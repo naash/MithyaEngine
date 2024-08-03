@@ -1,2 +1,2 @@
 # mithyaEngine
-My attempt to learn Rust and engine development at the same time
+My attempt to learn Rust and create a game engine at the same time :O
