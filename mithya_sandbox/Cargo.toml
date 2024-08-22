@@ -1,0 +1,7 @@
+[package]
+name = "mithya_sandbox"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+mithya_engine = { version = "0.1.0", path = "../mithya_engine" }

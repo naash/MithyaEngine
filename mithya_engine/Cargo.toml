@@ -1,0 +1,9 @@
+[package]
+name = "mithya_engine"
+version = "0.1.0"
+edition = "2021"
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+gl = "0.14.0"
+sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }

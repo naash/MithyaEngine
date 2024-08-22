@@ -1,0 +1,10 @@
+^C:\PROGRAMMING WORKBENCH\RUST\MITHYAENGINE\MITHYA_ENGINE\TARGET\DEBUG\BUILD\SDL2-SYS-6DE8A199650C495E\OUT\BUILD\CMAKEFILES\F3BE328BE8E4762187249E7E9F85D5AB\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/nisha/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sdl2-sys-0.37.0/SDL "-BC:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/SDL2.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

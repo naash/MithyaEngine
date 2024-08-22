@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-6de8a199650c495e\out\build\x64\Release\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-6de8a199650c495e\out\build\x64\Release\sdl_headers_copy</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

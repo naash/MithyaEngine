@@ -1,0 +1,8 @@
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/sdl_headers_copy.dir
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/SDL2main.dir
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/SDL2-static.dir
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/SDL2_test.dir
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/uninstall.dir
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/INSTALL.dir
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/ALL_BUILD.dir
+C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-6de8a199650c495e/out/build/CMakeFiles/ZERO_CHECK.dir

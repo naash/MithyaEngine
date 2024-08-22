@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Programming Workbench\Rust\MithyaEngine\mithya_engine\target\debug\build\sdl2-sys-6de8a199650c495e\out\build\CMakeFiles\f3be328be8e4762187249e7e9f85d5ab\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C7530484-3FFE-3ECA-9534-6BF62DD13236}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
