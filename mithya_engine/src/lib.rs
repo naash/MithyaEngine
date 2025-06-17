@@ -1,4 +1,4 @@
-extern crate gl;
+/*extern crate gl;
 extern crate sdl2;
 
 pub mod render_gl;
@@ -138,4 +138,25 @@ pub fn display_window() {
 
         window.gl_swap_window();
     }
+}
+*/
+
+pub mod core;
+pub mod rendering;
+pub mod components;
+pub mod window;
+
+// Re-export commonly used types for easier access
+pub use core::{EntityManager, EntityId, Transform};
+pub use components::Component;
+pub use rendering::{RenderingSystem, Mesh, Renderable};
+pub use window::display_window;
+
+// Prelude module - common imports users will want
+pub mod prelude {
+    pub use crate::{
+        EntityManager, EntityId, Transform,
+        Component, RenderingSystem, Mesh, Renderable,
+        display_window
+    };
 }
