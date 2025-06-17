@@ -35,24 +35,53 @@ pub fn display_window() {
 
     let shader_program = render_gl::Program::from_shaders(&[vert_shader, frag_shader]).unwrap();
 
-    // set up vertex buffer object
-    // Later load vertex data from a file
-    let vertices: Vec<f32> = vec![-0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.0, 0.5, 0.0];
+    // Quad vertex data (4 vertices forming a square)
+    let vertices: Vec<f32> = vec![
+        // Bottom left
+        -0.5, -0.5, 0.0,
+        // Bottom right  
+         0.5, -0.5, 0.0,
+        // Top right
+         0.5,  0.5, 0.0,
+        // Top left
+        -0.5,  0.5, 0.0,
+    ];
+
+    // Indices for drawing two triangles to form a quad
+    let indices: Vec<u32> = vec![
+        0, 1, 2,  // First triangle (bottom-left, bottom-right, top-right)
+        2, 3, 0   // Second triangle (top-right, top-left, bottom-left)
+    ];
 
     let mut vbo: gl::types::GLuint = 0;
+    let mut ebo: gl::types::GLuint = 0; // Element Buffer Object for indices
+
     unsafe {
         gl::GenBuffers(1, &mut vbo);
+        gl::GenBuffers(1, &mut ebo);
     }
 
     unsafe {
+        // Set up vertex buffer
         gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
         gl::BufferData(
-            gl::ARRAY_BUFFER,                                                       // target
-            (vertices.len() * std::mem::size_of::<f32>()) as gl::types::GLsizeiptr, // size of data in bytes
-            vertices.as_ptr() as *const gl::types::GLvoid, // pointer to data
-            gl::STATIC_DRAW,                               // usage
+            gl::ARRAY_BUFFER,
+            (vertices.len() * std::mem::size_of::<f32>()) as gl::types::GLsizeiptr,
+            vertices.as_ptr() as *const gl::types::GLvoid,
+            gl::STATIC_DRAW,
         );
+
+        // Set up element buffer
+        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, ebo);
+        gl::BufferData(
+            gl::ELEMENT_ARRAY_BUFFER,
+            (indices.len() * std::mem::size_of::<u32>()) as gl::types::GLsizeiptr,
+            indices.as_ptr() as *const gl::types::GLvoid,
+            gl::STATIC_DRAW,
+        );
+
         gl::BindBuffer(gl::ARRAY_BUFFER, 0);
+        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, 0);
     }
 
     // set up vertex array object
@@ -60,16 +89,20 @@ pub fn display_window() {
     unsafe {
         gl::GenVertexArrays(1, &mut vao);
         gl::BindVertexArray(vao);
+        
         gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
-        gl::EnableVertexAttribArray(0); // this is "layout (location = 0)" in vertex shader
+        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, ebo); // Bind EBO to VAO
+        
+        gl::EnableVertexAttribArray(0);
         gl::VertexAttribPointer(
-            0,         // index of the generic vertex attribute ("layout (location = 0)")
-            3,         // the number of components per generic vertex attribute
-            gl::FLOAT, // data type
-            gl::FALSE, // normalized (int-to-float conversion)
-            (3 * std::mem::size_of::<f32>()) as gl::types::GLint, // stride (byte offset between consecutive attributes)
-            std::ptr::null(),                                     // offset of the first component
+            0,
+            3,
+            gl::FLOAT,
+            gl::FALSE,
+            (3 * std::mem::size_of::<f32>()) as gl::types::GLint,
+            std::ptr::null(),
         );
+        
         gl::BindBuffer(gl::ARRAY_BUFFER, 0);
         gl::BindVertexArray(0);
 
@@ -78,7 +111,6 @@ pub fn display_window() {
     }
 
     // main loop
-
     let mut event_pump = sdl.event_pump().unwrap();
     'main: loop {
         for event in event_pump.poll_iter() {
@@ -92,14 +124,15 @@ pub fn display_window() {
             gl::Clear(gl::COLOR_BUFFER_BIT);
         }
 
-        shader_program.set_used(); //Enable shader
+        shader_program.set_used();
         unsafe {
             gl::BindVertexArray(vao);
-            // draw triangle
-            gl::DrawArrays(
-                gl::TRIANGLES, // mode
-                0,             // starting index in the enabled arrays
-                3,             // number of indices to be rendered
+            // Draw quad using indexed drawing
+            gl::DrawElements(
+                gl::TRIANGLES,
+                6, // number of indices (2 triangles * 3 vertices each)
+                gl::UNSIGNED_INT, // type of indices
+                std::ptr::null(), // offset
             );
         }
 
