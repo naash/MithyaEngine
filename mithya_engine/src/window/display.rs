@@ -1,3 +1,5 @@
+use glam::Vec3;
+
 use crate::core::{EntityManager, Transform};
 use crate::rendering::{RenderingSystem, Renderable, Mesh};
 
@@ -28,7 +30,7 @@ pub fn display_window() {
     // Create some entities
     let triangle_entity = entity_manager.create_entity();
     entity_manager.add_transform(triangle_entity, Transform {
-        position: [-0.3, 0.0, 0.0],
+        position:  Vec3::new(-0.3, 0.0, 0.0),
         ..Default::default()
     });
     entity_manager.add_renderable(triangle_entity, Renderable {
@@ -38,7 +40,7 @@ pub fn display_window() {
 
     let quad_entity = entity_manager.create_entity();
     entity_manager.add_transform(quad_entity, Transform {
-        position: [0.3, 0.0, 0.0],
+        position: Vec3::new(0.3, 0.0, 0.0),
         ..Default::default()
     });
     entity_manager.add_renderable(quad_entity, Renderable {

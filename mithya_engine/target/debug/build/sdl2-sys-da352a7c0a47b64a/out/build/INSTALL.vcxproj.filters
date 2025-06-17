@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Programming Workbench\Rust\MithyaEngine\mithya_engine\target\debug\build\sdl2-sys-da352a7c0a47b64a\out\build\CMakeFiles\cdb7e29366bac21dd9356a7157973c91\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{07E7BC02-3EAA-3E8D-90A6-9EE2EA2C1B5C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
