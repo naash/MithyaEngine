@@ -93,10 +93,14 @@ impl RenderingSystem {
         let entities = entity_manager.get_renderable_entities();
         
         for entity_id in entities {
-        if let Some((transform, renderable)) = entity_manager.get_transform_and_renderable_mut(entity_id) {
-            self.render_entity(transform, renderable);
+            if let (Some(transform), Some(renderable)) = (
+            entity_manager.get_component::<Transform>(entity_id).cloned(), //Need to clone to fix mutability issue
+            entity_manager.get_component_mut::<Renderable>(entity_id)
+            ) 
+            {
+                self.render_entity(&transform, renderable);
+            }
         }
-    }
     }
 
     fn render_entity(&self, _transform: &Transform, renderable: &mut Renderable) {
@@ -114,7 +118,7 @@ impl RenderingSystem {
             program.set_used();
         }
 
-        //TODO use Transform
+        //TODO use Transform, currently all entities will be rendered at center
     
         // Render the mesh
         if let Some(vao) = renderable.mesh.vao {

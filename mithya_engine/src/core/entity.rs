@@ -1,5 +1,7 @@
 use std::collections::HashMap;
+use std::any::{Any, TypeId};
 use super::Transform;
+use crate::components::Component;
 use crate::rendering::Renderable;
 
 // Simple entity ID system
@@ -8,16 +10,16 @@ pub type EntityId = u32;
 // Entity manager - stores components for entities
 pub struct EntityManager {
     next_entity_id: EntityId,
-    transforms: HashMap<EntityId, Transform>,
-    renderables: HashMap<EntityId, Renderable>,
+    entity_components: HashMap<TypeId, HashMap<EntityId, Box<dyn Any + Send + Sync>>>,
+    archetypes: HashMap<TypeId, Vec<EntityId>>,
 }
 
 impl EntityManager {
     pub fn new() -> Self {
         Self {
             next_entity_id: 0,
-            transforms: HashMap::new(),
-            renderables: HashMap::new(),
+            entity_components: HashMap::new(),
+            archetypes: HashMap::new(),
         }
     }
 
@@ -27,44 +29,115 @@ impl EntityManager {
         id
     }
 
-    pub fn add_transform(&mut self, entity: EntityId, transform: Transform) {
-        self.transforms.insert(entity, transform);
+    //Add component of any type
+    pub fn add_component<T: Component>(&mut self, entity_id: EntityId, component: T) {
+        let type_id = TypeId::of::<T>();
+        
+        //Store the component
+        self.entity_components
+            .entry(type_id)
+            .or_insert_with(HashMap::new)
+            .insert(entity_id, Box::new(component));
+        
+        //Add entity to this component's archetype
+        // This creates the archetype if it doesn't exist
+        self.archetypes
+            .entry(type_id)
+            .or_insert_with(Vec::new)
+            .push(entity_id);
     }
 
-    pub fn add_renderable(&mut self, entity: EntityId, renderable: Renderable) {
-        self.renderables.insert(entity, renderable);
+    pub fn get_component<T: Component>(&self, entity_id: EntityId) -> Option<&T> {
+        let type_id = TypeId::of::<T>();
+        self.entity_components
+            .get(&type_id)?
+            .get(&entity_id)?
+            .downcast_ref::<T>()
+    }
+    
+    pub fn get_component_mut<T: Component>(&mut self, entity_id: EntityId) -> Option<&mut T> {
+        let type_id = TypeId::of::<T>();
+        self.entity_components
+            .get_mut(&type_id)?
+            .get_mut(&entity_id)?
+            .downcast_mut::<T>()
     }
 
-    pub fn get_transform(&self, entity: EntityId) -> Option<&Transform> {
-        self.transforms.get(&entity)
+    pub fn remove_component<T: Component>(&mut self, entity_id: EntityId) -> Option<T> {
+       let type_id = TypeId::of::<T>();
+  
+        // Remove from component storage
+        let component = self.entity_components
+            .get_mut(&type_id)?
+            .remove(&entity_id)?
+            .downcast::<T>()
+            .ok()?;
+        
+        // Remove from archetype
+        if let Some(entities) = self.archetypes.get_mut(&type_id) {
+            entities.retain(|&id| id != entity_id);
+            // Clean up empty archetypes
+            if entities.is_empty() {
+                self.archetypes.remove(&type_id);
+            }
+        }
+        
+        Some(*component)
     }
-
-    pub fn get_renderable(&self, entity: EntityId) -> Option<&Renderable> {
-        self.renderables.get(&entity)
+    
+    pub fn has_component<T: Component>(&self, entity_id: EntityId) -> bool {
+        self.get_component::<T>(entity_id).is_some()
     }
+    
+    pub fn destroy_entity(&mut self, entity_id: EntityId) {
+        
+        //Remove from all archetypes
+        for (_, entities) in self.archetypes.iter_mut() {
+            entities.retain(|&id| id != entity_id);
+        }
 
-    pub fn get_renderable_mut(&mut self, entity: EntityId) -> Option<&mut Renderable> {
-        self.renderables.get_mut(&entity)
-    }
-
-    pub fn get_transform_and_renderable_mut(&mut self, entity_id: EntityId) 
-    -> Option<(&Transform, &mut Renderable)> {
-        if let (Some(transform), Some(renderable)) = (
-            self.transforms.get(&entity_id),
-            self.renderables.get_mut(&entity_id)
-        ) {
-            Some((transform, renderable))
-        } else {
-            None
+        //Clean up empty archetypes (optional optimization)
+        self.archetypes.retain(|_, entities| !entities.is_empty());
+        
+        //Remove from all component storages
+        for (_, components) in self.entity_components.iter_mut() {
+            components.remove(&entity_id);
         }
     }
 
-    // Get all entities that have both transform and renderable components
+     // Get entities that have ALL specified component types
+    pub fn query_entities(&self, component_types: &[TypeId]) -> Vec<EntityId> {
+        if component_types.is_empty() {
+            return Vec::new();
+        }
+        
+        // Start with entities from the first component type
+        let mut result: Vec<EntityId> = self.archetypes
+            .get(&component_types[0])
+            .cloned()
+            .unwrap_or_default();
+        
+        // Filter by remaining component types
+        for &type_id in &component_types[1..] {
+            if let Some(entities) = self.archetypes.get(&type_id) {
+                result.retain(|entity_id| entities.contains(entity_id));
+            } else {
+                // If any component type has no entities, result is empty
+                return Vec::new();
+            }
+        }
+        
+        result
+    }
+    
+    // Convenience method for two component types
+    pub fn query_two_components<T1: Component, T2: Component>(&self) -> Vec<EntityId> {
+        let types = vec![TypeId::of::<T1>(), TypeId::of::<T2>()];
+        self.query_entities(&types)
+    }
+    
+    // Get renderable entities (Transform + Renderable)
     pub fn get_renderable_entities(&self) -> Vec<EntityId> {
-        self.renderables
-            .keys()
-            .filter(|&&entity| self.transforms.contains_key(&entity))
-            .copied()
-            .collect()
+        self.query_two_components::<Transform, Renderable>()
     }
 }

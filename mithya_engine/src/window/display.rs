@@ -28,24 +28,27 @@ pub fn display_window() {
     rendering_system.initialize().expect("Failed to initialize rendering system");
 
     // Create some entities
-    let triangle_entity = entity_manager.create_entity();
-    entity_manager.add_transform(triangle_entity, Transform {
-        position:  Vec3::new(-0.3, 0.0, 0.0),
-        ..Default::default()
-    });
-    entity_manager.add_renderable(triangle_entity, Renderable {
-        mesh: Mesh::new_triangle(),
-        shader_program_id: None, // Use default shader
-    });
+
 
     let quad_entity = entity_manager.create_entity();
-    entity_manager.add_transform(quad_entity, Transform {
-        position: Vec3::new(0.3, 0.0, 0.0),
+    entity_manager.add_component(quad_entity, Transform {
+        position: Vec3::new(-50.0, 0.0, 0.0),
         ..Default::default()
     });
-    entity_manager.add_renderable(quad_entity, Renderable {
+    entity_manager.add_component(quad_entity, Renderable {
         mesh: Mesh::new_quad(),
         shader_program_id: None,
+    });
+
+    let triangle_entity = entity_manager.create_entity();
+    
+    entity_manager.add_component(triangle_entity, Transform {
+        position:  Vec3::new(500.0, 0.0, 0.0),
+        ..Default::default()
+    });
+    entity_manager.add_component(triangle_entity, Renderable {
+        mesh: Mesh::new_triangle(),
+        shader_program_id: None, // Use default shader
     });
 
     unsafe {

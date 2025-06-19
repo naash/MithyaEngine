@@ -1,7 +1,5 @@
 use glam::{Vec3, Quat};
 
-use crate::components::Component;
-
 // Transform component for position, rotation, scale
 #[derive(Clone, Debug)]
 pub struct Transform {
@@ -9,8 +7,6 @@ pub struct Transform {
     pub rotation: Quat,
     pub scale: Vec3,
 }
-
-impl Component for Transform {}
 
 impl Default for Transform {
     fn default() -> Self {
