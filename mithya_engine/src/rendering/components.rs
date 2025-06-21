@@ -5,4 +5,5 @@ use super::Mesh;
 pub struct Renderable {
     pub mesh: Mesh,
     pub shader_program_id: Option<u32>, // Reference to shader program
+    //Todo material info: shader path
 }

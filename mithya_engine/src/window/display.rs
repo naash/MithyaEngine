@@ -13,7 +13,7 @@ pub fn display_window() {
     gl_attr.set_context_version(4, 1);
 
     let window = video_subsystem
-        .window("Game Engine", 900, 700)
+        .window("Game Engine", 2048, 1024)
         .opengl()
         .resizable()
         .build()
@@ -28,11 +28,9 @@ pub fn display_window() {
     rendering_system.initialize().expect("Failed to initialize rendering system");
 
     // Create some entities
-
-
     let quad_entity = entity_manager.create_entity();
     entity_manager.add_component(quad_entity, Transform {
-        position: Vec3::new(-50.0, 0.0, 0.0),
+        position: Vec3::new(1.0, 0.0, 10.0),
         ..Default::default()
     });
     entity_manager.add_component(quad_entity, Renderable {
@@ -43,7 +41,7 @@ pub fn display_window() {
     let triangle_entity = entity_manager.create_entity();
     
     entity_manager.add_component(triangle_entity, Transform {
-        position:  Vec3::new(500.0, 0.0, 0.0),
+        position:  Vec3::new(0.0, 10.0, 0.0),
         ..Default::default()
     });
     entity_manager.add_component(triangle_entity, Renderable {
@@ -52,7 +50,7 @@ pub fn display_window() {
     });
 
     unsafe {
-        gl::Viewport(0, 0, 900, 700);
+        gl::Viewport(0, 0, 2048, 1024);
     }
 
     // Main loop

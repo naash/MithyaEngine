@@ -1,3 +1,5 @@
+use glam::Mat4;
+
 use super::{ShaderManager, Mesh};
 use super::components::Renderable;
 use crate::core::{EntityManager, Transform};
@@ -18,6 +20,7 @@ impl RenderingSystem {
 
     pub fn initialize(&mut self) -> Result<(), String> {
         // Create default shader program
+        // Todo Need to be part of material trait, so that each element can define different shader
         let vert_source = include_str!("../../shaders/triangle.vert");
         let frag_source = include_str!("../../shaders/triangle.frag");
         
@@ -40,8 +43,16 @@ impl RenderingSystem {
             let mut ebo = 0;
 
             gl::GenVertexArrays(1, &mut vao);
+
+            println!("Generated VAO: {}", vao);
+            self.check_gl_error("GenVertexArrays");
             gl::GenBuffers(1, &mut vbo);
+
+            println!("Generated VBO: {}", vbo);
+            self.check_gl_error("GenBuffers VBO");
             gl::GenBuffers(1, &mut ebo);
+            println!("Generated EBO: {}", ebo);
+            self.check_gl_error("GenBuffers EBO");
 
             gl::BindVertexArray(vao);
 
@@ -74,6 +85,7 @@ impl RenderingSystem {
                 std::ptr::null(),
             );
 
+            //Clear buffers. Note that ebo is not cleared as it is part of vao
             gl::BindBuffer(gl::ARRAY_BUFFER, 0);
             gl::BindVertexArray(0);
 
@@ -103,7 +115,7 @@ impl RenderingSystem {
         }
     }
 
-    fn render_entity(&self, _transform: &Transform, renderable: &mut Renderable) {
+    fn render_entity(&self, transform: &Transform, renderable: &mut Renderable) {
         // Prepare mesh if not already prepared
         if renderable.mesh.vao.is_none() {
             self.prepare_mesh(&mut renderable.mesh);
@@ -116,9 +128,27 @@ impl RenderingSystem {
         
         if let Some(program) = self.shader_manager.get_program(shader_id) {
             program.set_used();
-        }
 
-        //TODO use Transform, currently all entities will be rendered at center
+            // Create model matrix from transform
+            let model_matrix = self.create_model_matrix(transform);
+            
+            // Set the model matrix uniform in the shader
+            self.shader_manager.set_uniform_matrix4fv(program.id(), "u_model", &model_matrix);
+            
+            //Todo: Need to change later when camera updates
+            let identity_matrix = [
+                1.0, 0.0, 0.0, 0.0,
+                0.0, 1.0, 0.0, 0.0,
+                0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, 0.0, 1.0,
+            ];
+
+           let projection = Mat4::orthographic_rh(-20.0, 20.0, -20.0, 20.0, -1.0, 100.0);
+
+           self.shader_manager.set_uniform_matrix4fv(program.id(), "u_view", &identity_matrix);
+           self.shader_manager.set_uniform_matrix4fv(program.id(), "u_projection", &projection.to_cols_array());
+           self.check_gl_error("set view/projection uniforms");
+        }
     
         // Render the mesh
         if let Some(vao) = renderable.mesh.vao {
@@ -137,5 +167,28 @@ impl RenderingSystem {
 
     pub fn create_shader_program(&mut self, vert_source: &str, frag_source: &str) -> Result<u32, String> {
         self.shader_manager.create_program(vert_source, frag_source)
+    }
+
+    fn create_model_matrix(&self, transform: &Transform) -> [f32; 16] {
+        // Use glam to create the transformation matrix
+        let translation = glam::Mat4::from_translation(transform.position);
+        let rotation = glam::Mat4::from_quat(transform.rotation);
+        let scale = glam::Mat4::from_scale(transform.scale);
+        
+        // Combine transformations: Translation * Rotation * Scale
+        let model_matrix = translation * rotation * scale;
+        
+        // Convert to array format for OpenGL
+        model_matrix.to_cols_array()
+    }
+
+    // Add this debugging function to check OpenGL errors
+    fn check_gl_error(&self, operation: &str) {
+        unsafe {
+            let error = gl::GetError();
+            if error != gl::NO_ERROR {
+                println!("OpenGL error after {}: {}", operation, error);
+            }
+        }
     }
 }

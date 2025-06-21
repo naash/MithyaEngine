@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+
 use super::render_gl::Program;
 use super::render_gl::Shader;
 
@@ -38,5 +39,35 @@ impl ShaderManager {
 
     pub fn get_program(&self, id: u32) -> Option<&Program> {
         self.programs.get(&id)
+    }
+
+    pub fn set_uniform_matrix4fv(&self, id: u32, name: &str, matrix: &[f32; 16]) {
+        unsafe {
+            let c_name = std::ffi::CString::new(name).unwrap();
+            let location = gl::GetUniformLocation(id, c_name.as_ptr());
+            if location != -1 {
+                gl::UniformMatrix4fv(location, 1, gl::FALSE, matrix.as_ptr());
+            }
+        }
+    }
+    
+    pub fn set_uniform_1f(&self, id: u32, name: &str, value: f32) {
+        unsafe {
+            let c_name = std::ffi::CString::new(name).unwrap();
+            let location = gl::GetUniformLocation(id, c_name.as_ptr());
+            if location != -1 {
+                gl::Uniform1f(location, value);
+            }
+        }
+    }
+    
+    pub fn set_uniform_3f(&self, id: u32, name: &str, x: f32, y: f32, z: f32) {
+        unsafe {
+            let c_name = std::ffi::CString::new(name).unwrap();
+            let location = gl::GetUniformLocation(id, c_name.as_ptr());
+            if location != -1 {
+                gl::Uniform3f(location, x, y, z);
+            }
+        }
     }
 }
