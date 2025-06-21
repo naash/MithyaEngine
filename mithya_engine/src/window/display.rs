@@ -13,7 +13,7 @@ pub fn display_window() {
     gl_attr.set_context_version(4, 1);
 
     let window = video_subsystem
-        .window("Game Engine", 2048, 1024)
+        .window("Mithya Engine", 2048, 1024)
         .opengl()
         .resizable()
         .build()
