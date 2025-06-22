@@ -1,5 +1,5 @@
-pub mod entity;
+pub mod entity_manager;
 pub mod transform;
 
-pub use entity::{EntityManager, EntityId};
+pub use entity_manager::{EntityManager, EntityId};
 pub use transform::Transform;

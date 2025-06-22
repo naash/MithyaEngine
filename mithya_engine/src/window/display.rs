@@ -1,7 +1,7 @@
 use glam::Vec3;
 
 use crate::core::{EntityManager, Transform};
-use crate::rendering::{RenderingSystem, Renderable, Mesh};
+use crate::rendering::{RenderingSystem, Render, Mesh};
 
 // Updated main display function using the new architecture
 pub fn display_window() {
@@ -33,9 +33,9 @@ pub fn display_window() {
         position: Vec3::new(1.0, 0.0, 10.0),
         ..Default::default()
     });
-    entity_manager.add_component(quad_entity, Renderable {
+    entity_manager.add_component(quad_entity, Render {
         mesh: Mesh::new_quad(),
-        shader_program_id: None,
+        material_id : rendering_system.material_manager.get_material_id_from_name("unlit_color").copied(),
     });
 
     let triangle_entity = entity_manager.create_entity();
@@ -44,9 +44,9 @@ pub fn display_window() {
         position:  Vec3::new(0.0, 10.0, 0.0),
         ..Default::default()
     });
-    entity_manager.add_component(triangle_entity, Renderable {
+    entity_manager.add_component(triangle_entity, Render {
         mesh: Mesh::new_triangle(),
-        shader_program_id: None, // Use default shader
+        material_id : rendering_system.material_manager.get_material_id_from_name("unlit_color").copied(),
     });
 
     unsafe {
