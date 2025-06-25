@@ -1,0 +1,10 @@
+^C:\PROGRAMMING WORKBENCH\RUST\MITHYAENGINE\MITHYA_SANDBOX\TARGET\DEBUG\BUILD\SDL2-SYS-A0E1A65896E40957\OUT\BUILD\CMAKEFILES\9198F0E6C7F7E15FD9AA97FB35342B3D\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,274 @@
+CMAKE_TOOLCHAIN_FILE_x86_64-pc-windows-msvc = None
+CMAKE_TOOLCHAIN_FILE_x86_64_pc_windows_msvc = None
+HOST_CMAKE_TOOLCHAIN_FILE = None
+CMAKE_TOOLCHAIN_FILE = None
+CMAKE_GENERATOR_x86_64-pc-windows-msvc = None
+CMAKE_GENERATOR_x86_64_pc_windows_msvc = None
+HOST_CMAKE_GENERATOR = None
+CMAKE_GENERATOR = None
+CMAKE_PREFIX_PATH_x86_64-pc-windows-msvc = None
+CMAKE_PREFIX_PATH_x86_64_pc_windows_msvc = None
+HOST_CMAKE_PREFIX_PATH = None
+CMAKE_PREFIX_PATH = None
+CMAKE_x86_64-pc-windows-msvc = None
+CMAKE_x86_64_pc_windows_msvc = None
+HOST_CMAKE = None
+CMAKE = None
+running: "cmake" "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-sys-0.37.0\\SDL" "-G" "Visual Studio 17 2022" "-Thost=x64" "-Ax64" "-DCMAKE_CONFIGURATION_TYPES=Release" "-DSDL_SHARED=OFF" "-DSDL_STATIC=ON" "-DSDL_MAIN_HANDLED=ON" "-DCMAKE_INSTALL_PREFIX=C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out" "-DCMAKE_C_FLAGS= -D__FLTUSED__ -nologo -MD -Brepro" "-DCMAKE_C_FLAGS_RELEASE= -D__FLTUSED__ -nologo -MD -Brepro" "-DCMAKE_CXX_FLAGS= -nologo -MD -Brepro" "-DCMAKE_CXX_FLAGS_RELEASE= -nologo -MD -Brepro" "-DCMAKE_ASM_FLAGS= -nologo -MD -Brepro" "-DCMAKE_ASM_FLAGS_RELEASE= -nologo -MD -Brepro" "-DCMAKE_BUILD_TYPE=Release"
+-- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) 
+-- 
+-- SDL2 was configured with the following options:
+-- 
+-- Platform: Windows-10.0.26100
+-- 64-bit:   TRUE
+-- Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe
+-- Revision: SDL-2.26.4-no-vcs
+-- 
+-- Subsystems:
+--   Atomic:	ON
+--   Audio:	ON
+--   Video:	ON
+--   Render:	ON
+--   Events:	ON
+--   Joystick:	ON
+--   Haptic:	ON
+--   Hidapi:	ON
+--   Power:	ON
+--   Threads:	ON
+--   Timers:	ON
+--   File:	ON
+--   Loadso:	ON
+--   CPUinfo:	ON
+--   Filesystem:	ON
+--   Sensor:	ON
+--   Locale:	ON
+--   Misc:	ON
+-- 
+-- Options:
+--   SDL2_DISABLE_INSTALL        (Wanted: OFF): OFF
+--   SDL2_DISABLE_SDL2MAIN       (Wanted: OFF): OFF
+--   SDL2_DISABLE_UNINSTALL      (Wanted: OFF): OFF
+--   SDL_3DNOW                   (Wanted: ON): OFF
+--   SDL_ALSA                    (Wanted: OFF): OFF
+--   SDL_ALSA_SHARED             (Wanted: OFF): OFF
+--   SDL_ALTIVEC                 (Wanted: ON): OFF
+--   SDL_ARMNEON                 (Wanted: OFF): OFF
+--   SDL_ARMSIMD                 (Wanted: OFF): OFF
+--   SDL_ARTS                    (Wanted: OFF): OFF
+--   SDL_ARTS_SHARED             (Wanted: OFF): OFF
+--   SDL_ASAN                    (Wanted: OFF): OFF
+--   SDL_ASSEMBLY                (Wanted: ON): OFF
+--   SDL_ASSERTIONS              (Wanted: auto): auto
+--   SDL_BACKGROUNDING_SIGNAL    (Wanted: OFF): OFF
+--   SDL_CCACHE                  (Wanted: ON): OFF
+--   SDL_CLOCK_GETTIME           (Wanted: OFF): OFF
+--   SDL_COCOA                   (Wanted: OFF): OFF
+--   SDL_DBUS                    (Wanted: OFF): OFF
+--   SDL_DIRECTFB                (Wanted: OFF): OFF
+--   SDL_DIRECTFB_SHARED         (Wanted: OFF): OFF
+--   SDL_DIRECTX                 (Wanted: ON): ON
+--   SDL_DISKAUDIO               (Wanted: ON): ON
+--   SDL_DUMMYAUDIO              (Wanted: ON): ON
+--   SDL_DUMMYVIDEO              (Wanted: ON): ON
+--   SDL_ESD                     (Wanted: OFF): OFF
+--   SDL_ESD_SHARED              (Wanted: OFF): OFF
+--   SDL_FOREGROUNDING_SIGNAL    (Wanted: OFF): OFF
+--   SDL_FUSIONSOUND             (Wanted: OFF): OFF
+--   SDL_FUSIONSOUND_SHARED      (Wanted: OFF): OFF
+--   SDL_GCC_ATOMICS             (Wanted: OFF): OFF
+--   SDL_HIDAPI                  (Wanted: ON): ON
+--   SDL_HIDAPI_JOYSTICK         (Wanted: ON): ON
+--   SDL_HIDAPI_LIBUSB           (Wanted: OFF): OFF
+--   SDL_IBUS                    (Wanted: OFF): OFF
+--   SDL_INSTALL_TESTS           (Wanted: OFF): OFF
+--   SDL_JACK                    (Wanted: OFF): OFF
+--   SDL_JACK_SHARED             (Wanted: OFF): OFF
+--   SDL_KMSDRM                  (Wanted: OFF): OFF
+--   SDL_KMSDRM_SHARED           (Wanted: OFF): OFF
+--   SDL_LIBC                    (Wanted: OFF): OFF
+--   SDL_LIBSAMPLERATE           (Wanted: OFF): OFF
+--   SDL_LIBSAMPLERATE_SHARED    (Wanted: OFF): OFF
+--   SDL_METAL                   (Wanted: OFF): OFF
+--   SDL_MMX                     (Wanted: ON): OFF
+--   SDL_NAS                     (Wanted: OFF): OFF
+--   SDL_NAS_SHARED              (Wanted: OFF): OFF
+--   SDL_OFFSCREEN               (Wanted: ON): ON
+--   SDL_OPENGL                  (Wanted: ON): ON
+--   SDL_OPENGLES                (Wanted: ON): ON
+--   SDL_OSS                     (Wanted: OFF): OFF
+--   SDL_PIPEWIRE                (Wanted: OFF): OFF
+--   SDL_PIPEWIRE_SHARED         (Wanted: OFF): OFF
+--   SDL_PTHREADS                (Wanted: OFF): OFF
+--   SDL_PTHREADS_SEM            (Wanted: OFF): OFF
+--   SDL_PULSEAUDIO              (Wanted: OFF): OFF
+--   SDL_PULSEAUDIO_SHARED       (Wanted: OFF): OFF
+--   SDL_RENDER_D3D              (Wanted: ON): ON
+--   SDL_RENDER_METAL            (Wanted: OFF): OFF
+--   SDL_RPATH                   (Wanted: OFF): OFF
+--   SDL_RPI                     (Wanted: OFF): OFF
+--   SDL_SNDIO                   (Wanted: OFF): OFF
+--   SDL_SNDIO_SHARED            (Wanted: OFF): OFF
+--   SDL_SSE                     (Wanted: ON): ON
+--   SDL_SSE2                    (Wanted: ON): ON
+--   SDL_SSE3                    (Wanted: ON): ON
+--   SDL_SSEMATH                 (Wanted: ON): OFF
+--   SDL_STATIC_PIC              (Wanted: OFF): OFF
+--   SDL_SYSTEM_ICONV            (Wanted: ON): OFF
+--   SDL_TESTS                   (Wanted: OFF): OFF
+--   SDL_VENDOR_INFO             (Wanted: ): OFF
+--   SDL_VIRTUAL_JOYSTICK        (Wanted: ON): ON
+--   SDL_VIVANTE                 (Wanted: OFF): OFF
+--   SDL_VULKAN                  (Wanted: ON): ON
+--   SDL_WASAPI                  (Wanted: ON): ON
+--   SDL_WAYLAND                 (Wanted: OFF): OFF
+--   SDL_WAYLAND_LIBDECOR        (Wanted: OFF): OFF
+--   SDL_WAYLAND_LIBDECOR_SHARED (Wanted: OFF): OFF
+--   SDL_WAYLAND_QT_TOUCH        (Wanted: OFF): OFF
+--   SDL_WAYLAND_SHARED          (Wanted: OFF): OFF
+--   SDL_X11                     (Wanted: OFF): OFF
+--   SDL_X11_SHARED              (Wanted: OFF): OFF
+--   SDL_X11_XCURSOR             (Wanted: OFF): OFF
+--   SDL_X11_XDBE                (Wanted: OFF): OFF
+--   SDL_X11_XFIXES              (Wanted: OFF): OFF
+--   SDL_X11_XINPUT              (Wanted: OFF): OFF
+--   SDL_X11_XRANDR              (Wanted: OFF): OFF
+--   SDL_X11_XSCRNSAVER          (Wanted: OFF): OFF
+--   SDL_X11_XSHAPE              (Wanted: OFF): OFF
+--   SDL_XINPUT                  (Wanted: ON): ON
+-- 
+--  CFLAGS:         -D__FLTUSED__ -nologo -MD -Brepro
+--  EXTRA_CFLAGS:  
+--  EXTRA_LDFLAGS:  -CETCOMPAT
+--  EXTRA_LIBS:    user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8
+-- 
+--  Build Shared Library: OFF
+--  Build Static Library: ON
+--  Build Static Library with Position Independent Code: OFF
+-- 
+-- Configuring done (0.5s)
+-- Generating done (0.4s)
+-- Build files have been written to: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build
+running: "cmake" "--build" "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build" "--target" "install" "--config" "Release" "--parallel" "16"
+MSBuild version 17.14.10+8b8e13593 for .NET Framework
+
+  1>Checking Build System
+  Building Custom Rule C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/CMakeLists.txt
+  Building Custom Rule C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/CMakeLists.txt
+  Building Custom Rule C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/CMakeLists.txt
+  SDL2_test.vcxproj -> C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out\build\Release\SDL2_test.lib
+  SDL2-static.vcxproj -> C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out\build\Release\SDL2-static.lib
+  Building Custom Rule C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/CMakeLists.txt
+  SDL2main.vcxproj -> C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out\build\Release\SDL2main.lib
+  Building Custom Rule C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/CMakeLists.txt
+  1>
+  -- Install configuration: "Release"
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/lib/SDL2main.lib
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/lib/SDL2-static.lib
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/lib/SDL2_test.lib
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2mainTargets.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2mainTargets-release.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2staticTargets.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2staticTargets-release.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2testTargets.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2testTargets-release.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2Config.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/cmake/SDL2ConfigVersion.cmake
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_assert.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_atomic.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_audio.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_bits.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_blendmode.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_clipboard.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_copying.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_cpuinfo.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_egl.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_endian.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_error.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_events.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_filesystem.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_gamecontroller.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_gesture.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_guid.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_haptic.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_hidapi.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_hints.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_joystick.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_keyboard.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_keycode.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_loadso.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_locale.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_log.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_main.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_messagebox.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_metal.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_misc.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_mouse.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_mutex.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_name.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengl.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengl_glext.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengles.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengles2.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengles2_gl2.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengles2_gl2ext.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengles2_gl2platform.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_opengles2_khrplatform.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_pixels.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_platform.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_power.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_quit.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_rect.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_render.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_rwops.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_scancode.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_sensor.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_shape.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_stdinc.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_surface.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_system.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_syswm.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_assert.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_common.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_compare.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_crc32.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_font.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_fuzzer.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_harness.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_images.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_log.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_md5.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_memory.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_test_random.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_thread.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_timer.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_touch.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_types.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_version.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_video.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_vulkan.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/begin_code.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/close_code.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_revision.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/include/SDL2/SDL_config.h
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/licenses/SDL2/LICENSE.txt
+  -- Up-to-date: C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/lib/pkgconfig/sdl2.pc
+cargo:root=C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out
+cargo:rustc-link-search=C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out\lib64
+cargo:rustc-link-search=C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out\lib
+cargo:include=C:\Users\nisha\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\sdl2-sys-0.37.0\SDL\include
+cargo:rustc-link-lib=static=SDL2main
+cargo:rustc-link-lib=static=SDL2-static
+cargo:rustc-link-lib=shell32
+cargo:rustc-link-lib=user32
+cargo:rustc-link-lib=gdi32
+cargo:rustc-link-lib=winmm
+cargo:rustc-link-lib=imm32
+cargo:rustc-link-lib=ole32
+cargo:rustc-link-lib=oleaut32
+cargo:rustc-link-lib=version
+cargo:rustc-link-lib=uuid
+cargo:rustc-link-lib=dinput8
+cargo:rustc-link-lib=dxguid
+cargo:rustc-link-lib=setupapi

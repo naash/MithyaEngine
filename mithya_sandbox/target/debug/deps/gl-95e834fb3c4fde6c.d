@@ -1,0 +1,8 @@
+C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\deps\libgl-95e834fb3c4fde6c.rmeta: C:\Users\nisha\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gl-0.14.0\src\lib.rs C:\Programming\ Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\gl-d8a1ce384f8668d7\out/bindings.rs
+
+C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\deps\gl-95e834fb3c4fde6c.d: C:\Users\nisha\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gl-0.14.0\src\lib.rs C:\Programming\ Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\gl-d8a1ce384f8668d7\out/bindings.rs
+
+C:\Users\nisha\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gl-0.14.0\src\lib.rs:
+C:\Programming\ Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\gl-d8a1ce384f8668d7\out/bindings.rs:
+
+# env-dep:OUT_DIR=C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\target\\debug\\build\\gl-d8a1ce384f8668d7\\out

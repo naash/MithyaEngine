@@ -22,18 +22,7 @@ impl RenderingSystem {
     pub fn initialize(&mut self) -> Result<(), String> {
         //Create default program
         let _ = self.material_manager.create_default_materials();
-        // Create default shader program
-        // Todo Need to be part of material trait, so that each element can define different shader
-        // let vert_source = include_str!("../../../shaders/unlit_color.vert");
-        // let frag_source = include_str!("../../../shaders/unlit_color.frag");
-        
-        // let shader_id = self.shader_manager.create_program(vert_source, frag_source)?;
 
-        // println!("Generated shader_id: {}", shader_id);
-        // self.check_gl_error("create_program");
-
-        // self.default_shader_id = Some(shader_id);
-        
         unsafe {
             gl::Enable(gl::DEPTH_TEST);
             gl::ClearColor(0.0, 0.3, 0.5, 1.0);
@@ -81,16 +70,18 @@ impl RenderingSystem {
                 gl::STATIC_DRAW,
             );
 
-            // Vertex attributes
-            gl::EnableVertexAttribArray(0);
-            gl::VertexAttribPointer(
-                0,
-                3,
-                gl::FLOAT,
-                gl::FALSE,
-                (3 * std::mem::size_of::<f32>()) as gl::types::GLint,
-                std::ptr::null(),
-            );
+            // Configure all attributes
+            for attr in &mesh.attributes {
+                gl::EnableVertexAttribArray(attr.location);
+                gl::VertexAttribPointer(
+                    attr.location,
+                    attr.size,
+                    gl::FLOAT,
+                    gl::FALSE,
+                    mesh.vertex_stride as gl::types::GLint,
+                    attr.offset as *const gl::types::GLvoid,
+                );
+            }
 
             //Clear buffers. Note that ebo is not cleared as it is part of vao
             gl::BindBuffer(gl::ARRAY_BUFFER, 0);

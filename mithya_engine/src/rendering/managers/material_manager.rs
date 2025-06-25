@@ -1,12 +1,17 @@
 
 use std::collections::HashMap;
+use crate::rendering::texture_manager::TextureLoadError;
 use crate::rendering::ShaderManager;
+use crate::rendering::TextureManager;
 
 use super::Material;
 
 // Material Manager for caching and loading
 pub struct MaterialManager {
+    //Not sure if one manager should have direct reference to other managers. Reconsider this.
     shader_manager: ShaderManager,
+    texture_manager: TextureManager,
+    //,,,,,,,,,,,,
     materials: HashMap<u32, Material>,        // ID -> Material
     material_name_to_id: HashMap<String, u32>,         // Name -> ID (for lookup by name)
     next_id: u32,
@@ -20,6 +25,7 @@ impl MaterialManager {
             materials: HashMap::new(),
             next_id: 1,
             shader_manager: ShaderManager::new(),
+            texture_manager: TextureManager::new(),
             shader_cache: HashMap::new(),
         }
     }
@@ -41,13 +47,13 @@ impl MaterialManager {
             program_key
         };
 
-         println!("Loading Material with Program : {}", program_key);
         let mut material = Material::new(name, vertex_path, fragment_path);
         let program_id =self.shader_manager.get_program(program_key);
-        
+                
         //This is ugly, needs cleaup
         material.shader_program_id = Some(program_id.unwrap().id());
-        
+        println!("Loading Material with Program : {}", &material.shader_program_id.unwrap());
+
         self.materials.insert(id, material);
         self.material_name_to_id.insert(name.to_string(), id);
         Ok(())
@@ -75,11 +81,54 @@ impl MaterialManager {
         self.materials.get_mut(&material_id)
     }
 
+    pub fn add_texture_to_material(
+    &mut self,
+    material_name: &str,
+    uniform_name: &str,
+    texture_path: &str,
+    slot: u32,
+    ) -> Result<(), MaterialError> {
+
+        // Load texture through texture manager
+        let texture_id = self.texture_manager.load_texture(texture_path)
+            .map_err(MaterialError::TextureLoadError)?;
+
+        // Add texture binding to material
+        let material_id = self.material_name_to_id.get(material_name);
+        if let Some(material) = self.materials.get_mut(material_id.unwrap()) {
+            material.bind_texture(uniform_name, texture_id, slot);
+            Ok(())
+        } else {
+            Err(MaterialError::MaterialNotFound(material_name.to_string()))
+        }
+    }
+
     // Create predefined materials
     pub fn create_default_materials(&mut self) -> Result<(), String> {
         self.load_material("unlit_color",
          include_str!("../../../shaders/unlit_color.vert"),
          include_str!("../../../shaders/unlit_color.frag"))?;
-        Ok(())
+
+        self.load_material("unlit_texture_default",
+         include_str!("../../../shaders/unlit_texture.vert"),
+         include_str!("../../../shaders/unlit_texture.frag"))?;
+
+        //Load default texture for this material
+        let _ = self.add_texture_to_material("unlit_texture_default",
+             "u_texture",
+              "test_texture.png",
+              0);
+
+         Ok(())     
     }
+}
+
+#[derive(Debug)]
+pub enum MaterialError {
+    MaterialNotFound(String),
+    TextureLoadError(TextureLoadError), // Assuming you have a TextureError type
+    InvalidSlot(u32),
+    UniformNotFound(String),
+    ShaderCompilationError(String),
+    InvalidMaterialData(String),
 }

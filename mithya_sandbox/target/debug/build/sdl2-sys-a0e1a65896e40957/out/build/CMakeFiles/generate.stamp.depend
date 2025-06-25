@@ -1,0 +1,65 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.30/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeCXXInformation.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDependentOption.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeParseArguments.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakePushCheckState.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeRCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCCompilerFlag.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceRuns.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCXXSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFiles.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckLanguage.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckLibraryExists.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckOBJCSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckStructHasMember.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/CheckSymbolExists.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Compiler/MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Compiler/MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/FindGit.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/FindPkgConfig.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckFlagCommonConfig.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake
+C:/Program Files/CMake/share/cmake-3.30/Modules/WriteBasicConfigVersionFile.cmake
+C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-a0e1a65896e40957/out/build/CMakeFiles/3.30.2/CMakeCCompiler.cmake
+C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-a0e1a65896e40957/out/build/CMakeFiles/3.30.2/CMakeCXXCompiler.cmake
+C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-a0e1a65896e40957/out/build/CMakeFiles/3.30.2/CMakeRCCompiler.cmake
+C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-a0e1a65896e40957/out/build/CMakeFiles/3.30.2/CMakeSystem.cmake
+C:/Programming Workbench/Rust/MithyaEngine/mithya_sandbox/target/debug/build/sdl2-sys-a0e1a65896e40957/out/build/SDL_config.h.intermediate
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/CMakeLists.txt
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/SDL2.spec.in
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/SDL2Config.cmake.in
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake/CheckCPUArchitecture.cmake
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake/macros.cmake
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake/sdlchecks.cmake
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake_uninstall.cmake.in
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/include/SDL_config.h.cmake
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/include/SDL_revision.h.cmake
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/sdl2-config.in
+C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/sdl2.pc.in

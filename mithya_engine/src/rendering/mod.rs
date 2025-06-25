@@ -7,10 +7,13 @@ pub use render_system::RenderingSystem;
 //Managers
 #[path = "managers/shader_manager.rs"]
 pub mod shader_manager;
+#[path = "managers/texture_manager.rs"]
+pub mod texture_manager;
 #[path = "managers/material_manager.rs"]
 pub mod material_manager;
 
 pub use shader_manager::ShaderManager;
+pub use texture_manager::TextureManager;
 pub use material_manager::MaterialManager;
 
 //Components

@@ -34,8 +34,8 @@ pub fn display_window() {
         ..Default::default()
     });
     entity_manager.add_component(quad_entity, Render {
-        mesh: Mesh::new_quad(),
-        material_id : rendering_system.material_manager.get_material_id_from_name("unlit_color").copied(),
+        mesh: Mesh::new_quad_textured(),
+        material_id : rendering_system.material_manager.get_material_id_from_name("unlit_texture_default").copied(),
     });
 
     let triangle_entity = entity_manager.create_entity();
@@ -50,7 +50,7 @@ pub fn display_window() {
     });
 
     unsafe {
-        gl::Viewport(0, 0, 2048, 1024);
+        gl::Viewport(0, 0, 980, 640);
     }
 
     // Main loop
