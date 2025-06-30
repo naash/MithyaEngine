@@ -9,14 +9,13 @@ pub use core::{EntityManager, EntityId, Transform};
 pub use components::Component;
 pub use rendering::{RenderingSystem, Mesh, Render};
 pub use input::InputManager;
-pub use engine::run;
+pub use engine::Engine;
 
 // Prelude module - common imports users will want
 pub mod prelude {
     pub use crate::{
         EntityManager, EntityId, Transform,
         Component, RenderingSystem, Mesh, Render,
-        InputManager,
-        run
+        InputManager
     };
 }

@@ -275,7 +275,9 @@ dependencies = [
 name = "mithya_sandbox"
 version = "0.1.0"
 dependencies = [
+ "glam",
  "mithya_engine",
+ "sdl2",
 ]
 
 [[package]]

@@ -1,3 +1,3 @@
-pub mod engine;
+pub mod core;
 
-pub use engine::run;
+pub use core::{Engine, EngineConfig, GameLogic, EntityBuilder};
