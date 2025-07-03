@@ -1,8 +1,7 @@
 use crate::{
     core::EntityManager,
-    input::{input_manager::InputManager, PlayerControlled},
-    rendering::RenderingSystem, Mesh, Render, 
-    Transform
+    engine::system::{MovementSystem, SystemsManager},
+    input::{input_manager::InputManager, PlayerControlled}, rendering::RenderingSystem, Mesh, Render, Transform
 };
 use sdl2::{video::Window, EventPump, Sdl};
 use gl;
@@ -35,9 +34,14 @@ pub struct Engine {
     window: Window,
     _gl_context: sdl2::video::GLContext,
     event_pump: EventPump,
+    pub systems_manager: SystemsManager,
+    pub world: World
+}
+
+pub struct World {
+    pub input_manager: InputManager,
     pub entity_manager: EntityManager,
     pub rendering_system: RenderingSystem,
-    pub input_manager: InputManager,
 }
 
 impl Engine {
@@ -69,10 +73,17 @@ impl Engine {
         let _gl = gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
 
         // Initialize systems
-        let input_manager = InputManager::new();
-        let entity_manager = EntityManager::new();
-        let mut rendering_system = RenderingSystem::new();
-        rendering_system.initialize()?;
+        let mut systems_manager = SystemsManager::new();
+
+        let mut world = World {
+            input_manager: InputManager::new(),
+            entity_manager: EntityManager::new(),
+            rendering_system: RenderingSystem::new(),
+        };
+        
+        world.rendering_system.initialize()?;
+
+        systems_manager.add_system(MovementSystem);
 
         // Set viewport
         unsafe {
@@ -87,15 +98,14 @@ impl Engine {
             window,
             _gl_context: gl_context,
             event_pump,
-            entity_manager,
-            rendering_system,
-            input_manager,
+            systems_manager,
+            world
         })
     }
 
     pub fn run<G: GameLogic>(mut self, mut game: G) -> Result<(), Box<dyn std::error::Error>> {
         // Let the game initialize itself
-        game.initialize(&mut self.entity_manager, &mut self.rendering_system);
+        game.initialize(&mut self.world);
 
         // Main game loop
         'main: loop {
@@ -104,17 +114,20 @@ impl Engine {
                 match event {
                     sdl2::event::Event::Quit { .. } => break 'main,
                     sdl2::event::Event::KeyDown { keycode: Some(keycode), .. } => {
-                        self.input_manager.handle_key_down(keycode);
+                        self.world.input_manager.handle_key_down(keycode);
                     }
                     sdl2::event::Event::KeyUp { keycode: Some(keycode), .. } => {
-                        self.input_manager.handle_key_up(keycode);
+                        self.world.input_manager.handle_key_up(keycode);
                     }
                     _ => {}
                 }
             }
 
+            //Update systems
+            &self.systems_manager.update_all(&mut self.world);
+
             // Update game logic
-            game.update(&self.input_manager, &mut self.entity_manager);
+            game.update(&mut self.world);
 
             // Clear the screen
             unsafe {
@@ -122,12 +135,12 @@ impl Engine {
             }
 
             // Render all entities
-            self.rendering_system.render(&mut self.entity_manager);
+            self.world.rendering_system.render(&mut self.world.entity_manager);
 
             // Swap buffers
             self.window.gl_swap_window();
 
-            self.input_manager.clear();
+            self.world.input_manager.clear();
         }
 
         Ok(())
@@ -135,8 +148,8 @@ impl Engine {
 }
 
 pub trait GameLogic {
-    fn initialize(&mut self, entity_manager: &mut EntityManager, rendering_system: &mut RenderingSystem);
-    fn update(&mut self, input: &InputManager, entity_manager: &mut EntityManager);
+    fn initialize(&mut self, world: &mut World);
+    fn update(&mut self, world: &mut World);
 }
 
 // Helper function for creating common entities

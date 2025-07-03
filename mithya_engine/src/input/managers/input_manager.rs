@@ -46,4 +46,24 @@ impl InputManager {
         self.just_pressed.clear();
         self.just_released.clear();
     }
+
+    pub fn get_movement_input(&self) -> (f32, f32) {
+        let mut dx = 0.0;
+        let mut dy = 0.0;
+
+        if self.is_key_pressed(Keycode::A) || self.is_key_pressed(Keycode::Left) {
+            dx -= 1.0;
+        }
+        if self.is_key_pressed(Keycode::D) || self.is_key_pressed(Keycode::Right) {
+            dx += 1.0;
+        }
+        if self.is_key_pressed(Keycode::W) || self.is_key_pressed(Keycode::Up) {
+            dy += 1.0;
+        }
+        if self.is_key_pressed(Keycode::S) || self.is_key_pressed(Keycode::Down) {
+            dy -= 1.0;
+        }
+
+        (dx, dy)
+    }
 }

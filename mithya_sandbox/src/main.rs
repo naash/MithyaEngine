@@ -1,8 +1,6 @@
 use mithya_engine::{
-    core::EntityManager,
-    engine::{Engine, EngineConfig, EntityBuilder, GameLogic},
-    input::{input_manager::InputManager, system::movement_system},
-    rendering::{mesh::Mesh, RenderingSystem}
+    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
+    rendering::{mesh::Mesh}
 };
 use glam::{Vec3, Quat};
 
@@ -12,13 +10,13 @@ struct Sandbox {
 }
 
 impl GameLogic for Sandbox {
-    fn initialize(&mut self, entity_manager: &mut EntityManager, rendering_system: &mut RenderingSystem) {
+    fn initialize(&mut self, world: &mut World) {
 
-        let _player = EntityBuilder::new(entity_manager)
+        let _player = EntityBuilder::new(&mut world.entity_manager)
             .with_transform(Vec3::ZERO, Quat::IDENTITY, Vec3::ONE)
             .with_render(
                 Mesh::new_quad_textured(), 
-                rendering_system.material_manager
+                world.rendering_system.material_manager
                     .get_material_id_from_name("unlit_texture_default")
                     .copied()
             )
@@ -26,9 +24,8 @@ impl GameLogic for Sandbox {
             .build();
     }
 
-    fn update(&mut self, input: &InputManager, entity_manager: &mut EntityManager) {
-        // Updates go here
-        movement_system(input, entity_manager);
+    fn update(&mut self, _world: &mut World) {
+        // Sandbox Updates go here
     }
 }
 

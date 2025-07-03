@@ -1,3 +1,3 @@
 pub mod core;
-
-pub use core::{Engine, EngineConfig, GameLogic, EntityBuilder};
+pub mod system;
+pub use core::{Engine, EngineConfig, World, GameLogic, EntityBuilder};
