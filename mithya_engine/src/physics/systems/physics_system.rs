@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use glam::Vec2;
+use glam::Vec3;
 
 use crate::{
     core::{Transform},
@@ -46,11 +46,11 @@ impl System for PhysicsSystem {
                     let vel = rigidbody.velocity;
 
                     // Reset acceleration for next frame
-                    rigidbody.acceleration = Vec2::ZERO;
+                    rigidbody.acceleration = Vec3::ZERO;
 
                     (vel, true)
                 } else {
-                    (Vec2::ZERO, false)
+                    (Vec3::ZERO, false)
                 }
             }; // The mutable borrow of entity_manager ends here
 

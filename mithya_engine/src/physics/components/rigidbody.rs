@@ -3,12 +3,12 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use glam::Vec2;
+use glam::Vec3;
 
 #[derive(Debug, Clone)]
 pub struct RigidBody {
-    pub velocity: Vec2,
-    pub acceleration: Vec2,
+    pub velocity: Vec3,
+    pub acceleration: Vec3,
     pub gravity_scale: f32,
     pub drag: f32,
     pub is_kinematic: bool

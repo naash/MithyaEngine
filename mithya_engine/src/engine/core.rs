@@ -199,12 +199,12 @@ impl<'a> EntityBuilder<'a> {
         self
     }
 
-    pub fn with_rigidbody(self, velocity: Vec2) -> Self {
+    pub fn with_rigidbody(self, velocity: Vec3) -> Self {
         self.entity_manager.add_component(
             self.entity_id,
             RigidBody {
                 velocity,
-                acceleration: Vec2::ZERO,
+                acceleration: Vec3::ZERO,
                 drag: 0.01,
                 gravity_scale: 1.0,
                 is_kinematic: false,
@@ -213,7 +213,7 @@ impl<'a> EntityBuilder<'a> {
         self
     }
 
-        pub fn with_circle_collider(self, radius: f32) -> Self {
+    pub fn with_circle_collider(self, radius: f32) -> Self {
         self.entity_manager.add_component(
             self.entity_id,
             Collider {

@@ -27,7 +27,7 @@ impl GameLogic for Sandbox {
             )
             .with_player_control()
             .with_box_collider(10.0, 10.0)
-            .with_rigidbody(Vec2::ZERO)
+            .with_rigidbody(Vec3::ZERO)
             .build();
 
         let _floor = EntityBuilder::new(&mut world.entity_manager)
