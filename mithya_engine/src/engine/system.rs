@@ -32,7 +32,7 @@ impl SystemsManager {
 
 pub struct MovementSystem;
 
-const SPEED: f32 = 0.1;
+const SPEED: f32 = 0.02;
 
 impl System for MovementSystem {
     fn update(&mut self, world: &mut World) {

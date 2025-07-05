@@ -1,11 +1,14 @@
 use crate::{
     core::EntityManager,
     engine::system::{MovementSystem, SystemsManager},
-    input::{input_manager::InputManager, PlayerControlled}, rendering::RenderingSystem, Mesh, Render, Transform
+    input::{input_manager::InputManager, PlayerControlled}, 
+    physics::{collider::{Collider, ColliderShape}, CollisionSystem, PhysicsConfig, PhysicsSystem, RigidBody},
+    rendering::RenderingSystem, Mesh, Render, Transform
 };
+
 use sdl2::{video::Window, EventPump, Sdl};
 use gl;
-use glam::{Vec3, Quat};
+use glam::{Quat, Vec2, Vec3};
 
 pub struct EngineConfig {
     pub window_title: String,
@@ -42,6 +45,7 @@ pub struct World {
     pub input_manager: InputManager,
     pub entity_manager: EntityManager,
     pub rendering_system: RenderingSystem,
+    pub physics_config: PhysicsConfig,
 }
 
 impl Engine {
@@ -79,12 +83,16 @@ impl Engine {
             input_manager: InputManager::new(),
             entity_manager: EntityManager::new(),
             rendering_system: RenderingSystem::new(),
+            physics_config: PhysicsConfig::default()
         };
         
         world.rendering_system.initialize()?;
 
+        //For input
         systems_manager.add_system(MovementSystem);
-
+        //For physics
+        systems_manager.add_system(PhysicsSystem);
+        systems_manager.add_system(CollisionSystem); 
         // Set viewport
         unsafe {
             gl::Viewport(0, 0, config.window_width as i32, config.window_height as i32);
@@ -124,7 +132,7 @@ impl Engine {
             }
 
             //Update systems
-            &self.systems_manager.update_all(&mut self.world);
+            let _ = &self.systems_manager.update_all(&mut self.world);
 
             // Update game logic
             game.update(&mut self.world);
@@ -183,6 +191,44 @@ impl<'a> EntityBuilder<'a> {
 
     pub fn with_player_control(self) -> Self {
         self.entity_manager.add_component(self.entity_id, PlayerControlled);
+        self
+    }
+
+    pub fn with_rigidbody(self, velocity: Vec2) -> Self {
+        self.entity_manager.add_component(
+            self.entity_id,
+            RigidBody {
+                velocity,
+                acceleration: Vec2::ZERO,
+                drag: 0.01,
+                gravity_scale: 1.0,
+                is_kinematic: false,
+            }
+        );
+        self
+    }
+
+        pub fn with_circle_collider(self, radius: f32) -> Self {
+        self.entity_manager.add_component(
+            self.entity_id,
+            Collider {
+                shape: ColliderShape::Circle { radius },
+                is_trigger: false,
+                offset: Vec2::ZERO,
+            }
+        );
+        self
+    }
+
+    pub fn with_box_collider(self, width: f32, height: f32) -> Self {
+        self.entity_manager.add_component(
+            self.entity_id,
+            Collider {
+                shape: ColliderShape::Box { width, height },
+                is_trigger: false,
+                offset: Vec2::ZERO,
+            }
+        );
         self
     }
 
