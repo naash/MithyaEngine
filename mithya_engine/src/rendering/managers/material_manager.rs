@@ -117,11 +117,20 @@ impl MaterialManager {
          include_str!("../../../shaders/unlit_texture.vert"),
          include_str!("../../../shaders/unlit_texture.frag"))?;
 
+        self.load_material("unlit_texture_circle",
+         include_str!("../../../shaders/unlit_texture.vert"),
+         include_str!("../../../shaders/unlit_texture.frag"))?;
+
         //Load default texture for this material
         let _ = self.add_texture_to_material("unlit_texture_default",
              "u_texture",
               "test_texture.png",
               0);
+
+        let _ = self.add_texture_to_material("unlit_texture_circle",
+        "u_texture",
+        "pinkCircle.png",
+        1);
 
          Ok(())     
     }

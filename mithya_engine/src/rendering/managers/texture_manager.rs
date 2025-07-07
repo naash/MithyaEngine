@@ -45,6 +45,15 @@ impl TextureManager {
         let (width, height) = img.dimensions();
         let mut texture_id = 0;
 
+        // Debug: Print some pixel values
+        println!("Image dimensions: {}x{}", width, height);
+        println!("First pixel RGBA: {:?}", img.get_pixel(0, 0));
+        println!("Center pixel RGBA: {:?}", img.get_pixel(width/2, height/2));
+
+        // Check if any pixels have alpha < 255
+        let has_transparency = img.pixels().any(|p| p[3] < 255);
+        println!("Has transparency: {}", has_transparency);
+
         unsafe {
             gl::GenTextures(1, &mut texture_id);
             gl::BindTexture(gl::TEXTURE_2D, texture_id);

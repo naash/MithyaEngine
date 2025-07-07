@@ -28,8 +28,8 @@ impl Default for EngineConfig {
     fn default() -> Self {
         Self {
             window_title: "Mithya Engine".to_string(),
-            window_width: 1024,
-            window_height: 768,
+            window_width: 800,
+            window_height: 600,
             gl_major_version: 4,
             gl_minor_version: 1,
             resizable: true,
@@ -91,7 +91,7 @@ impl Engine {
             physics_config: PhysicsConfig::default()
         };
         
-        world.rendering_system.initialize()?;
+        world.rendering_system.initialize(config.window_width, config.window_height)?;
 
         //For input
         systems_manager.add_system(MovementSystem);

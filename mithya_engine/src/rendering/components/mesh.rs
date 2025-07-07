@@ -40,10 +40,10 @@ impl Mesh {
     pub fn new_quad() -> Self {
         Self {
             vertices: vec![
-                -5.0, -5.0, 0.0,  // Bottom left
-                 5.0, -5.0, 0.0,  // Bottom right
-                 5.0,  5.0, 0.0,  // Top right
-                -5.0,  5.0, 0.0,  // Top left
+                -0.5, -0.5, 0.0,  // Bottom left
+                 0.5, -0.5, 0.0,  // Bottom right
+                 0.5,  0.5, 0.0,  // Top right
+                -0.5,  0.5, 0.0,  // Top left
             ],
             indices: vec![0, 1, 2, 2, 3, 0],
             vao: None,
@@ -61,9 +61,9 @@ impl Mesh {
         Self {
             vertices: vec![
                 // Position   UV
-                -5.0, -5.0, 0.0,  0.0, 0.0,  // Bottom left
-                 5.0, -5.0, 0.0,  1.0, 0.0,  // Bottom right
-                 0.0,  5.0, 0.0,  0.5, 1.0,  // Top center
+                -0.5, -0.5, 0.0,  0.0, 0.0,  // Bottom left
+                 0.5, -0.5, 0.0,  1.0, 0.0,  // Bottom right
+                 0.0,  0.5, 0.0,  0.5, 1.0,  // Top center
             ],
             indices: vec![0, 1, 2],
             vao: None,
@@ -81,10 +81,10 @@ impl Mesh {
         Self {
             vertices: vec![
                 // Position    UV
-                -5.0, -5.0, 0.0,  0.0, 0.0,  // Bottom left
-                 5.0, -5.0, 0.0,  1.0, 0.0,  // Bottom right
-                 5.0,  5.0, 0.0,  1.0, 1.0,  // Top right
-                -5.0,  5.0, 0.0,  0.0, 1.0,  // Top left
+                -0.5, -0.5, 0.0,  0.0, 0.0,  // Bottom left
+                 0.5, -0.5, 0.0,  1.0, 0.0,  // Bottom right
+                 0.5,  0.5, 0.0,  1.0, 1.0,  // Top right
+                -0.5,  0.5, 0.0,  0.0, 1.0,  // Top left
             ],
             indices: vec![0, 1, 2, 2, 3, 0],
             vao: None,

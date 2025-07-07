@@ -72,7 +72,7 @@ fn check_collision(
 }
 
 fn resolve_collision(world: &mut World, entity_a: u32, entity_b: u32) {
-    println!("Collision between {} and {}", entity_a, entity_b);
+    //println!("Collision between {} and {}", entity_a, entity_b);
 
     // Get the positions and colliders again to calculate separation
     let (pos_a, pos_b, separation_distance) = {

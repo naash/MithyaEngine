@@ -14,6 +14,7 @@ use crate::rendering::MaterialManager;
 pub struct RenderingSystem {
     shader_manager: ShaderManager,
     pub material_manager: MaterialManager,
+    pub aspect_ratio: f32,
 }
 
 impl RenderingSystem {
@@ -21,12 +22,15 @@ impl RenderingSystem {
         Self {
             shader_manager: ShaderManager::new(),
             material_manager: MaterialManager::new(),
+            aspect_ratio: 1.333
         }
     }
 
-    pub fn initialize(&mut self) -> Result<(), String> {
+    pub fn initialize(&mut self, width: u32, height: u32) -> Result<(), String> {
         //Create default program
         let _ = self.material_manager.create_default_materials();
+
+        self.aspect_ratio =  width as f32 / height as f32;
 
         unsafe {
             gl::Enable(gl::DEPTH_TEST);
@@ -102,6 +106,9 @@ impl RenderingSystem {
     pub fn render(&mut self, entity_manager: &mut EntityManager) {
         unsafe {
             gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
+            gl::Enable(gl::BLEND);
+            gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
         }
 
         // Collect entity IDs first to avoid borrowing conflicts
@@ -147,7 +154,7 @@ impl RenderingSystem {
                 0.0, 0.0, 0.0, 1.0,
             ];
 
-            let projection = Mat4::orthographic_rh(-20.0, 20.0, -20.0, 20.0, -1.0, 100.0);
+            let projection = Mat4::orthographic_rh(-20.0 * self.aspect_ratio, 20.0 * self.aspect_ratio, -20.0, 20.0, -1.0, 1.0);
         
             // Update model matrix from transform
             material.set_mat4("u_model", model_matrix.to_cols_array());

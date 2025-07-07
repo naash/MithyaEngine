@@ -10,9 +10,12 @@ uniform sampler2D u_texture;
 out vec4 frag_color;
 
 void main() {
-    // Sample the texture
-    vec4 tex_color = texture(u_texture, v_tex_coord);
+    vec4 texColor = texture2D(u_texture, v_tex_coord);
     
-    // Apply tint and output
-    frag_color = tex_color;
+    // If alpha is very low, discard the pixel. Hack!
+    if (texColor.a < 0.1) {
+        discard;
+    }
+    
+    frag_color = texColor;
 }

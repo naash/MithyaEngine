@@ -7,7 +7,7 @@ use mithya_engine::{
     engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
     rendering::{mesh::Mesh}
 };
-use glam::{Quat, Vec2, Vec3};
+use glam::{Quat, Vec3};
 
 //Sandbox to test engine features
 struct Sandbox {
@@ -22,11 +22,11 @@ impl GameLogic for Sandbox {
             .with_render(
                 Mesh::new_quad_textured(), 
                 world.rendering_system.material_manager
-                    .get_material_id_from_name("unlit_texture_default")
+                    .get_material_id_from_name("unlit_texture_circle")
                     .copied()
             )
             .with_player_control()
-            .with_box_collider(10.0, 10.0)
+            .with_box_collider(1.0, 1.0)
             .with_rigidbody(Vec3::ZERO)
             .build();
 
@@ -38,7 +38,7 @@ impl GameLogic for Sandbox {
                     .get_material_id_from_name("unlit_texture_default")
                     .copied()
             )
-            .with_box_collider(10.0, 10.0)
+            .with_box_collider(1.0, 1.0)
             .build();
     }
 
