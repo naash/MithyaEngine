@@ -13,7 +13,7 @@ use crate::{
 
 use sdl2::{video::Window, EventPump, Sdl};
 use gl;
-use glam::{Quat, Vec2, Vec3};
+use glam::{Quat, Vec3};
 
 pub struct EngineConfig {
     pub window_title: String,
@@ -204,10 +204,7 @@ impl<'a> EntityBuilder<'a> {
             self.entity_id,
             RigidBody {
                 velocity,
-                acceleration: Vec3::ZERO,
-                drag: 0.01,
-                gravity_scale: 1.0,
-                is_kinematic: false,
+                ..Default::default()
             }
         );
         self
@@ -218,8 +215,7 @@ impl<'a> EntityBuilder<'a> {
             self.entity_id,
             Collider {
                 shape: ColliderShape::Circle { radius },
-                is_trigger: false,
-                offset: Vec2::ZERO,
+                ..Default::default()
             }
         );
         self
@@ -230,8 +226,7 @@ impl<'a> EntityBuilder<'a> {
             self.entity_id,
             Collider {
                 shape: ColliderShape::Box { width, height },
-                is_trigger: false,
-                offset: Vec2::ZERO,
+                ..Default::default()
             }
         );
         self

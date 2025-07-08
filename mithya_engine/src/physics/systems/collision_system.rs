@@ -3,7 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use glam::Vec2;
+use std::collections::HashSet;
+
+use glam::{Vec2, Vec3Swizzles};
 
 use crate::{
     core::Transform,
@@ -16,6 +18,8 @@ impl System for CollisionSystem {
     fn update(&mut self, world: &mut World) {
         let collider_entities = world.entity_manager
         .query_two_components::<Transform, Collider>();
+
+        let mut colliding_entities = HashSet::new();
 
         // Check all pairs of entities
         for i in 0..collider_entities.len() {
@@ -33,9 +37,20 @@ impl System for CollisionSystem {
                     ) {
                         if check_collision(transform_a, collider_a, transform_b, collider_b) {
                             resolve_collision(world, entity_a, entity_b);
+                            
+                            // Track both entities as colliding
+                            colliding_entities.insert(entity_a);
+                            colliding_entities.insert(entity_b);
                         }
                     }
                 }
+            }
+        }
+
+        // Update all collider flags based on the collected data
+        for &entity in &collider_entities {
+            if let Some(collider) = world.entity_manager.get_component_mut::<Collider>(entity) {
+                collider.is_colliding = colliding_entities.contains(&entity);
             }
         }
     }
@@ -47,9 +62,9 @@ fn check_collision(
     transform_b: &Transform,
     collider_b: &Collider,
 ) -> bool {
-    let pos_a = Vec2::new(transform_a.position.x, transform_a.position.y) + collider_a.offset;
-    let pos_b = Vec2::new(transform_b.position.x, transform_b.position.y) + collider_b.offset;
-
+    let pos_a = transform_a.position + collider_a.offset;
+    let pos_b = transform_b.position + collider_b.offset;
+    //Collision logic is only for 2D
     match (&collider_a.shape, &collider_b.shape) {
         (ColliderShape::Circle { radius: r1 }, ColliderShape::Circle { radius: r2 }) => {
             let distance = (pos_a - pos_b).length();
@@ -68,11 +83,11 @@ fn check_collision(
         }
         // Circle-Box collision (circle A, box B)
         (ColliderShape::Circle { radius }, ColliderShape::Box { width, height }) => {
-            check_circle_box_collision(pos_a, *radius, pos_b, *width, *height)
+            check_circle_box_collision(pos_a.xy(), *radius, pos_b.xy(), *width, *height)
         }
         // Box-Circle collision (box A, circle B)
         (ColliderShape::Box { width, height }, ColliderShape::Circle { radius }) => {
-            check_circle_box_collision(pos_b, *radius, pos_a, *width, *height)
+            check_circle_box_collision(pos_b.xy(), *radius, pos_a.xy(), *width, *height)
         }
     }
 }
@@ -95,25 +110,25 @@ fn check_circle_box_collision(
 
 fn resolve_collision(world: &mut World, entity_a: u32, entity_b: u32) {
     //println!("Collision between {} and {}", entity_a, entity_b);
-
+    //Collision response logic is only for 2D
     // Get the positions and colliders again to calculate separation
-    let (pos_a, pos_b, separation_distance, collision_normal) = {
+    let (separation_distance, collision_normal) = {
         let transform_a = world.entity_manager.get_component::<Transform>(entity_a).unwrap();
         let transform_b = world.entity_manager.get_component::<Transform>(entity_b).unwrap();
         let collider_a = world.entity_manager.get_component::<Collider>(entity_a).unwrap();
         let collider_b = world.entity_manager.get_component::<Collider>(entity_b).unwrap();
         
-        let pos_a = Vec2::new(transform_a.position.x, transform_a.position.y) + collider_a.offset;
-        let pos_b = Vec2::new(transform_b.position.x, transform_b.position.y) + collider_b.offset;
+        let pos_a = transform_a.position + collider_a.offset;
+        let pos_b = transform_b.position + collider_b.offset;
         
         //println!("Entity {} pos: {:?}, Entity {} pos: {:?}", entity_a, pos_a, entity_b, pos_b);
         
         // Calculate collision normal and separation distance
-        let (normal, separation) = calculate_collision_response(pos_a, pos_b, &collider_a, &collider_b);
+        let (normal, separation) = calculate_collision_response(pos_a.xy(), pos_b.xy(), &collider_a, &collider_b);
         
         //println!("Raw collision normal from A to B: {:?}", normal);
         
-        (pos_a, pos_b, separation, normal)
+        (separation, normal)
     };
     
     //println!("Separation distance: {}, Normal: {:?}", separation_distance, collision_normal);

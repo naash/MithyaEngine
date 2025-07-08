@@ -14,3 +14,15 @@ pub struct RigidBody {
     pub is_kinematic: bool
     //More physical properties can be added here like drag etc
 }
+
+impl Default for RigidBody {
+    fn default() -> Self {
+        Self {
+            velocity: Vec3::ZERO,
+            acceleration: Vec3::ZERO,
+            drag: 0.01,
+            gravity_scale: 1.0,
+            is_kinematic: false,
+        }
+    }
+}
