@@ -124,7 +124,7 @@ impl Engine {
 
         // In your initialization:
         let mut painter = Painter::new(&self.window, 1.0, ShaderVersion::Default);
-        let mut egui_ctx = egui::Context::default();
+        let egui_ctx = egui::Context::default();
 
         // Main game loop
         'main: loop {
@@ -156,10 +156,13 @@ impl Engine {
             // Render all entities
             self.world.rendering_system.render(&mut self.world.entity_manager);
 
+            // Get window size
+            let (window_width, window_height) = self.window.drawable_size();
+
             let raw_input = egui::RawInput {
                 screen_rect: Some(egui::Rect::from_min_size(
                     egui::Pos2::ZERO,
-                    egui::vec2(800.0, 600.0),
+                   egui::vec2(window_width as f32, window_height as f32),
                 )),
                 ..Default::default()
             };
@@ -167,8 +170,14 @@ impl Engine {
             // Run egui - Fix me
             let full_output = egui_ctx.run(raw_input, |ctx| {
                 egui::Window::new("Debug Info")
+                    .default_size(egui::vec2(200.0, 100.0))
+                    .default_pos(egui::pos2(20.0, 20.0))
                     .show(ctx, |ui| {
                         ui.label("Hello egui!");
+                        ui.label("This should be visible!");
+                        if ui.button("Test Button").clicked() {
+                            println!("Button clicked!");
+                        }
                     });
             });
 
@@ -181,6 +190,13 @@ impl Engine {
                 full_output.textures_delta,
                 primitives,
             );
+
+            unsafe {
+                let error = gl::GetError();
+                if error != gl::NO_ERROR {
+                    println!("OpenGL error after egui: {}", error);
+                }
+            }
 
             // Swap buffers
             self.window.gl_swap_window();
