@@ -11,6 +11,7 @@ pub struct RigidBody {
     pub acceleration: Vec3,
     pub gravity_scale: f32,
     pub drag: f32,
+    pub bounce: f32, //0.0 to 1.0 | inverts % of velocity on collision
     pub is_kinematic: bool
     //More physical properties can be added here like drag etc
 }
@@ -22,6 +23,7 @@ impl Default for RigidBody {
             acceleration: Vec3::ZERO,
             drag: 0.01,
             gravity_scale: 1.0,
+            bounce: 0.0,
             is_kinematic: false,
         }
     }

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["max_int_value","min_int_value"],"struct":["FPoint","FRect","Point","Rect"]};

@@ -47,10 +47,21 @@ impl System for CollisionSystem {
             }
         }
 
-        // Update all collider flags based on the collected data
+        // Update data 
         for &entity in &collider_entities {
+            // Collision flag
             if let Some(collider) = world.entity_manager.get_component_mut::<Collider>(entity) {
                 collider.is_colliding = colliding_entities.contains(&entity);
+            }
+
+            // Velocity based on bounce
+            if colliding_entities.contains(&entity) {
+                if let Some(rigid_body) = world.entity_manager.get_component_mut::<RigidBody>(entity)
+                {
+                    // Simple bounce: flip velocity and apply bounce factor
+                    rigid_body.velocity = -rigid_body.velocity * rigid_body.bounce;
+                    println!("Velocity: {}", rigid_body.velocity);
+                }
             }
         }
     }

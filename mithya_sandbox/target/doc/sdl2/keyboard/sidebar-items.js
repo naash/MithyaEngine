@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Scancode"],"struct":["KeyboardState","KeyboardUtil","Keycode","Mod","ScancodeIterator","TextInputUtil"],"type":["PressedScancodeIterator"]};

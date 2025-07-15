@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Copy a portion of the texture to the current rendering, with optional rotation and flipping."><title>SDL_RenderCopyEx in sdl2_sys - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="sdl2_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0 (17067e9ac 2025-05-09)" data-channel="1.87.0" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../static.files/storage-82c7156e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../sdl2_sys/index.html">sdl2_<wbr>sys</a><span class="version">0.37.0</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">sdl2_sys</a></div><h1>Function <span class="fn">SDL_RenderCopyEx</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/sdl2_sys/Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-a0e1a65896e40957\out/sdl_bindings.rs.html#15906-15914">Source</a> </span></div><pre class="rust item-decl"><code>pub unsafe extern &quot;C&quot; fn SDL_RenderCopyEx(
+    renderer: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.pointer.html">*mut </a><a class="struct" href="struct.SDL_Renderer.html" title="struct sdl2_sys::SDL_Renderer">SDL_Renderer</a>,
+    texture: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.pointer.html">*mut </a><a class="struct" href="struct.SDL_Texture.html" title="struct sdl2_sys::SDL_Texture">SDL_Texture</a>,
+    srcrect: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.pointer.html">*const </a><a class="struct" href="struct.SDL_Rect.html" title="struct sdl2_sys::SDL_Rect">SDL_Rect</a>,
+    dstrect: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.pointer.html">*const </a><a class="struct" href="struct.SDL_Rect.html" title="struct sdl2_sys::SDL_Rect">SDL_Rect</a>,
+    angle: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.f64.html">f64</a>,
+    center: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.pointer.html">*const </a><a class="struct" href="struct.SDL_Point.html" title="struct sdl2_sys::SDL_Point">SDL_Point</a>,
+    flip: <a class="enum" href="enum.SDL_RendererFlip.html" title="enum sdl2_sys::SDL_RendererFlip">SDL_RendererFlip</a>,
+) -&gt; <a class="type" href="../libc/primitives/type.c_int.html" title="type libc::primitives::c_int">c_int</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Copy a portion of the texture to the current rendering, with optional
+rotation and flipping.</p>
+<p>Copy a portion of the texture to the current rendering target, optionally
+rotating it by angle around the given center and also flipping it
+top-bottom and/or left-right.</p>
+<p>The texture is blended with the destination based on its blend mode set
+with SDL_SetTextureBlendMode().</p>
+<p>The texture color is affected based on its color modulation set by
+SDL_SetTextureColorMod().</p>
+<p>The texture alpha is affected based on its alpha modulation set by
+SDL_SetTextureAlphaMod().</p>
+<p>\param renderer the rendering context
+\param texture the source texture
+\param srcrect the source SDL_Rect structure or NULL for the entire texture
+\param dstrect the destination SDL_Rect structure or NULL for the entire
+rendering target
+\param angle an angle in degrees that indicates the rotation that will be
+applied to dstrect, rotating it in a clockwise direction
+\param center a pointer to a point indicating the point around which
+dstrect will be rotated (if NULL, rotation will be done
+around <code>dstrect.w / 2</code>, <code>dstrect.h / 2</code>)
+\param flip a SDL_RendererFlip value stating which flipping actions should
+be performed on the texture
+\returns 0 on success or a negative error code on failure; call
+SDL_GetError() for more information.</p>
+<p>\since This function is available since SDL 2.0.0.</p>
+<p>\sa SDL_RenderCopy
+\sa SDL_SetTextureAlphaMod
+\sa SDL_SetTextureBlendMode
+\sa SDL_SetTextureColorMod</p>
+</div></details></section></div></main></body></html>

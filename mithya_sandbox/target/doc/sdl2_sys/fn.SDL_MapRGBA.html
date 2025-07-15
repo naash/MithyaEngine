@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Map an RGBA quadruple to a pixel value for a given pixel format."><title>SDL_MapRGBA in sdl2_sys - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="sdl2_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0 (17067e9ac 2025-05-09)" data-channel="1.87.0" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../static.files/storage-82c7156e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../sdl2_sys/index.html">sdl2_<wbr>sys</a><span class="version">0.37.0</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">sdl2_sys</a></div><h1>Function <span class="fn">SDL_MapRGBA</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/sdl2_sys/Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-a0e1a65896e40957\out/sdl_bindings.rs.html#5718-5724">Source</a> </span></div><pre class="rust item-decl"><code>pub unsafe extern &quot;C&quot; fn SDL_MapRGBA(
+    format: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.pointer.html">*const </a><a class="struct" href="struct.SDL_PixelFormat.html" title="struct sdl2_sys::SDL_PixelFormat">SDL_PixelFormat</a>,
+    r: <a class="type" href="type.Uint8.html" title="type sdl2_sys::Uint8">Uint8</a>,
+    g: <a class="type" href="type.Uint8.html" title="type sdl2_sys::Uint8">Uint8</a>,
+    b: <a class="type" href="type.Uint8.html" title="type sdl2_sys::Uint8">Uint8</a>,
+    a: <a class="type" href="type.Uint8.html" title="type sdl2_sys::Uint8">Uint8</a>,
+) -&gt; <a class="type" href="type.Uint32.html" title="type sdl2_sys::Uint32">Uint32</a></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Map an RGBA quadruple to a pixel value for a given pixel format.</p>
+<p>This function maps the RGBA color value to the specified pixel format and
+returns the pixel value best approximating the given RGBA color value for
+the given pixel format.</p>
+<p>If the specified pixel format has no alpha component the alpha value will
+be ignored (as it will be in formats with a palette).</p>
+<p>If the format has a palette (8-bit) the index of the closest matching color
+in the palette will be returned.</p>
+<p>If the pixel format bpp (color depth) is less than 32-bpp then the unused
+upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+format the return value can be assigned to a Uint16, and similarly a Uint8
+for an 8-bpp format).</p>
+<p>\param format an SDL_PixelFormat structure describing the format of the
+pixel
+\param r the red component of the pixel in the range 0-255
+\param g the green component of the pixel in the range 0-255
+\param b the blue component of the pixel in the range 0-255
+\param a the alpha component of the pixel in the range 0-255
+\returns a pixel value</p>
+<p>\since This function is available since SDL 2.0.0.</p>
+<p>\sa SDL_GetRGB
+\sa SDL_GetRGBA
+\sa SDL_MapRGB</p>
+</div></details></section></div></main></body></html>

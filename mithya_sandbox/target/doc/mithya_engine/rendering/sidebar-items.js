@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["material","material_manager","mesh","render","render_system","shader_manager","texture_manager"]};

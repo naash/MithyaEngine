@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["EntityManager"],"type":["EntityId"]};

@@ -4,8 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
-    rendering::{mesh::Mesh}
+    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World}, physics::RigidBody, rendering::mesh::Mesh
 };
 use glam::{Quat, Vec3};
 
@@ -29,6 +28,9 @@ impl GameLogic for Sandbox {
             .with_circle_collider(1.0)
             .with_rigidbody(Vec3::ZERO)
             .build();
+
+        let mut _player_rigid_body = world.entity_manager.get_component_mut::<RigidBody>(_player).unwrap();
+        _player_rigid_body.bounce = 1.0;
 
         let _floor = EntityBuilder::new(&mut world.entity_manager)
             .with_transform(Vec3 { x: (0.0), y: (-15.0), z: (0.0) }, Quat::IDENTITY, Vec3::ONE * 2.0)

@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Let a thread clean up on exit without intervention."><title>SDL_DetachThread in sdl2_sys - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="sdl2_sys" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0 (17067e9ac 2025-05-09)" data-channel="1.87.0" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../static.files/storage-82c7156e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../sdl2_sys/index.html">sdl2_<wbr>sys</a><span class="version">0.37.0</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">sdl2_sys</a></div><h1>Function <span class="fn">SDL_DetachThread</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/sdl2_sys/Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\build\sdl2-sys-a0e1a65896e40957\out/sdl_bindings.rs.html#2158">Source</a> </span></div><pre class="rust item-decl"><code>pub unsafe extern &quot;C&quot; fn SDL_DetachThread(thread: <a class="primitive" href="https://doc.rust-lang.org/1.87.0/core/primitive.pointer.html">*mut </a><a class="struct" href="struct.SDL_Thread.html" title="struct sdl2_sys::SDL_Thread">SDL_Thread</a>)</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Let a thread clean up on exit without intervention.</p>
+<p>A thread may be “detached” to signify that it should not remain until
+another thread has called SDL_WaitThread() on it. Detaching a thread is
+useful for long-running threads that nothing needs to synchronize with or
+further manage. When a detached thread is done, it simply goes away.</p>
+<p>There is no way to recover the return code of a detached thread. If you
+need this, don’t detach the thread and instead use SDL_WaitThread().</p>
+<p>Once a thread is detached, you should usually assume the SDL_Thread isn’t
+safe to reference again, as it will become invalid immediately upon the
+detached thread’s exit, instead of remaining until someone has called
+SDL_WaitThread() to finally clean it up. As such, don’t detach the same
+thread more than once.</p>
+<p>If a thread has already exited when passed to SDL_DetachThread(), it will
+stop waiting for a call to SDL_WaitThread() and clean up immediately. It is
+not safe to detach a thread that might be used with SDL_WaitThread().</p>
+<p>You may not call SDL_WaitThread() on a thread that has been detached. Use
+either that function or this one, but not both, or behavior is undefined.</p>
+<p>It is safe to pass NULL to this function; it is a no-op.</p>
+<p>\param thread the SDL_Thread pointer that was returned from the
+SDL_CreateThread() call that started this thread</p>
+<p>\since This function is available since SDL 2.0.2.</p>
+<p>\sa SDL_CreateThread
+\sa SDL_WaitThread</p>
+</div></details></section></div></main></body></html>

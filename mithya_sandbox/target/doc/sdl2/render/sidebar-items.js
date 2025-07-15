@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BlendMode","TargetRenderError","TextureAccess","TextureValueError","UpdateTextureError","UpdateTextureYUVError"],"fn":["drivers"],"struct":["Canvas","CanvasBuilder","DriverIterator","RendererContext","RendererInfo","SdlError","Texture","TextureCreator","TextureQuery"],"trait":["RenderTarget"],"type":["SurfaceCanvas","WindowCanvas"]};

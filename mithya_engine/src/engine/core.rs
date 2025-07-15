@@ -14,6 +14,8 @@ use crate::{
 use sdl2::{video::Window, EventPump, Sdl};
 use gl;
 use glam::{Quat, Vec3};
+use egui_sdl2_gl::{painter::Painter, ShaderVersion};
+use egui_sdl2_gl::egui; // Use egui from the same crate
 
 pub struct EngineConfig {
     pub window_title: String,
@@ -120,6 +122,10 @@ impl Engine {
         // Let the game initialize itself
         game.initialize(&mut self.world);
 
+        // In your initialization:
+        let mut painter = Painter::new(&self.window, 1.0, ShaderVersion::Default);
+        let mut egui_ctx = egui::Context::default();
+
         // Main game loop
         'main: loop {
             // Handle events
@@ -149,6 +155,32 @@ impl Engine {
 
             // Render all entities
             self.world.rendering_system.render(&mut self.world.entity_manager);
+
+            let raw_input = egui::RawInput {
+                screen_rect: Some(egui::Rect::from_min_size(
+                    egui::Pos2::ZERO,
+                    egui::vec2(800.0, 600.0),
+                )),
+                ..Default::default()
+            };
+
+            // Run egui - Fix me
+            let full_output = egui_ctx.run(raw_input, |ctx| {
+                egui::Window::new("Debug Info")
+                    .show(ctx, |ui| {
+                        ui.label("Hello egui!");
+                    });
+            });
+
+            // Convert shapes to primitives
+            let primitives = egui_ctx.tessellate(full_output.shapes, full_output.pixels_per_point);
+
+            // Paint egui
+            painter.paint_jobs(
+                None, // Background color
+                full_output.textures_delta,
+                primitives,
+            );
 
             // Swap buffers
             self.window.gl_swap_window();
