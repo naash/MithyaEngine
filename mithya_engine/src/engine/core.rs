@@ -167,12 +167,14 @@ impl Engine {
                 ..Default::default()
             };
 
-            // Run egui - Fix me
+            // Run egui
             let full_output = egui_ctx.run(raw_input, |ctx| {
+              
                 egui::Window::new("Debug Info")
                     .default_size(egui::vec2(200.0, 100.0))
                     .default_pos(egui::pos2(20.0, 20.0))
                     .show(ctx, |ui| {
+                        
                         ui.label("Hello egui!");
                         ui.label("This should be visible!");
                         if ui.button("Test Button").clicked() {
@@ -184,18 +186,26 @@ impl Engine {
             // Convert shapes to primitives
             let primitives = egui_ctx.tessellate(full_output.shapes, full_output.pixels_per_point);
 
-            // Paint egui
+
+            // Right before paint_jobs, ensure proper OpenGL state
+            unsafe {
+                gl::Enable(gl::BLEND);
+                gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+                gl::Disable(gl::DEPTH_TEST);
+                gl::Disable(gl::CULL_FACE);
+            }
+
             painter.paint_jobs(
-                None, // Background color
+                None,
                 full_output.textures_delta,
                 primitives,
             );
 
+            // Restore OpenGL state for game rendering
             unsafe {
-                let error = gl::GetError();
-                if error != gl::NO_ERROR {
-                    println!("OpenGL error after egui: {}", error);
-                }
+                gl::Enable(gl::DEPTH_TEST);
+                gl::Enable(gl::CULL_FACE);
+                gl::Disable(gl::BLEND);
             }
 
             // Swap buffers
