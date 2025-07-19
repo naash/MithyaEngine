@@ -1,3 +1,8 @@
+// Copyright (c) 2025 Nishant Sthalekar
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 use crate::ui::{UiContext, UiElement};
 use egui_sdl2_gl::egui;
 
