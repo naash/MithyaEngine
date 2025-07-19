@@ -4,40 +4,33 @@
 // https://opensource.org/licenses/MIT
 
 use glam::Mat4;
+use sdl2::event::Event;
+use sdl2::video::Window;
 
 use super::{ShaderManager, Mesh};
 use super::render::Render;
 use crate::core::{EntityManager, Transform};
+use crate::engine::system::System;
 use crate::rendering::MaterialManager;
+use crate::World;
 
 // Rendering system - handles all rendering logic
 pub struct RenderingSystem {
     shader_manager: ShaderManager,
-    pub material_manager: MaterialManager,
+    //pub material_manager: MaterialManager,
     pub aspect_ratio: f32,
 }
 
 impl RenderingSystem {
-    pub fn new() -> Self {
+    pub fn new(window: &Window) -> Self {
+
+        let (width, height) = window.size();
+
         Self {
             shader_manager: ShaderManager::new(),
-            material_manager: MaterialManager::new(),
-            aspect_ratio: 1.333
+            //material_manager: MaterialManager::new(),
+            aspect_ratio: width as f32 / height as f32
         }
-    }
-
-    pub fn initialize(&mut self, width: u32, height: u32) -> Result<(), String> {
-        //Create default program
-        let _ = self.material_manager.create_default_materials();
-
-        self.aspect_ratio =  width as f32 / height as f32;
-
-        unsafe {
-            gl::Enable(gl::DEPTH_TEST);
-            gl::ClearColor(0.0, 0.3, 0.5, 1.0);
-        }
-        
-        Ok(())
     }
 
     // Prepare mesh for rendering by creating OpenGL buffers
@@ -102,30 +95,7 @@ impl RenderingSystem {
         }
     }
 
-    // Render all entities with renderable components
-    pub fn render(&mut self, entity_manager: &mut EntityManager) {
-        unsafe {
-            gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-
-            gl::Enable(gl::BLEND);
-            gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
-        }
-
-        // Collect entity IDs first to avoid borrowing conflicts
-        let entities = entity_manager.get_renderable_entities();
-        
-        for entity_id in entities {
-            if let (Some(transform), Some(render)) = (
-            entity_manager.get_component::<Transform>(entity_id).cloned(), //Need to clone to fix mutability issue
-            entity_manager.get_component_mut::<Render>(entity_id)
-            ) 
-            {
-                self.render_entity(&transform, render);
-            }
-        }
-    }
-
-    fn render_entity(&mut self, transform: &Transform, render: &mut Render) {
+    fn render_entity(&mut self, transform: &Transform, render: &mut Render, material_manager: &mut MaterialManager) {
         // Prepare mesh if not already prepared
         if render.mesh.vao.is_none() {
             self.prepare_mesh(&mut render.mesh);
@@ -136,7 +106,7 @@ impl RenderingSystem {
             0
         );
 
-        if let Some(material) = self.material_manager.get_material_mut(&material_id) {
+        if let Some(material) = material_manager.get_material_mut(&material_id) {
 
             // Use glam to create the transformation matrix
             let translation = glam::Mat4::from_translation(transform.position);
@@ -200,5 +170,56 @@ impl RenderingSystem {
                 println!("OpenGL error after {}: {}", operation, error);
             }
         }
+    }
+}
+
+impl System for RenderingSystem
+{
+    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
+        
+        //Create default program
+        let _ = _world.material_manager.create_default_materials();
+
+        unsafe {
+            gl::Enable(gl::DEPTH_TEST);
+            gl::ClearColor(0.0, 0.3, 0.5, 1.0);
+        }
+
+        Ok(())
+    }
+
+    fn handle_event(&mut self, _event: &Event, _world: &mut World) -> bool {
+        false
+    }
+
+    fn update(&mut self, _world: &mut World, _delta_time: f32) {
+        //Nothing to update just render
+    }
+
+    fn render(&mut self, world: &mut World) {
+        unsafe {
+            gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+
+            gl::Enable(gl::BLEND);
+            gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+        }
+
+        // Collect entity IDs first to avoid borrowing conflicts
+        let entities = world.entity_manager.get_renderable_entities();
+        
+        for entity_id in entities {
+            if let (Some(transform), Some(render)) = (
+            world.entity_manager.get_component::<Transform>(entity_id).cloned(), //Need to clone to fix mutability issue
+            world.entity_manager.get_component_mut::<Render>(entity_id)
+            ) 
+            {
+                self.render_entity(&transform, render, &mut world.material_manager);
+            }
+        }
+    }
+
+    fn cleanup(&mut self, _world: &mut World) {
+        // Any cleanup logic specific to the UI system
+        // The painter and context will be dropped automatically
     }
 }

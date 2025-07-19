@@ -4,18 +4,27 @@
 // https://opensource.org/licenses/MIT
 
 use crate::{
-    core::EntityManager,
-    engine::system::{MovementSystem, SystemsManager},
-    input::{input_manager::InputManager, PlayerControlled}, 
-    physics::{collider::{Collider, ColliderShape}, CollisionSystem, PhysicsConfig, PhysicsSystem, RigidBody},
-    rendering::RenderingSystem, Mesh, Render, Transform
+    core::EntityManager, 
+    engine::system::{MovementSystem, SystemsManager}, 
+    input::{InputSystem, PlayerControlled}, 
+    physics::{
+        collider::{Collider, ColliderShape}, 
+        CollisionSystem, 
+        PhysicsConfig, 
+        PhysicsSystem, 
+        RigidBody
+    }, 
+    rendering::{MaterialManager, RenderingSystem}, 
+    ui::UiSystem, 
+    Mesh, 
+    Render, 
+    Transform
 };
 
-use sdl2::{video::Window, EventPump, Sdl};
+use sdl2::{video::Window, EventPump, Sdl, event::Event};
 use gl;
 use glam::{Quat, Vec3};
-use egui_sdl2_gl::{painter::Painter, ShaderVersion};
-use egui_sdl2_gl::egui; // Use egui from the same crate
+use std::{collections::HashSet, time::Instant};
 
 pub struct EngineConfig {
     pub window_title: String,
@@ -45,14 +54,76 @@ pub struct Engine {
     _gl_context: sdl2::video::GLContext,
     event_pump: EventPump,
     pub systems_manager: SystemsManager,
-    pub world: World
+    pub world: World,
+    frame_timer: FrameTimer,
 }
 
 pub struct World {
-    pub input_manager: InputManager,
+    pub input_state: InputState,
     pub entity_manager: EntityManager,
-    pub rendering_system: RenderingSystem,
     pub physics_config: PhysicsConfig,
+    pub material_manager: MaterialManager,
+    pub fps: f32
+}
+
+#[derive(Default)]
+pub struct InputState {
+    pub movement: (f32, f32),
+    pub keys_pressed: HashSet<sdl2::keyboard::Keycode>,
+    pub mouse_position: (i32, i32),
+}
+
+// Helper struct for FPS calculation
+struct FrameTimer {
+    last_frame_time: Instant,
+    last_fps_time: Instant,
+    frame_count: u32,
+    fps: f32,
+    delta_time: f32,
+}
+
+impl FrameTimer {
+    fn new() -> Self {
+        let now = Instant::now();
+        Self {
+            last_frame_time: now,
+            last_fps_time: now,
+            frame_count: 0,
+            fps: 0.0,
+            delta_time: 0.0,
+        }
+    }
+    
+    fn update(&mut self) {
+        let current_time = Instant::now();
+        
+        // Calculate delta time from last frame
+        self.delta_time = current_time.duration_since(self.last_frame_time).as_secs_f32();
+        self.last_frame_time = current_time;
+        
+        // Update FPS counter
+        self.frame_count += 1;
+        let fps_elapsed = current_time.duration_since(self.last_fps_time);
+        
+        if fps_elapsed.as_secs_f32() >= 1.0 {
+            self.fps = self.frame_count as f32 / fps_elapsed.as_secs_f32();
+            self.frame_count = 0;
+            self.last_fps_time = current_time;
+        }
+    }
+    
+    fn get_fps(&self) -> f32 {
+        self.fps
+    }
+    
+    fn get_delta_time(&self) -> f32 {
+        self.delta_time
+    }
+    
+    // Optional: Cap delta time to prevent large jumps (useful for physics)
+    fn get_capped_delta_time(&self, max_delta: f32) -> f32 {
+        self.delta_time.min(max_delta)
+    }
 }
 
 impl Engine {
@@ -87,19 +158,28 @@ impl Engine {
         let mut systems_manager = SystemsManager::new();
 
         let mut world = World {
-            input_manager: InputManager::new(),
+            input_state: InputState::default(),
             entity_manager: EntityManager::new(),
-            rendering_system: RenderingSystem::new(),
-            physics_config: PhysicsConfig::default()
+            physics_config: PhysicsConfig::default(),
+            material_manager: MaterialManager::new(),
+            fps: 0.0
         };
-        
-        world.rendering_system.initialize(config.window_width, config.window_height)?;
 
-        //For input
-        systems_manager.add_system(MovementSystem);
-        //For physics
+        // For input
+        systems_manager.add_system(UiSystem::new(&window)); //UI will be at the top to consume event if required
+        systems_manager.add_system(InputSystem::new()); //Input manager is then followed so that it caches input state on the world... There should be a better way?
+        systems_manager.add_system(MovementSystem::default());
+        
+        // For rendering
+        systems_manager.add_system(RenderingSystem::new(&window));
+        
+        // For physics
         systems_manager.add_system(PhysicsSystem);
         systems_manager.add_system(CollisionSystem); 
+        
+
+        systems_manager.initialize_all(&mut world);
+        
         // Set viewport
         unsafe {
             gl::Viewport(0, 0, config.window_width as i32, config.window_height as i32);
@@ -114,7 +194,8 @@ impl Engine {
             _gl_context: gl_context,
             event_pump,
             systems_manager,
-            world
+            world,
+            frame_timer: FrameTimer::new(),
         })
     }
 
@@ -122,96 +203,41 @@ impl Engine {
         // Let the game initialize itself
         game.initialize(&mut self.world);
 
-        // In your initialization:
-        let mut painter = Painter::new(&self.window, 1.0, ShaderVersion::Default);
-        let egui_ctx = egui::Context::default();
-
         // Main game loop
         'main: loop {
+            // Update frame timer
+            self.frame_timer.update();
+            let delta_time = self.frame_timer.get_delta_time();
+           
+            self.world.fps = self.frame_timer.fps;
+
             // Handle events
             for event in self.event_pump.poll_iter() {
                 match event {
-                    sdl2::event::Event::Quit { .. } => break 'main,
-                    sdl2::event::Event::KeyDown { keycode: Some(keycode), .. } => {
-                        self.world.input_manager.handle_key_down(keycode);
+                    Event::Quit { .. } => break 'main,
+                    _ => {
+                        //Event order is fixed -> UI -> Input -> Movement
+                        self.systems_manager.handle_event_all(&event, &mut self.world);
                     }
-                    sdl2::event::Event::KeyUp { keycode: Some(keycode), .. } => {
-                        self.world.input_manager.handle_key_up(keycode);
-                    }
-                    _ => {}
                 }
             }
 
-            //Update systems
-            let _ = &self.systems_manager.update_all(&mut self.world);
+            // Update systems
+            self.systems_manager.update_all(&mut self.world, delta_time);
 
             // Update game logic
-            game.update(&mut self.world);
+            game.update(&mut self.world, delta_time);
 
             // Clear the screen
             unsafe {
                 gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
             }
 
-            // Render all entities
-            self.world.rendering_system.render(&mut self.world.entity_manager);
-
-            // Get window size
-            let (window_width, window_height) = self.window.drawable_size();
-
-            let raw_input = egui::RawInput {
-                screen_rect: Some(egui::Rect::from_min_size(
-                    egui::Pos2::ZERO,
-                   egui::vec2(window_width as f32, window_height as f32),
-                )),
-                ..Default::default()
-            };
-
-            // Run egui
-            let full_output = egui_ctx.run(raw_input, |ctx| {
-              
-                egui::Window::new("Debug Info")
-                    .default_size(egui::vec2(200.0, 100.0))
-                    .default_pos(egui::pos2(20.0, 20.0))
-                    .show(ctx, |ui| {
-                        
-                        ui.label("Hello egui!");
-                        ui.label("This should be visible!");
-                        if ui.button("Test Button").clicked() {
-                            println!("Button clicked!");
-                        }
-                    });
-            });
-
-            // Convert shapes to primitives
-            let primitives = egui_ctx.tessellate(full_output.shapes, full_output.pixels_per_point);
-
-
-            // Right before paint_jobs, ensure proper OpenGL state
-            unsafe {
-                gl::Enable(gl::BLEND);
-                gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
-                gl::Disable(gl::DEPTH_TEST);
-                gl::Disable(gl::CULL_FACE);
-            }
-
-            painter.paint_jobs(
-                None,
-                full_output.textures_delta,
-                primitives,
-            );
-
-            // Restore OpenGL state for game rendering
-            unsafe {
-                gl::Enable(gl::DEPTH_TEST);
-                gl::Enable(gl::CULL_FACE);
-                gl::Disable(gl::BLEND);
-            }
+            //Render all systems. NOTE: Rendering is done in reverse so that UI is rendered at the top
+            self.systems_manager.render_all(&mut self.world);
 
             // Swap buffers
             self.window.gl_swap_window();
-
-            self.world.input_manager.clear();
         }
 
         Ok(())
@@ -220,7 +246,7 @@ impl Engine {
 
 pub trait GameLogic {
     fn initialize(&mut self, world: &mut World);
-    fn update(&mut self, world: &mut World);
+    fn update(&mut self, world: &mut World, delta_time: f32);
 }
 
 // Helper function for creating common entities

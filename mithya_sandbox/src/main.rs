@@ -20,7 +20,7 @@ impl GameLogic for Sandbox {
             .with_transform(Vec3 { x: (0.0), y: (20.0), z: (0.0) }, Quat::IDENTITY, Vec3::ONE)
             .with_render(
                 Mesh::new_quad_textured(), 
-                world.rendering_system.material_manager
+                world.material_manager
                     .get_material_id_from_name("unlit_texture_circle")
                     .copied()
             )
@@ -36,7 +36,7 @@ impl GameLogic for Sandbox {
             .with_transform(Vec3 { x: (0.0), y: (-15.0), z: (0.0) }, Quat::IDENTITY, Vec3::ONE * 2.0)
             .with_render(
                 Mesh::new_quad_textured(), 
-                world.rendering_system.material_manager
+                world.material_manager
                     .get_material_id_from_name("unlit_texture_default")
                     .copied()
             )
@@ -44,7 +44,7 @@ impl GameLogic for Sandbox {
             .build();
     }
 
-    fn update(&mut self, _world: &mut World) {
+    fn update(&mut self, _world: &mut World, _delta_time: f32) {
         // Sandbox Updates go here
     }
 }

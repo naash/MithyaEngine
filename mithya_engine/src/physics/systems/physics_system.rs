@@ -14,7 +14,15 @@ use crate::{
 pub struct PhysicsSystem;
 
 impl System for PhysicsSystem {
-    fn update(&mut self, world: &mut World) {
+    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
+        Ok(())
+    }
+
+    fn handle_event(&mut self, _event: &sdl2::event::Event, _world: &mut World) -> bool {
+        false
+    }
+
+    fn update(&mut self, world: &mut World, _delta_time: f32) {
         let dt = world.physics_config.time_step;
         let gravity = world.physics_config.gravity;
 
@@ -23,7 +31,7 @@ impl System for PhysicsSystem {
             .query_two_components::<Transform, RigidBody>();
 
         for entity_id in physics_entities {
-            // cache velocity and should_update flag
+            // Cache velocity and should_update flag
             let (velocity, should_update) = {
                 if let Some(rigidbody) = world.entity_manager.get_component_mut::<RigidBody>(entity_id) {
                     // Skip kinematic bodies
@@ -54,7 +62,7 @@ impl System for PhysicsSystem {
                 }
             }; // The mutable borrow of entity_manager ends here
 
-            // Update transform
+            // Update transform position
             if should_update {
                 if let Some(transform) = world.entity_manager.get_component_mut::<Transform>(entity_id) {
                     transform.position.x += velocity.x * dt;
@@ -62,5 +70,9 @@ impl System for PhysicsSystem {
                 }
             }
         }
+    }
+
+    fn render(&mut self, _world: &mut World) {
+        // Physics system doesn't render anything
     }
 }

@@ -15,9 +15,17 @@ use crate::{
 pub struct CollisionSystem;
 
 impl System for CollisionSystem {
-    fn update(&mut self, world: &mut World) {
+    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
+        Ok(())
+    }
+
+    fn handle_event(&mut self, _event: &sdl2::event::Event, _world: &mut World) -> bool {
+        false
+    }
+
+    fn update(&mut self, world: &mut World, _delta_time: f32) {
         let collider_entities = world.entity_manager
-        .query_two_components::<Transform, Collider>();
+            .query_two_components::<Transform, Collider>();
 
         let mut colliding_entities = HashSet::new();
 
@@ -47,23 +55,25 @@ impl System for CollisionSystem {
             }
         }
 
-        // Update data 
+        // Update collision data 
         for &entity in &collider_entities {
-            // Collision flag
+            // Update collision flag
             if let Some(collider) = world.entity_manager.get_component_mut::<Collider>(entity) {
                 collider.is_colliding = colliding_entities.contains(&entity);
             }
 
-            // Velocity based on bounce
+            // Handle velocity bounce for colliding entities
             if colliding_entities.contains(&entity) {
-                if let Some(rigid_body) = world.entity_manager.get_component_mut::<RigidBody>(entity)
-                {
+                if let Some(rigid_body) = world.entity_manager.get_component_mut::<RigidBody>(entity) {
                     // Simple bounce: flip velocity and apply bounce factor
                     rigid_body.velocity = -rigid_body.velocity * rigid_body.bounce;
-                    println!("Velocity: {}", rigid_body.velocity);
                 }
             }
         }
+    }
+
+    fn render(&mut self, _world: &mut World) {
+        // Collision system doesn't render anything, might render debug stuff?
     }
 }
 
