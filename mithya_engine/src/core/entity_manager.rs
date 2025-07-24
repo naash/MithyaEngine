@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::any::{Any, TypeId};
 use super::Transform;
 
@@ -13,11 +13,32 @@ use crate::rendering::Render;
 // Simple entity ID system
 pub type EntityId = u32;
 
+//Archetype is a collection of entities that share the same component types
+#[derive(Debug)]
+pub struct Archetype {
+    pub signature: HashSet<TypeId>,
+    pub entities: Vec<EntityId>,
+}
+
+impl Archetype {
+    pub fn new(signature: HashSet<TypeId>) -> Self {
+        Self {
+            signature,
+            entities: Vec::new(),
+        }
+    }
+
+    pub fn matches(&self, required_components: &[TypeId]) -> bool {
+        required_components.iter().all(|type_id| self.signature.contains(type_id))
+    }
+}
+
 // Entity manager - stores components for entities
 pub struct EntityManager {
     next_entity_id: EntityId,
     entity_components: HashMap<TypeId, HashMap<EntityId, Box<dyn Any + Send + Sync>>>,
-    archetypes: HashMap<TypeId, Vec<EntityId>>,
+    archetypes: Vec<Archetype>,
+    entity_to_archetype: HashMap<EntityId, usize>,
 }
 
 impl EntityManager {
@@ -25,7 +46,8 @@ impl EntityManager {
         Self {
             next_entity_id: 0,
             entity_components: HashMap::new(),
-            archetypes: HashMap::new(),
+            archetypes: Vec::new(),
+            entity_to_archetype: HashMap::new(),
         }
     }
 
@@ -39,18 +61,45 @@ impl EntityManager {
     pub fn add_component<T: Component>(&mut self, entity_id: EntityId, component: T) {
         let type_id = TypeId::of::<T>();
         
-        //Store the component
+        let mut new_signature = match self.entity_to_archetype.get(&entity_id) {
+            Some(&arch_idx) => self.archetypes[arch_idx].signature.clone(),
+            None => HashSet::new(),
+        };
+
+        // Add new component type to signature
+        new_signature.insert(type_id);
+
+        // Find or create matching archetype
+        let archetype_idx = self.find_or_create_archetype(new_signature);
+
+        // Move entity to new archetype
+        if let Some(old_arch_idx) = self.entity_to_archetype.get(&entity_id) {
+            self.archetypes[*old_arch_idx].entities.retain(|&e| e != entity_id);
+        }
+        
+        self.archetypes[archetype_idx].entities.push(entity_id);
+        self.entity_to_archetype.insert(entity_id, archetype_idx);
+        
+        // Store component
         self.entity_components
             .entry(type_id)
             .or_insert_with(HashMap::new)
             .insert(entity_id, Box::new(component));
+    }
+
+    fn find_or_create_archetype(&mut self, signature: HashSet<TypeId>) -> usize {
+        // Try to find existing archetype
+        if let Some(idx) = self.archetypes
+            .iter()
+            .position(|arch| arch.signature == signature) 
+        {
+            return idx;
+        }
         
-        //Add entity to this component's archetype
-        // This creates the archetype if it doesn't exist
-        self.archetypes
-            .entry(type_id)
-            .or_insert_with(Vec::new)
-            .push(entity_id);
+        // Create new archetype
+        let idx = self.archetypes.len();
+        self.archetypes.push(Archetype::new(signature));
+        idx
     }
 
     pub fn get_component<T: Component>(&self, entity_id: EntityId) -> Option<&T> {
@@ -70,24 +119,31 @@ impl EntityManager {
     }
 
     pub fn remove_component<T: Component>(&mut self, entity_id: EntityId) -> Option<T> {
-       let type_id = TypeId::of::<T>();
-  
-        // Remove from component storage
-        let component = self.entity_components
-            .get_mut(&type_id)?
-            .remove(&entity_id)?
-            .downcast::<T>()
-            .ok()?;
+        let type_id = TypeId::of::<T>();
+
+        // Get current archetype
+        let current_arch_idx = *self.entity_to_archetype.get(&entity_id)?;
+        let current_signature = self.archetypes[current_arch_idx].signature.clone();
         
-        // Remove from archetype
-        if let Some(entities) = self.archetypes.get_mut(&type_id) {
-            entities.retain(|&id| id != entity_id);
-            // Clean up empty archetypes
-            if entities.is_empty() {
-                self.archetypes.remove(&type_id);
-            }
-        }
+        // Create new signature without borrowing self
+        let mut new_signature = current_signature;
+        new_signature.remove(&type_id);
         
+        // Store component before archetype modifications
+        let component = match self.entity_components.get_mut(&type_id) {
+            Some(components) => match components.remove(&entity_id) {
+                Some(component) => component.downcast::<T>().ok()?,
+                None => return None
+            },
+            None => return None
+        };
+
+        // Now handle archetype changes
+        let new_arch_idx = self.find_or_create_archetype(new_signature);
+        self.archetypes[current_arch_idx].entities.retain(|&e| e != entity_id);
+        self.archetypes[new_arch_idx].entities.push(entity_id);
+        self.entity_to_archetype.insert(entity_id, new_arch_idx);
+
         Some(*component)
     }
     
@@ -96,19 +152,21 @@ impl EntityManager {
     }
     
     pub fn destroy_entity(&mut self, entity_id: EntityId) {
-        
-        //Remove from all archetypes
-        for (_, entities) in self.archetypes.iter_mut() {
-            entities.retain(|&id| id != entity_id);
+        // Remove from current archetype
+        if let Some(&arch_idx) = self.entity_to_archetype.get(&entity_id) {
+            self.archetypes[arch_idx].entities.retain(|&e| e != entity_id);
         }
-
-        //Clean up empty archetypes (optional optimization)
-        self.archetypes.retain(|_, entities| !entities.is_empty());
         
-        //Remove from all component storages
+        // Remove archetype mapping
+        self.entity_to_archetype.remove(&entity_id);
+        
+        // Remove from all component storages
         for (_, components) in self.entity_components.iter_mut() {
             components.remove(&entity_id);
         }
+        
+        // Clean up empty archetypes
+        self.archetypes.retain(|arch| !arch.entities.is_empty());
     }
 
      // Get entities that have ALL specified component types
@@ -117,19 +175,24 @@ impl EntityManager {
             return Vec::new();
         }
         
-        // Start with entities from the first component type
-        let mut result: Vec<EntityId> = self.archetypes
-            .get(&component_types[0])
-            .cloned()
-            .unwrap_or_default();
+        let mut result = Vec::new();
         
-        // Filter by remaining component types
-        for &type_id in &component_types[1..] {
-            if let Some(entities) = self.archetypes.get(&type_id) {
-                result.retain(|entity_id| entities.contains(entity_id));
-            } else {
-                // If any component type has no entities, result is empty
-                return Vec::new();
+        for archetype in &self.archetypes {
+            if archetype.matches(component_types) {
+                // Verify entities exist in component storages
+                let valid_entities: Vec<_> = archetype.entities.iter()
+                    .filter(|&&entity_id| {
+                        component_types.iter().all(|&type_id| 
+                            self.entity_components
+                                .get(&type_id)
+                                .and_then(|components| components.get(&entity_id))
+                                .is_some()
+                        )
+                    })
+                    .copied()
+                    .collect();
+                
+                result.extend(valid_entities);
             }
         }
         

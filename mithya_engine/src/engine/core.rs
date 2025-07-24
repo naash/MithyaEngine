@@ -4,21 +4,13 @@
 // https://opensource.org/licenses/MIT
 
 use crate::{
-    core::EntityManager, 
-    engine::system::{MovementSystem, SystemsManager}, 
-    input::{InputSystem, PlayerControlled}, 
-    physics::{
+    core::EntityManager, engine::system::{MovementSystem, SystemsManager}, input::{InputSystem, PlayerControlled}, physics::{
         collider::{Collider, ColliderShape}, 
         CollisionSystem, 
         PhysicsConfig, 
         PhysicsSystem, 
         RigidBody
-    }, 
-    rendering::{MaterialManager, RenderingSystem}, 
-    ui::UiSystem, 
-    Mesh, 
-    Render, 
-    Transform
+    }, rendering::{MaterialManager, RenderingSystem}, ui::UiSystem, Component, Mesh, Render, Transform
 };
 
 use sdl2::{video::Window, EventPump, Sdl, event::Event};
@@ -261,58 +253,9 @@ impl<'a> EntityBuilder<'a> {
         Self { entity_manager, entity_id }
     }
 
-    pub fn with_transform(self, position: Vec3, rotation: Quat, scale: Vec3) -> Self {
-        self.entity_manager.add_component(self.entity_id, Transform {
-            position,
-            rotation,
-            scale,
-        });
-        self
-    }
-
-    pub fn with_render(self, mesh: Mesh, material_id: Option<u32>) -> Self {
-        self.entity_manager.add_component(self.entity_id, Render {
-            mesh,
-            material_id,
-        });
-        self
-    }
-
-    pub fn with_player_control(self) -> Self {
-        self.entity_manager.add_component(self.entity_id, PlayerControlled);
-        self
-    }
-
-    pub fn with_rigidbody(self, velocity: Vec3) -> Self {
-        self.entity_manager.add_component(
-            self.entity_id,
-            RigidBody {
-                velocity,
-                ..Default::default()
-            }
-        );
-        self
-    }
-
-    pub fn with_circle_collider(self, radius: f32) -> Self {
-        self.entity_manager.add_component(
-            self.entity_id,
-            Collider {
-                shape: ColliderShape::Circle { radius },
-                ..Default::default()
-            }
-        );
-        self
-    }
-
-    pub fn with_box_collider(self, width: f32, height: f32) -> Self {
-        self.entity_manager.add_component(
-            self.entity_id,
-            Collider {
-                shape: ColliderShape::Box { width, height },
-                ..Default::default()
-            }
-        );
+    // Generic method to add any component
+    pub fn with<T: Component>(self, component: T) -> Self {
+        self.entity_manager.add_component(self.entity_id, component);
         self
     }
 

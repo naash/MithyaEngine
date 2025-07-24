@@ -4,7 +4,13 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World}, physics::RigidBody, rendering::mesh::Mesh
+    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
+    input::PlayerControlled,
+    physics::RigidBody,
+    physics::collider::{Collider, ColliderShape},
+    rendering::mesh::Mesh,
+    Render,
+    Transform
 };
 use glam::{Quat, Vec3};
 
@@ -17,30 +23,45 @@ impl GameLogic for Sandbox {
     fn initialize(&mut self, world: &mut World) {
 
         let _player = EntityBuilder::new(&mut world.entity_manager)
-            .with_transform(Vec3 { x: (0.0), y: (20.0), z: (0.0) }, Quat::IDENTITY, Vec3::ONE)
-            .with_render(
-                Mesh::new_quad_textured(), 
-                world.material_manager
+            .with(Transform{
+                position: Vec3 { x: 0.0, y: 20.0, z: 0.0 },
+                rotation: Quat::IDENTITY,
+                scale: Vec3::ONE,
+            })
+            .with(Render {
+                mesh: Mesh::new_quad_textured(),
+                material_id: world.material_manager
                     .get_material_id_from_name("unlit_texture_circle")
                     .copied()
-            )
-            .with_player_control()
-            .with_circle_collider(1.0)
-            .with_rigidbody(Vec3::ZERO)
+            })
+            .with(PlayerControlled)
+            .with(RigidBody {
+                velocity: Vec3::ZERO,
+                bounce: 1.0,
+                ..Default::default()
+            })
+            .with(Collider {
+                shape: ColliderShape::Circle { radius: 1.0 },
+                ..Default::default()
+            })
             .build();
 
-        let mut _player_rigid_body = world.entity_manager.get_component_mut::<RigidBody>(_player).unwrap();
-        _player_rigid_body.bounce = 1.0;
-
         let _floor = EntityBuilder::new(&mut world.entity_manager)
-            .with_transform(Vec3 { x: (0.0), y: (-15.0), z: (0.0) }, Quat::IDENTITY, Vec3::ONE * 2.0)
-            .with_render(
-                Mesh::new_quad_textured(), 
-                world.material_manager
+            .with(Transform{
+                position: Vec3 { x: 0.0, y: -15.0, z: 0.0 },
+                rotation: Quat::IDENTITY,
+                scale: Vec3::ONE * 2.0,
+            })
+            .with(Render {
+                mesh: Mesh::new_quad_textured(),
+                material_id: world.material_manager
                     .get_material_id_from_name("unlit_texture_default")
                     .copied()
-            )
-            .with_box_collider(2.0, 2.0)
+            })
+            .with(Collider {
+                shape: ColliderShape::Box { width: 2.0, height: 2.0 },
+                ..Default::default()
+            })
             .build();
     }
 
