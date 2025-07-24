@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use crate::{
-    engine::core::World, input::PlayerControlled, Transform
+    engine::core::World
 };
 
 pub trait System {
@@ -59,49 +59,4 @@ impl SystemsManager {
         }
     }
 
-}
-
-// MovementSystem - add some basic configuration
-pub struct MovementSystem {
-    pub speed: f32,
-}
-
-impl Default for MovementSystem {
-    fn default() -> Self {
-        Self { speed: 20.0 }
-    }
-}
-
-impl System for MovementSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
-        Ok(())
-    }
-
-    fn handle_event(&mut self, _event: &sdl2::event::Event, _world: &mut World) -> bool {
-        false // Movement system doesn't handle events directly
-    }
-
-    fn update(&mut self, world: &mut World, delta_time: f32) {
-        let (dx, dy) = world.input_state.movement;
-
-        if dx != 0.0 || dy != 0.0 {
-            // Get the IDs first with a separate borrow
-            let player_ids = {
-                let entity_manager = &world.entity_manager;
-                entity_manager.query_two_components::<Transform, PlayerControlled>()
-            }; // This borrow ends here
-            
-            // Now get mutable access
-            for entity_id in player_ids {
-                if let Some(transform) = world.entity_manager.get_component_mut::<Transform>(entity_id) {
-                    transform.position[0] += dx * self.speed * delta_time;
-                    transform.position[1] += dy * self.speed * delta_time;
-                }
-            }
-        }
-    }
-
-    fn render(&mut self, _world: &mut World) {
-        // Movement system doesn't render anything
-    }
 }

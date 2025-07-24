@@ -5,5 +5,4 @@
 
 //System
 pub mod system;
-pub use system::PlayerControlled;
 pub use system::InputSystem;

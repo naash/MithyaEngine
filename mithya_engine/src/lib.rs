@@ -8,6 +8,7 @@ pub mod rendering;
 pub mod components;
 pub mod engine;
 pub mod input;
+pub mod player;
 pub mod physics;
 pub mod ui;
 
@@ -16,6 +17,7 @@ pub use core::{EntityManager, EntityId, Transform};
 pub use components::Component;
 pub use rendering::{RenderingSystem, Mesh, Render};
 pub use input::InputSystem;
+pub use player::{Player, PlayerControlSystem};
 pub use engine::{Engine, World};
 pub use physics::PhysicsSystem;
 

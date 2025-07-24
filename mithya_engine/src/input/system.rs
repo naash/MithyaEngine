@@ -3,11 +3,6 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-
-#[derive(Debug, Clone, Copy)]
-pub struct PlayerControlled;
-
-
 use std::collections::HashSet;
 use sdl2::keyboard::Keycode;
 

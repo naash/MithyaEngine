@@ -5,7 +5,7 @@
 
 use mithya_engine::{
     engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
-    input::PlayerControlled,
+    player::Player,
     physics::RigidBody,
     physics::collider::{Collider, ColliderShape},
     rendering::mesh::Mesh,
@@ -34,7 +34,7 @@ impl GameLogic for Sandbox {
                     .get_material_id_from_name("unlit_texture_circle")
                     .copied()
             })
-            .with(PlayerControlled)
+            .with(Player)
             .with(RigidBody {
                 velocity: Vec3::ZERO,
                 bounce: 1.0,

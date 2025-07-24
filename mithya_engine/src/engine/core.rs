@@ -4,18 +4,18 @@
 // https://opensource.org/licenses/MIT
 
 use crate::{
-    core::EntityManager, engine::system::{MovementSystem, SystemsManager}, input::{InputSystem, PlayerControlled}, physics::{
-        collider::{Collider, ColliderShape}, 
+    core::EntityManager, 
+    engine::system::SystemsManager,
+    player::system::PlayerControlSystem,
+    input::InputSystem, physics::{
         CollisionSystem, 
         PhysicsConfig, 
-        PhysicsSystem, 
-        RigidBody
-    }, rendering::{MaterialManager, RenderingSystem}, ui::UiSystem, Component, Mesh, Render, Transform
+        PhysicsSystem
+    }, rendering::{MaterialManager, RenderingSystem}, ui::UiSystem, Component
 };
 
 use sdl2::{video::Window, EventPump, Sdl, event::Event};
 use gl;
-use glam::{Quat, Vec3};
 use std::{collections::HashSet, time::Instant};
 
 pub struct EngineConfig {
@@ -103,18 +103,9 @@ impl FrameTimer {
             self.last_fps_time = current_time;
         }
     }
-    
-    fn get_fps(&self) -> f32 {
-        self.fps
-    }
-    
+  
     fn get_delta_time(&self) -> f32 {
         self.delta_time
-    }
-    
-    // Optional: Cap delta time to prevent large jumps (useful for physics)
-    fn get_capped_delta_time(&self, max_delta: f32) -> f32 {
-        self.delta_time.min(max_delta)
     }
 }
 
@@ -160,7 +151,7 @@ impl Engine {
         // For input
         systems_manager.add_system(UiSystem::new(&window)); //UI will be at the top to consume event if required
         systems_manager.add_system(InputSystem::new()); //Input manager is then followed so that it caches input state on the world... There should be a better way?
-        systems_manager.add_system(MovementSystem::default());
+        systems_manager.add_system(PlayerControlSystem::default());
         
         // For rendering
         systems_manager.add_system(RenderingSystem::new(&window));
