@@ -6,11 +6,11 @@
 use crate::ui::types::ButtonResponse;
 use egui_sdl2_gl::egui;
 
-pub struct UiElement<'a> {
+pub struct UIElement<'a> {
     pub(crate) ui: &'a mut egui::Ui,
 }
 
-impl<'a> UiElement<'a> {
+impl<'a> UIElement<'a> {
     pub fn label(&mut self, text: &str) {
         self.ui.label(text);
     }
@@ -45,20 +45,20 @@ impl<'a> UiElement<'a> {
     
     pub fn horizontal<F>(&mut self, content: F) 
     where
-        F: FnOnce(&mut UiElement),
+        F: FnOnce(&mut UIElement),
     {
         self.ui.horizontal(|ui| {
-            let mut ui_element = UiElement { ui };
+            let mut ui_element = UIElement { ui };
             content(&mut ui_element);
         });
     }
     
     pub fn vertical<F>(&mut self, content: F) 
     where
-        F: FnOnce(&mut UiElement),
+        F: FnOnce(&mut UIElement),
     {
         self.ui.vertical(|ui| {
-            let mut ui_element = UiElement { ui };
+            let mut ui_element = UIElement { ui };
             content(&mut ui_element);
         });
     }

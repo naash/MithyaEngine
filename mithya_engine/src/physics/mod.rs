@@ -3,22 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-//Systems
-#[path = "systems/physics_system.rs"]
-pub mod physics_system;
-pub use physics_system::PhysicsSystem;
+mod components;
+mod systems;
+mod physics_config;
 
-#[path = "systems/collision_system.rs"]
-pub mod collision_system;
-pub use collision_system::CollisionSystem;
-
-pub mod physics_config;
+pub use components::{Collider, ColliderShape, RigidBody};
+pub use systems::{PhysicsSystem, CollisionSystem};
 pub use physics_config::PhysicsConfig;
-
-//Components
-#[path = "components/collider.rs"]
-pub mod collider;
-#[path = "components/rigidbody.rs"]
-pub mod rigidbody;
-
-pub use rigidbody::RigidBody;

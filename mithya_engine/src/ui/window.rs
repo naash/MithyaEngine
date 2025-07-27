@@ -3,10 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use crate::ui::{UiContext, UiElement};
+use crate::ui::{UIContext, UIElement};
 use egui_sdl2_gl::egui;
 
-pub struct UiWindow {
+pub struct UIWindow {
     pub title: String,
     pub size: Option<(f32, f32)>,
     pub position: Option<(f32, f32)>,
@@ -14,7 +14,7 @@ pub struct UiWindow {
     pub collapsible: bool,
 }
 
-impl UiWindow {
+impl UIWindow {
     pub fn size(mut self, width: f32, height: f32) -> Self {
         self.size = Some((width, height));
         self
@@ -35,9 +35,9 @@ impl UiWindow {
         self
     }
     
-    pub fn show<F>(self, ctx: &UiContext, mut content: F) 
+    pub fn show<F>(self, ctx: &UIContext, mut content: F) 
     where
-    F: FnMut(&mut UiElement),
+    F: FnMut(&mut UIElement),
     {
         let mut window = egui::Window::new(self.title)
             .resizable(self.resizable)
@@ -52,7 +52,7 @@ impl UiWindow {
         }
         
         window.show(ctx.ctx, |ui| {
-            let mut ui_element = UiElement { ui };
+            let mut ui_element = UIElement { ui };
             content(&mut ui_element);
         });
     }

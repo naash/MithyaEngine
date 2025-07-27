@@ -5,13 +5,16 @@
 
 use crate::{
     core::EntityManager, 
-    engine::system::SystemsManager,
-    player::system::PlayerControlSystem,
-    input::InputSystem, physics::{
+    engine::system::SystemsManager, 
+    input::InputSystem, 
+    physics::{
         CollisionSystem, 
         PhysicsConfig, 
         PhysicsSystem
-    }, rendering::{MaterialManager, RenderingSystem}, ui::UiSystem, Component
+    }, 
+    player::PlayerControlSystem, 
+    rendering::{MaterialManager, RenderingSystem}, 
+    ui::UISystem, Component
 };
 
 use sdl2::{video::Window, EventPump, Sdl, event::Event};
@@ -149,7 +152,7 @@ impl Engine {
         };
 
         // For input
-        systems_manager.add_system(UiSystem::new(&window)); //UI will be at the top to consume event if required
+        systems_manager.add_system(UISystem::new(&window)); //UI will be at the top to consume event if required
         systems_manager.add_system(InputSystem::new()); //Input manager is then followed so that it caches input state on the world... There should be a better way?
         systems_manager.add_system(PlayerControlSystem::default());
         

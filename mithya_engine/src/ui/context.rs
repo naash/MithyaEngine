@@ -3,16 +3,16 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use crate::ui::UiWindow;
+use crate::ui::UIWindow;
 use egui_sdl2_gl::egui;
 
-pub struct UiContext<'a> {
+pub struct UIContext<'a> {
     pub(crate) ctx: &'a egui::Context,
 }
 
-impl<'a> UiContext<'a> {
-    pub fn window(&self, title: &str) -> UiWindow {
-        UiWindow {
+impl<'a> UIContext<'a> {
+    pub fn window(&self, title: &str) -> UIWindow {
+        UIWindow {
             title: title.to_string(),
             size: None,
             position: None,

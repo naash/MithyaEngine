@@ -4,7 +4,9 @@
 // https://opensource.org/licenses/MIT
 
 pub mod entity_manager;
+pub mod components;
 pub mod transform;
 
 pub use entity_manager::{EntityManager, EntityId};
 pub use transform::Transform;
+pub use components::Component;

@@ -7,9 +7,10 @@ use glam::Mat4;
 use sdl2::event::Event;
 use sdl2::video::Window;
 
-use super::{ShaderManager, Mesh};
-use super::render::Render;
-use crate::core::{EntityManager, Transform};
+use crate::rendering::managers::ShaderManager;
+use crate::rendering::components::{ Mesh, Render};
+
+use crate::core::Transform;
 use crate::engine::system::System;
 use crate::rendering::MaterialManager;
 use crate::World;

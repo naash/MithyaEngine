@@ -7,8 +7,8 @@ use mithya_engine::{
     engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
     player::Player,
     physics::RigidBody,
-    physics::collider::{Collider, ColliderShape},
-    rendering::mesh::Mesh,
+    physics::{Collider, ColliderShape},
+    rendering::Mesh,
     Render,
     Transform
 };

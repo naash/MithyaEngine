@@ -9,7 +9,8 @@ use glam::{Vec2, Vec3Swizzles};
 
 use crate::{
     core::Transform,
-    engine::{system::System, World}, physics::{collider::{Collider, ColliderShape}, RigidBody},
+    engine::{system::System, World}, 
+    physics::components::{Collider, ColliderShape, RigidBody},
 };
 
 pub struct CollisionSystem;

@@ -3,32 +3,16 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-//System
-#[path = "systems/render_system.rs"]
-pub mod render_system;
+mod systems;
+mod managers;
+mod components;
 
-pub use render_system::RenderingSystem;
+pub use managers::ShaderManager;
+pub use managers::TextureManager;
+pub use managers::MaterialManager;
 
-//Managers
-#[path = "managers/shader_manager.rs"]
-pub mod shader_manager;
-#[path = "managers/texture_manager.rs"]
-pub mod texture_manager;
-#[path = "managers/material_manager.rs"]
-pub mod material_manager;
+pub use components::Mesh;
+pub use components::Render;
+pub use components::Material;
 
-pub use shader_manager::ShaderManager;
-pub use texture_manager::TextureManager;
-pub use material_manager::MaterialManager;
-
-//Components
-#[path = "components/mesh.rs"]
-pub mod mesh;
-#[path = "components/material.rs"]
-pub mod material;
-#[path = "components/render.rs"]
-pub mod render;
-
-pub use mesh::Mesh;
-pub use render::Render;
-pub use material::Material;
+pub use systems::RenderingSystem;

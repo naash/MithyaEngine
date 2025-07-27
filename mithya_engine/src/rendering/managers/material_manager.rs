@@ -4,11 +4,11 @@
 // https://opensource.org/licenses/MIT
 
 use std::collections::HashMap;
-use crate::rendering::texture_manager::TextureLoadError;
-use crate::rendering::ShaderManager;
-use crate::rendering::TextureManager;
+use crate::rendering::components::Material;
+use crate::rendering::managers::TextureLoadError;
+use crate::rendering::managers::ShaderManager;
+use crate::rendering::managers::TextureManager;
 
-use super::Material;
 
 // Material Manager for caching and loading
 pub struct MaterialManager {

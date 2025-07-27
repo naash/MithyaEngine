@@ -6,8 +6,8 @@
 use std::collections::{HashMap, HashSet};
 use std::any::{Any, TypeId};
 use super::Transform;
+use super::Component;
 
-use crate::components::Component;
 use crate::rendering::Render;
 
 // Simple entity ID system
