@@ -4,15 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 mod systems;
-mod managers;
 mod components;
 
-pub use managers::ShaderManager;
-pub use managers::TextureManager;
-pub use managers::MaterialManager;
-
-pub use components::Mesh;
-pub use components::Render;
-pub use components::Material;
-
+pub use components::{Mesh, Render, Material};
 pub use systems::RenderingSystem;

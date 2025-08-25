@@ -4,17 +4,11 @@
 // https://opensource.org/licenses/MIT
 
 use crate::{
-    core::EntityManager, 
-    engine::system::SystemsManager, 
-    input::InputSystem, 
-    physics::{
+    asset::AssetManager, core::EntityManager, engine::system::SystemsManager, input::InputSystem, physics::{
         CollisionSystem, 
         PhysicsConfig, 
         PhysicsSystem
-    }, 
-    player::PlayerControlSystem, 
-    rendering::{MaterialManager, RenderingSystem}, 
-    ui::UISystem, Component
+    }, player::PlayerControlSystem, rendering::RenderingSystem, ui::UISystem, Component
 };
 
 use sdl2::{video::Window, EventPump, Sdl, event::Event};
@@ -57,7 +51,7 @@ pub struct World {
     pub input_state: InputState,
     pub entity_manager: EntityManager,
     pub physics_config: PhysicsConfig,
-    pub material_manager: MaterialManager,
+    pub asset_manager: AssetManager,
     pub fps: f32
 }
 
@@ -147,8 +141,8 @@ impl Engine {
             input_state: InputState::default(),
             entity_manager: EntityManager::new(),
             physics_config: PhysicsConfig::default(),
-            material_manager: MaterialManager::new(),
-            fps: 0.0
+            asset_manager: AssetManager::new()?,
+           fps: 0.0
         };
 
         // For input

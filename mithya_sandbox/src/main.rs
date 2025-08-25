@@ -4,14 +4,9 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
-    player::Player,
-    physics::RigidBody,
-    physics::{Collider, ColliderShape},
-    rendering::Mesh,
-    Render,
-    Transform
+    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World}, physics::{Collider, ColliderShape, RigidBody}, player::Player, rendering::{Mesh, Render}, Transform
 };
+
 use glam::{Quat, Vec3};
 
 //Sandbox to test engine features
@@ -30,9 +25,8 @@ impl GameLogic for Sandbox {
             })
             .with(Render {
                 mesh: Mesh::new_quad_textured(),
-                material_id: world.material_manager
-                    .get_material_id_from_name("unlit_texture_circle")
-                    .copied()
+                material_id: world.asset_manager
+                    .get_material_by_name("unlit_texture_circle")
             })
             .with(Player)
             .with(RigidBody {
@@ -54,9 +48,8 @@ impl GameLogic for Sandbox {
             })
             .with(Render {
                 mesh: Mesh::new_quad_textured(),
-                material_id: world.material_manager
-                    .get_material_id_from_name("unlit_texture_default")
-                    .copied()
+                material_id: world.asset_manager
+                    .get_material_by_name("unlit_texture_default")
             })
             .with(Collider {
                 shape: ColliderShape::Box { width: 2.0, height: 2.0 },

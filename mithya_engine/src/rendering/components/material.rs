@@ -3,37 +3,13 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::collections::HashMap;
+use crate::asset::asset_data::{MaterialData, UniformValue};
 
-// Material data - How should the geometry be displayed, which shaders should it use
+// Material - How should the geometry be displayed, which shaders should it use
 #[derive(Clone, Debug)]
 pub struct Material {
-    pub name: String,
-    pub shader_program_id: Option<u32>,
-    pub vertex_shader_path: String,
-    pub fragment_shader_path: String,
-    pub uniforms: HashMap<String, UniformValue>,
-    pub textures: HashMap<String, TextureBinding>,
+    pub data: MaterialData,
     pub render_state: RenderState,
-}
-
-// Uniform value types
-#[derive(Clone, Debug)]
-pub enum UniformValue {
-    Float(f32),
-    Vec2([f32; 2]),
-    Vec3([f32; 3]),
-    Vec4([f32; 4]),
-    Int(i32),
-    Mat4([f32; 16]),
-    Bool(bool),
-}
-
-// Texture binding information
-#[derive(Clone, Debug)]
-pub struct TextureBinding {
-    pub texture_id: u32,
-    pub slot: u32, // Texture unit
 }
 
 // Render state for material
@@ -75,59 +51,46 @@ impl Default for RenderState {
 }
 
 impl Material {
-    pub fn new(name: &str, vertex_path: &str, fragment_path: &str) -> Self {
+    pub fn from_data(data: MaterialData) -> Self {
         Self {
-            name: name.to_string(),
-            shader_program_id: None,
-            vertex_shader_path: vertex_path.to_string(),
-            fragment_shader_path: fragment_path.to_string(),
-            uniforms: HashMap::new(),
-            textures: HashMap::new(),
+            data,
             render_state: RenderState::default(),
         }
     }
 
     // Uniform setters
     pub fn set_float(&mut self, name: &str, value: f32) {
-        self.uniforms.insert(name.to_string(), UniformValue::Float(value));
+        self.data.uniforms.insert(name.to_string(), UniformValue::Float(value));
     }
 
     pub fn set_vec3(&mut self, name: &str, value: [f32; 3]) {
-        self.uniforms.insert(name.to_string(), UniformValue::Vec3(value));
+        self.data.uniforms.insert(name.to_string(), UniformValue::Vec3(value));
     }
 
     pub fn set_vec4(&mut self, name: &str, value: [f32; 4]) {
-        self.uniforms.insert(name.to_string(), UniformValue::Vec4(value));
+        self.data.uniforms.insert(name.to_string(), UniformValue::Vec4(value));
     }
 
     pub fn set_mat4(&mut self, name: &str, value: [f32; 16]) {
-        self.uniforms.insert(name.to_string(), UniformValue::Mat4(value));
+        self.data.uniforms.insert(name.to_string(), UniformValue::Mat4(value));
     }
 
     pub fn set_int(&mut self, name: &str, value: i32) {
-        self.uniforms.insert(name.to_string(), UniformValue::Int(value));
+        self.data.uniforms.insert(name.to_string(), UniformValue::Int(value));
     }
 
     pub fn set_bool(&mut self, name: &str, value: bool) {
-        self.uniforms.insert(name.to_string(), UniformValue::Bool(value));
-    }
-
-    // Texture binding
-    pub fn bind_texture(&mut self, uniform_name: &str, texture_id: u32, slot: u32) {
-        self.textures.insert(
-            uniform_name.to_string(),
-            TextureBinding { texture_id, slot },
-        );
+        self.data.uniforms.insert(name.to_string(), UniformValue::Bool(value));
     }
 
     // Get uniform value
     pub fn get_uniform(&self, name: &str) -> Option<&UniformValue> {
-        self.uniforms.get(name)
+        self.data.uniforms.get(name)
     }
 
     // Apply material state (called before rendering)
     pub fn apply(&self) {
-        if let Some(program_id) = self.shader_program_id {
+        if let Some(program_id) = self.data.shader_program_id {
             unsafe {
                 gl::UseProgram(program_id);
             }
@@ -144,8 +107,8 @@ impl Material {
     }
 
     fn apply_uniforms(&self) {
-        if let Some(program_id) = self.shader_program_id {
-            for (name, value) in &self.uniforms {
+        if let Some(program_id) = self.data.shader_program_id {
+            for (name, value) in &self.data.uniforms {
                 let location = unsafe {
                     let c_name = std::ffi::CString::new(name.as_str()).unwrap();
                     gl::GetUniformLocation(program_id, c_name.as_ptr())
@@ -169,12 +132,12 @@ impl Material {
     }
 
     fn apply_textures(&self) {
-        for (uniform_name, binding) in &self.textures {
+        for (uniform_name, binding) in &self.data.textures {
             unsafe {
                 gl::ActiveTexture(gl::TEXTURE0 + binding.slot);
                 gl::BindTexture(gl::TEXTURE_2D, binding.texture_id);
                 
-                if let Some(program_id) = self.shader_program_id {
+                if let Some(program_id) = self.data.shader_program_id {
                     let c_name = std::ffi::CString::new(uniform_name.as_str()).unwrap();
                     let location = gl::GetUniformLocation(program_id, c_name.as_ptr());
                     if location != -1 {

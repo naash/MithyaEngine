@@ -7,18 +7,13 @@ use glam::Mat4;
 use sdl2::event::Event;
 use sdl2::video::Window;
 
-use crate::rendering::managers::ShaderManager;
-use crate::rendering::components::{ Mesh, Render};
-
-use crate::core::Transform;
-use crate::engine::system::System;
-use crate::rendering::MaterialManager;
-use crate::World;
+use crate::{
+    asset::{managers::AssetManager, MaterialData, UniformValue}, 
+    core::Transform, engine::system::System, rendering::components::{ Mesh, Render}, World
+};
 
 // Rendering system - handles all rendering logic
 pub struct RenderingSystem {
-    shader_manager: ShaderManager,
-    //pub material_manager: MaterialManager,
     pub aspect_ratio: f32,
 }
 
@@ -28,8 +23,6 @@ impl RenderingSystem {
         let (width, height) = window.size();
 
         Self {
-            shader_manager: ShaderManager::new(),
-            //material_manager: MaterialManager::new(),
             aspect_ratio: width as f32 / height as f32
         }
     }
@@ -96,8 +89,9 @@ impl RenderingSystem {
         }
     }
 
-    fn render_entity(&mut self, transform: &Transform, render: &mut Render, material_manager: &mut MaterialManager) {
+    fn render_entity(&mut self, transform: &Transform, render: &mut Render, asset_manager: &mut AssetManager) {
         // Prepare mesh if not already prepared
+
         if render.mesh.vao.is_none() {
             self.prepare_mesh(&mut render.mesh);
         }
@@ -107,7 +101,7 @@ impl RenderingSystem {
             0
         );
 
-        if let Some(material) = material_manager.get_material_mut(&material_id) {
+        if let Some(material) = asset_manager.get_material_mut(material_id) {
 
             // Use glam to create the transformation matrix
             let translation = glam::Mat4::from_translation(transform.position);
@@ -126,25 +120,57 @@ impl RenderingSystem {
             ];
 
             let projection = Mat4::orthographic_rh(-20.0 * self.aspect_ratio, 20.0 * self.aspect_ratio, -20.0, 20.0, -1.0, 1.0);
-        
-            // Update model matrix from transform
-            material.set_mat4("u_model", model_matrix.to_cols_array());
-            material.set_mat4("u_view", identity_matrix);
-            material.set_mat4("u_projection", projection.to_cols_array());
 
-            //Color is static and should be set during initialization
-            material.set_vec3("u_color", [0.1, 0.5, 0.5]);
+            material.uniforms.insert("u_model".to_string(), UniformValue::Mat4(model_matrix.to_cols_array()));
+            material.uniforms.insert("u_view".to_string(), UniformValue::Mat4(identity_matrix));
+            material.uniforms.insert("u_projection".to_string(), UniformValue::Mat4(projection.to_cols_array()));
+            material.uniforms.insert("u_color".to_string(), UniformValue::Vec3([0.1, 0.5, 0.5]));
 
-            //Apply material
-            material.apply();
-
-            //Render Mesh
+            // Apply the material
+            self.apply_material(material);
             self.render_mesh(&render.mesh);
         }      
     }
 
-    pub fn create_shader_program(&mut self, vert_source: &str, frag_source: &str) -> Result<u32, String> {
-        self.shader_manager.create_program(vert_source, frag_source)
+    fn apply_material(&self, material: &MaterialData) {
+        // Apply shader program
+        if let Some(program_id) = material.shader_program_id {
+            unsafe {
+                gl::UseProgram(program_id);
+                //self.debug_shader_uniforms(program_id);
+            }
+        }
+
+        // Apply uniforms
+        for (name, value) in &material.uniforms {
+            unsafe {
+                
+                let location = gl::GetUniformLocation(
+                    material.shader_program_id.unwrap(),
+                    std::ffi::CString::new(name.as_str()).unwrap().as_ptr()
+                );
+
+                if location != -1 {
+                    match value {
+                        UniformValue::Mat4(v) => gl::UniformMatrix4fv(location, 1, gl::FALSE, v.as_ptr()),
+                        UniformValue::Vec2(v) => gl::Uniform2fv(location, 1, v.as_ptr()),
+                        UniformValue::Vec3(v) => gl::Uniform3fv(location, 1, v.as_ptr()),
+                        UniformValue::Vec4(v) => gl::Uniform4fv(location, 1, v.as_ptr()),
+                        UniformValue::Float(v) => gl::Uniform1f(location, *v),
+                        UniformValue::Int(v) => gl::Uniform1i(location, *v),
+                        UniformValue::Bool(v) => gl::Uniform1i(location, if *v { 1 } else { 0 }),
+                    }
+                }
+            }
+        }
+
+        // Apply textures
+        for (_name, binding) in &material.textures {
+            unsafe {
+                gl::ActiveTexture(gl::TEXTURE0 + binding.slot);
+                gl::BindTexture(gl::TEXTURE_2D, binding.texture_id);
+            }
+        }
     }
 
     fn render_mesh(&self, mesh: &Mesh) {
@@ -172,6 +198,40 @@ impl RenderingSystem {
             }
         }
     }
+
+    fn debug_shader_uniforms(&self, program_id: u32) {
+    unsafe {
+        let mut uniform_count = 0;
+        gl::GetProgramiv(program_id, gl::ACTIVE_UNIFORMS, &mut uniform_count);
+        println!("Shader program {} has {} active uniforms:", program_id, uniform_count);
+        
+        for i in 0..uniform_count {
+            let mut name = vec![0u8; 256];
+            let mut length = 0;
+            let mut size = 0;
+            let mut uniform_type = 0;
+            
+            gl::GetActiveUniform(
+                program_id,
+                i as u32,
+                256,
+                &mut length,
+                &mut size,
+                &mut uniform_type,
+                name.as_mut_ptr() as *mut i8,
+            );
+            
+            name.truncate(length as usize);
+            let uniform_name = String::from_utf8_lossy(&name);
+            let location = gl::GetUniformLocation(
+                program_id,
+                std::ffi::CString::new(uniform_name.as_ref()).unwrap().as_ptr()
+            );
+            
+            println!("  Uniform {}: '{}' (location: {})", i, uniform_name, location);
+        }
+    }
+}
 }
 
 impl System for RenderingSystem
@@ -179,7 +239,7 @@ impl System for RenderingSystem
     fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
         
         //Create default program
-        let _ = _world.material_manager.create_default_materials();
+        let _ = _world.asset_manager.create_default_materials();
 
         unsafe {
             gl::Enable(gl::DEPTH_TEST);
@@ -214,7 +274,7 @@ impl System for RenderingSystem
             world.entity_manager.get_component_mut::<Render>(entity_id)
             ) 
             {
-                self.render_entity(&transform, render, &mut world.material_manager);
+                self.render_entity(&transform, render, &mut world.asset_manager);
             }
         }
     }

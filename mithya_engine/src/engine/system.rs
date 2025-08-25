@@ -15,7 +15,6 @@ pub trait System {
     fn cleanup(&mut self, world: &mut World) {}
 }
 
-//Todo make use of SystemManager
 pub struct SystemsManager {
     systems: Vec<Box<dyn System>>,
 }

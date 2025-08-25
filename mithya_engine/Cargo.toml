@@ -11,3 +11,4 @@ image = "0.24"
 sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
 egui = "0.32"
 egui_sdl2_gl = "0.31"
+thiserror = "2.0.16"
