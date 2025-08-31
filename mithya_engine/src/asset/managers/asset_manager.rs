@@ -3,7 +3,6 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::path::{Path, PathBuf};
 use std::collections::HashMap;
 use crate::asset::error::AssetError;
 use crate::asset::MaterialData;

@@ -3,6 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use serde::{Serialize, Deserialize};
+
 #[derive(Clone, Debug)]
 pub struct VertexAttribute {
     pub location: u32,
@@ -95,6 +97,46 @@ impl Mesh {
                 VertexAttribute { location: 0, size: 3, offset: 0 }, // Position
                 VertexAttribute { location: 1, size: 2, offset: 3 * std::mem::size_of::<f32>() }, // UV
             ],
+        }
+    }
+}
+
+// Enum to identify mesh types for serialization. Using this as a helper
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub enum MeshType {
+    Triangle,
+    Quad, 
+    TriangleTextured,
+    QuadTextured,
+    // Future mesh types can be added here
+    Custom { name: String }, // For when you add 3D model loading
+}
+
+impl MeshType {
+    // Helper to create mesh from type
+    pub fn create_mesh(&self) -> Mesh {
+        match self {
+            MeshType::Triangle => Mesh::new_triangle(),
+            MeshType::Quad => Mesh::new_quad(),
+            MeshType::TriangleTextured => Mesh::new_triangle_textured(),
+            MeshType::QuadTextured => Mesh::new_quad_textured(),
+            MeshType::Custom { name: _ } => {
+                // For now, default to quad_textured
+                // Later you can load actual 3D models by name
+                Mesh::new_quad_textured()
+            }
+        }
+    }
+    
+    // Helper to detect mesh type from existing mesh (for serialization)
+    pub fn from_mesh(mesh: &Mesh) -> Self {
+        // Simple heuristic based on vertex count and stride
+        match (mesh.vertices.len(), mesh.vertex_stride) {
+            (9, 12) => MeshType::Triangle,      // 3 verts * 3 components, stride 12
+            (12, 12) => MeshType::Quad,         // 4 verts * 3 components, stride 12  
+            (15, 20) => MeshType::TriangleTextured, // 3 verts * 5 components, stride 20
+            (20, 20) => MeshType::QuadTextured,     // 4 verts * 5 components, stride 20
+            _ => MeshType::Custom { name: "unknown".to_string() },
         }
     }
 }
