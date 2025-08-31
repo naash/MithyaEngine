@@ -12,7 +12,7 @@ pub trait System {
     fn handle_event(&mut self, event: &sdl2::event::Event, world: &mut World) -> bool; // Returns true if consumed
     fn update(&mut self, world: &mut World, delta_time: f32);
     fn render(&mut self, world: &mut World);
-    fn cleanup(&mut self, world: &mut World) {}
+    fn cleanup(&mut self, _world: &mut World) {}
 }
 
 pub struct SystemsManager {
@@ -42,7 +42,7 @@ impl SystemsManager {
 
     pub fn initialize_all(&mut self, world: &mut World) {
         for system in &mut self.systems {
-            system.initialize(world);
+            let _ = system.initialize(world);
         }
     }
 

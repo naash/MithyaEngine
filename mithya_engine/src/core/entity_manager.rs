@@ -36,7 +36,7 @@ impl Archetype {
 // Entity manager - stores components for entities
 pub struct EntityManager {
     next_entity_id: EntityId,
-    entity_components: HashMap<TypeId, HashMap<EntityId, Box<dyn Any + Send + Sync>>>,
+    entity_components: HashMap<TypeId, HashMap<EntityId, Box<dyn Component>>>,
     archetypes: Vec<Archetype>,
     entity_to_archetype: HashMap<EntityId, usize>,
 }
@@ -107,6 +107,8 @@ impl EntityManager {
         self.entity_components
             .get(&type_id)?
             .get(&entity_id)?
+            .as_ref()
+            .as_any()
             .downcast_ref::<T>()
     }
     
@@ -115,10 +117,12 @@ impl EntityManager {
         self.entity_components
             .get_mut(&type_id)?
             .get_mut(&entity_id)?
+            .as_mut()
+            .as_any_mut()
             .downcast_mut::<T>()
     }
 
-    pub fn remove_component<T: Component>(&mut self, entity_id: EntityId) -> Option<T> {
+    pub fn remove_component<T: Component + Clone>(&mut self, entity_id: EntityId) -> Option<T> {
         let type_id = TypeId::of::<T>();
 
         // Get current archetype
@@ -132,7 +136,7 @@ impl EntityManager {
         // Store component before archetype modifications
         let component = match self.entity_components.get_mut(&type_id) {
             Some(components) => match components.remove(&entity_id) {
-                Some(component) => component.downcast::<T>().ok()?,
+                Some(component) => component,
                 None => return None
             },
             None => return None
@@ -144,7 +148,14 @@ impl EntityManager {
         self.archetypes[new_arch_idx].entities.push(entity_id);
         self.entity_to_archetype.insert(entity_id, new_arch_idx);
 
-        Some(*component)
+        // Downcast and clone the concrete type
+        let concrete_component = component
+            .as_ref()           // &dyn Component
+            .as_any()           // &dyn Any  
+            .downcast_ref::<T>()?  // Option<&T>
+            .clone();           // T (cloned)
+
+        Some(concrete_component)
     }
     
     pub fn has_component<T: Component>(&self, entity_id: EntityId) -> bool {
