@@ -9,7 +9,7 @@ use sdl2::video::Window;
 
 use crate::{
     asset::{managers::AssetManager, MaterialData, UniformValue}, 
-    core::Transform, engine::system::System, rendering::components::{ Mesh, Render}, World
+    core::Transform, engine::system::{System, SystemRenderContext, SystemUpdateContext}, rendering::components::{ Mesh, Render}, World
 };
 
 // Rendering system - handles all rendering logic
@@ -249,15 +249,11 @@ impl System for RenderingSystem
         Ok(())
     }
 
-    fn handle_event(&mut self, _event: &Event, _world: &mut World) -> bool {
-        false
-    }
-
-    fn update(&mut self, _world: &mut World, _delta_time: f32) {
+    fn update(&mut self, _update_context: &mut SystemUpdateContext) {
         //Nothing to update just render
     }
 
-    fn render(&mut self, world: &mut World) {
+    fn render(&mut self, render_context: &mut SystemRenderContext) {
         unsafe {
             gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 
@@ -266,15 +262,15 @@ impl System for RenderingSystem
         }
 
         // Collect entity IDs first to avoid borrowing conflicts
-        let entities = world.entity_manager.get_renderable_entities();
+        let entities = render_context.entity_manager.get_renderable_entities();
         
         for entity_id in entities {
             if let (Some(transform), Some(render)) = (
-            world.entity_manager.get_component::<Transform>(entity_id).cloned(), //Need to clone to fix mutability issue
-            world.entity_manager.get_component_mut::<Render>(entity_id)
+            render_context.entity_manager.get_component::<Transform>(entity_id).cloned(), //Need to clone to fix mutability issue
+            render_context.entity_manager.get_component_mut::<Render>(entity_id)
             ) 
             {
-                self.render_entity(&transform, render, &mut world.asset_manager);
+                self.render_entity(&transform, render, &mut render_context.asset_manager);
             }
         }
     }

@@ -14,3 +14,11 @@ CMake Deprecation Warning at CMakeLists.txt:3147 (cmake_minimum_required):
   CMake that the project does not need compatibility with older versions.
 
 
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_ASM_FLAGS
+    CMAKE_ASM_FLAGS_RELEASE
+    SDL_MAIN_HANDLED
+
+

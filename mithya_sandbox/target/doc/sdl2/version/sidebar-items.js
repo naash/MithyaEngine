@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["revision","revision_number","version"],"struct":["Version"]};

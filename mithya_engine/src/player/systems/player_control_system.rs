@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use crate::{
-    engine::{core::World, system::System}, Player, Transform
+    engine::{core::World, system::{System, SystemRenderContext, SystemUpdateContext}}, Player, Transform
 };
 
 pub struct PlayerControlSystem {
@@ -22,27 +22,23 @@ impl System for PlayerControlSystem {
         Ok(())
     }
 
-    fn handle_event(&mut self, _event: &sdl2::event::Event, _world: &mut World) -> bool {
-        false // Player control system doesn't handle events directly
-    }
-
-    fn update(&mut self, world: &mut World, delta_time: f32) {
-        let (dx, dy) = world.input_state.movement;
+    fn update(&mut self, update_context: &mut SystemUpdateContext) {
+        let (dx, dy) = update_context.world.input_state.movement;
 
         if dx != 0.0 || dy != 0.0 {
-            let player_ids = world.entity_manager
+            let player_ids = update_context.world.entity_manager
                 .query_two_components::<Transform, Player>();
             
             for entity_id in player_ids {
-                if let Some(transform) = world.entity_manager.get_component_mut::<Transform>(entity_id) {
-                    transform.position[0] += dx * self.movement_speed * delta_time;
-                    transform.position[1] += dy * self.movement_speed * delta_time;
+                if let Some(transform) = update_context.world.entity_manager.get_component_mut::<Transform>(entity_id) {
+                    transform.position[0] += dx * self.movement_speed * update_context.delta_time;
+                    transform.position[1] += dy * self.movement_speed * update_context.delta_time;
                 }
             }
         }
     }
 
-    fn render(&mut self, _world: &mut World) {
+    fn render(&mut self, _render_context: &mut SystemRenderContext) {
         // Player control system doesn't render anything
     }
 }

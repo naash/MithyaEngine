@@ -17,9 +17,64 @@ struct Sandbox {
 impl GameLogic for Sandbox {
     fn initialize(&mut self, world: &mut World) {
 
-        let _player = EntityBuilder::new(&mut world.entity_manager)
+        //Wall
+        // Left Wall
+        let _left_wall = EntityBuilder::new(&mut world.entity_manager)
+            .with(Transform {
+                position: Vec3 { x: -20.0, y: 0.0, z: 0.0 },
+                rotation: Quat::IDENTITY,
+                scale: Vec3 { x: 1.0, y: 39.0, z: 1.0 },
+            })
+            .with(Render {
+                mesh: Mesh::new_quad_textured(),
+                material_id: world.asset_manager
+                    .get_material_by_name("unlit_texture_default")
+            })
+            .with(Collider {
+                shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+                ..Default::default()
+            })
+            .build();
+
+        // Right Wall
+        let _right_wall = EntityBuilder::new(&mut world.entity_manager)
+            .with(Transform {
+                position: Vec3 { x: 20.0, y: 0.0, z: 0.0 },
+                rotation: Quat::IDENTITY,
+                scale: Vec3 { x: 1.0, y: 39.0, z: 1.0 },
+            })
+            .with(Render {
+                mesh: Mesh::new_quad_textured(),
+                material_id: world.asset_manager
+                    .get_material_by_name("unlit_texture_default")
+            })
+            .with(Collider {
+                shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+                ..Default::default()
+            })
+            .build();
+
+        // Top Wall
+        let _top_wall = EntityBuilder::new(&mut world.entity_manager)
+            .with(Transform {
+                position: Vec3 { x: 0.0, y: 19.0, z: 0.0 },
+                rotation: Quat::IDENTITY,
+                scale: Vec3 { x: 38.5, y: 1.0, z: 1.0 },
+            })
+            .with(Render {
+                mesh: Mesh::new_quad_textured(),
+                material_id: world.asset_manager
+                    .get_material_by_name("unlit_texture_default")
+            })
+            .with(Collider {
+                shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+                ..Default::default()
+            })
+            .build();
+
+        let _ball = EntityBuilder::new(&mut world.entity_manager)
             .with(Transform{
-                position: Vec3 { x: 0.0, y: 20.0, z: 0.0 },
+                position: Vec3 { x: 0.0, y: 15.0, z: 0.0 },
                 rotation: Quat::IDENTITY,
                 scale: Vec3::ONE,
             })
@@ -28,7 +83,6 @@ impl GameLogic for Sandbox {
                 material_id: world.asset_manager
                     .get_material_by_name("unlit_texture_circle")
             })
-            .with(Player)
             .with(RigidBody {
                 velocity: Vec3::ZERO,
                 bounce: 1.0,
@@ -40,11 +94,11 @@ impl GameLogic for Sandbox {
             })
             .build();
 
-        let _floor = EntityBuilder::new(&mut world.entity_manager)
+        let _paddle = EntityBuilder::new(&mut world.entity_manager)
             .with(Transform{
                 position: Vec3 { x: 0.0, y: -15.0, z: 0.0 },
                 rotation: Quat::IDENTITY,
-                scale: Vec3::ONE * 2.0,
+                scale: Vec3 { x: 5.0, y: 1.0, z: 1.0 },
             })
             .with(Render {
                 mesh: Mesh::new_quad_textured(),
@@ -52,9 +106,10 @@ impl GameLogic for Sandbox {
                     .get_material_by_name("unlit_texture_default")
             })
             .with(Collider {
-                shape: ColliderShape::Box { width: 2.0, height: 2.0 },
+                shape: ColliderShape::Box { width: 1.0, height: 1.0 },
                 ..Default::default()
             })
+            .with(Player)
             .build();
     }
 

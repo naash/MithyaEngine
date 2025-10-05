@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["PrefPathError"],"fn":["base_path","pref_path"]};

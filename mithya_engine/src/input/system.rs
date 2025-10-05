@@ -3,10 +3,22 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::collections::HashSet;
+use std::{collections::HashSet};
 use sdl2::keyboard::Keycode;
 
-use crate::{engine::system::System, World};
+use crate::{
+    core::{
+        engine_events::{
+        KeyPressedEvent, 
+        KeyReleasedEvent
+        }, 
+        EngineEventListener
+        }, 
+        engine::system::{
+        System, SystemRenderContext, SystemUpdateContext
+        },
+    World
+};
 
 pub struct InputSystem {
     pressed_keys: HashSet<Keycode>,
@@ -61,35 +73,54 @@ impl System for InputSystem {
         Ok(())
     }
 
-    fn handle_event(&mut self, event: &sdl2::event::Event, _world: &mut World) -> bool {
-        match event {
-            sdl2::event::Event::KeyDown { keycode: Some(keycode), repeat: false, .. } => {
-                if !self.pressed_keys.contains(keycode) {
-                    self.just_pressed.insert(*keycode);
-                }
-                self.pressed_keys.insert(*keycode);
-                true // Input system always consumes key events
-            }
-            sdl2::event::Event::KeyUp { keycode: Some(keycode), .. } => {
-                if self.pressed_keys.contains(keycode) {
-                    self.just_released.insert(*keycode);
-                }
-                self.pressed_keys.remove(keycode);
-                true // Input system always consumes key events
-            }
-            _ => false
-        }
-    }
+    fn update(&mut self, update_context: &mut SystemUpdateContext) {
 
-    fn update(&mut self, _world: &mut World, _delta_time: f32) {
-
-        _world.input_state.movement = self.get_movement_input();
+        update_context.world.input_state.movement = self.get_movement_input();
         // Clear the "just pressed" and "just released" states at the end of each frame
         self.just_pressed.clear();
         self.just_released.clear();
     }
 
-    fn render(&mut self, _world: &mut World) {
+    fn render(&mut self, _render_context: &mut SystemRenderContext) {
         // Input system doesn't render
+    }
+    
+    fn cleanup(&mut self, _world: &mut World) {}
+
+    //Has a listener, I don't like this but can't find a better way
+    fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
+        Some(self)
+    }
+}
+
+impl EngineEventListener for InputSystem {
+    fn interested_events(&self) -> Vec<std::any::TypeId> {
+        use std::any::TypeId;
+        vec![
+            TypeId::of::<KeyPressedEvent>(),
+            TypeId::of::<KeyReleasedEvent>()
+            ]
+    }
+
+    fn on_events(
+        &mut self,
+        events: &crate::core::EngineEventQueue,
+        _actions: &mut crate::core::EngineActionQueue,
+    ) {
+        // Process KeyPressed events
+        for event in events.iter_type::<KeyPressedEvent>() {
+            if !self.pressed_keys.contains(&event.key) {
+                self.just_pressed.insert(event.key);
+            }
+            self.pressed_keys.insert(event.key);
+        }
+
+        // Process KeyReleased events
+        for event in events.iter_type::<KeyReleasedEvent>() {
+            if self.pressed_keys.contains(&event.key) {
+                self.just_released.insert(event.key);
+            }
+            self.pressed_keys.remove(&event.key);
+        }
     }
 }

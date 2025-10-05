@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["DisplayEvent","Event","EventType","WindowEvent"],"struct":["EventPollIterator","EventSender","EventWaitIterator","EventWaitTimeoutIterator","EventWatch"],"trait":["EventWatchCallback"]};

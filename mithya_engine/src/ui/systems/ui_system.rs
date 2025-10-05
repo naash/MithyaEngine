@@ -3,12 +3,22 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use crate::engine::system::System;
+use crate::core::engine_events::{
+    KeyPressedEvent, 
+    KeyReleasedEvent, 
+    MouseButtonReleasedEvent, 
+    MouseClickEvent, 
+    MouseMoveEvent, 
+    MouseWheelEvent, 
+    TextInputEvent, 
+    WindowResizedEvent
+};
+use crate::core::EngineEventListener;
+use crate::engine::system::{System, SystemRenderContext, SystemUpdateContext};
 use crate::ui::UIContext;
 use crate::World;
 use egui_sdl2_gl::painter::Painter;
 use egui_sdl2_gl::egui;
-use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseButton;
 use sdl2::video::Window;
@@ -49,16 +59,6 @@ impl UISystem {
     pub fn wants_pointer_input(&self) -> bool {
         self.context.wants_pointer_input()
     }
-    
-    fn update_modifiers(&mut self, keymod: sdl2::keyboard::Mod) {
-        self.modifiers = egui::Modifiers {
-            alt: keymod.contains(sdl2::keyboard::Mod::LALTMOD) || keymod.contains(sdl2::keyboard::Mod::RALTMOD),
-            ctrl: keymod.contains(sdl2::keyboard::Mod::LCTRLMOD) || keymod.contains(sdl2::keyboard::Mod::RCTRLMOD),
-            shift: keymod.contains(sdl2::keyboard::Mod::LSHIFTMOD) || keymod.contains(sdl2::keyboard::Mod::RSHIFTMOD),
-            mac_cmd: false,
-            command: keymod.contains(sdl2::keyboard::Mod::LGUIMOD) || keymod.contains(sdl2::keyboard::Mod::RGUIMOD),
-        };
-    }
 
     pub fn begin_frame(&mut self, window_size: (u32, u32)) {
         self.painter.update_screen_rect(window_size);
@@ -72,7 +72,7 @@ impl UISystem {
     }
 
     // Add a separate method for rendering UI that can be called from the trait
-    fn render_ui(&mut self, world: &mut World) -> bool {
+    fn render_ui(&mut self) -> bool {
         let full_output = self.context.run(self.raw_input.take(), |ctx| {
             let ui_ctx = UIContext { ctx };
             
@@ -94,11 +94,11 @@ impl UISystem {
                 
                 ui.separator();
                 
-                ui.heading("Game Stats");
+                ui.heading("Test heading");
                 
                 // Access world data here
-                
-                ui.label(&format!("FPS: {:.1}", world.fps)); 
+                // Find better way to fetch UI data. We shouldn't pass data directly. Rather UI specific components should be created
+                //ui.label(&format!("FPS: {:.1}", world.fps)); 
             });
         });
         
@@ -136,94 +136,7 @@ impl System for UISystem {
         Ok(())
     }
 
-    fn handle_event(&mut self, event: &Event, _world: &mut World) -> bool {
-
-        match event {
-            Event::MouseMotion { x, y, .. } => {
-                self.mouse_pos = egui::pos2(*x as f32, *y as f32);
-                self.wants_pointer_input()
-            }
-            Event::MouseButtonDown { mouse_btn, .. } => {
-                if let Some(button) = sdl_to_egui_button(*mouse_btn) {
-                    let button_index = button_to_index(button);
-                    if button_index < self.mouse_pressed.len() {
-                        self.mouse_pressed[button_index] = true;
-                    }
-                    
-                    self.raw_input.events.push(egui::Event::PointerButton {
-                        pos: self.mouse_pos,
-                        button,
-                        pressed: true,
-                        modifiers: self.modifiers,
-                    });
-                }
-                self.wants_pointer_input()
-            }
-            Event::MouseButtonUp { mouse_btn, .. } => {
-                if let Some(button) = sdl_to_egui_button(*mouse_btn) {
-                    let button_index = button_to_index(button);
-                    if button_index < self.mouse_pressed.len() {
-                        self.mouse_pressed[button_index] = false;
-                    }
-                    
-                    self.raw_input.events.push(egui::Event::PointerButton {
-                        pos: self.mouse_pos,
-                        button,
-                        pressed: false,
-                        modifiers: self.modifiers,
-                    });
-                }
-                self.wants_pointer_input()
-            }
-            Event::MouseWheel { y, .. } => {
-                self.raw_input.events.push(egui::Event::MouseWheel {
-                    unit: egui::MouseWheelUnit::Line,
-                    delta: egui::vec2(0.0, *y as f32 * 10.0),
-                    modifiers: self.modifiers,
-                });
-                self.wants_pointer_input()
-            }
-            Event::KeyDown { keycode: Some(keycode), keymod, .. } => {
-                self.update_modifiers(*keymod);
-                if let Some(key) = sdl_to_egui_key(*keycode) {
-                    self.keys_pressed.insert(key);
-                    self.raw_input.events.push(egui::Event::Key {
-                        key,
-                        pressed: true,
-                        repeat: false,
-                        modifiers: self.modifiers,
-                        physical_key: Some(egui::Key::from(key)),
-                    });
-                }
-                self.wants_keyboard_input()
-            }
-            Event::KeyUp { keycode: Some(keycode), keymod, .. } => {
-                self.update_modifiers(*keymod);
-                if let Some(key) = sdl_to_egui_key(*keycode) {
-                    self.keys_pressed.remove(&key);
-                    self.raw_input.events.push(egui::Event::Key {
-                        key,
-                        pressed: false,
-                        repeat: false,
-                        modifiers: self.modifiers,
-                        physical_key: Some(egui::Key::from(key)),
-                    });
-                }
-                self.wants_keyboard_input()
-            }
-            Event::TextInput { text, .. } => {
-                self.raw_input.events.push(egui::Event::Text(text.clone()));
-                self.wants_keyboard_input()
-            }
-            Event::Window { win_event: sdl2::event::WindowEvent::Resized(width, height), .. } => {
-                self.window_size = egui::Vec2::new(*width as f32, *height as f32);
-                false // Don't consume window resize events
-            }
-            _ => false,
-        }
-    }
-
-    fn update(&mut self, _world: &mut World, _delta_time: f32) {
+    fn update(&mut self, _update_context: &mut SystemUpdateContext) {
         // Update UI frame preparation
         self.painter.update_screen_rect((self.window_size.x as u32, self.window_size.y as u32));
         
@@ -235,13 +148,132 @@ impl System for UISystem {
         self.raw_input.events.push(egui::Event::PointerMoved(self.mouse_pos));
     }
 
-    fn render(&mut self, world: &mut World) {
-         let _ = self.render_ui(world);
+    fn render(&mut self, _render_context: &mut SystemRenderContext) {
+         let _ = self.render_ui();
     }
 
     fn cleanup(&mut self, _world: &mut World) {
         // Any cleanup logic specific to the UI system
         // The painter and context will be dropped automatically
+    }
+
+    fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
+       Some(self)
+    }
+}
+
+impl EngineEventListener for UISystem {
+
+    fn interested_events(&self) -> Vec<std::any::TypeId> {
+        use std::any::TypeId;
+        vec![
+            TypeId::of::<MouseMoveEvent>(),
+            TypeId::of::<MouseClickEvent>(),
+            TypeId::of::<MouseButtonReleasedEvent>(),
+            TypeId::of::<MouseWheelEvent>(),
+            TypeId::of::<KeyPressedEvent>(),
+            TypeId::of::<KeyReleasedEvent>(),
+            TypeId::of::<TextInputEvent>(),
+            TypeId::of::<WindowResizedEvent>(),
+        ]
+    }
+
+    fn on_events(
+        &mut self,
+        events: &crate::core::EngineEventQueue,
+        actions: &mut crate::core::EngineActionQueue,
+    ) {
+        // Handle mouse motion
+        for event in events.iter_type::<MouseMoveEvent>() {
+            self.mouse_pos = egui::pos2(event.position.x, event.position.y);
+        }
+
+        // Handle mouse button down
+        for event in events.iter_type::<MouseClickEvent>() {
+            if let Some(button) = sdl_to_egui_button(event.button) {
+                let button_index = button_to_index(button);
+                if button_index < self.mouse_pressed.len() {
+                    self.mouse_pressed[button_index] = true;
+                }
+                
+                self.raw_input.events.push(egui::Event::PointerButton {
+                    pos: self.mouse_pos,
+                    button,
+                    pressed: true,
+                    modifiers: self.modifiers,
+                });
+            }
+        }
+
+        // Handle mouse button up
+        for event in events.iter_type::<MouseButtonReleasedEvent>() {
+            if let Some(button) = sdl_to_egui_button(event.button) {
+                let button_index = button_to_index(button);
+                if button_index < self.mouse_pressed.len() {
+                    self.mouse_pressed[button_index] = false;
+                }
+                
+                self.raw_input.events.push(egui::Event::PointerButton {
+                    pos: self.mouse_pos,
+                    button,
+                    pressed: false,
+                    modifiers: self.modifiers,
+                });
+            }
+        }
+
+        // Handle mouse wheel
+        for event in events.iter_type::<MouseWheelEvent>() {
+            self.raw_input.events.push(egui::Event::MouseWheel {
+                unit: egui::MouseWheelUnit::Line,
+                delta: egui::vec2(0.0, event.delta_y as f32 * 10.0),
+                modifiers: self.modifiers,
+            });
+        }
+
+        // Handle key down
+        for event in events.iter_type::<KeyPressedEvent>() {
+            
+            self.modifiers = event.modifiers.to_egui();
+            
+            if let Some(key) = sdl_to_egui_key(event.key) {
+                self.keys_pressed.insert(key);
+                self.raw_input.events.push(egui::Event::Key {
+                    key,
+                    pressed: true,
+                    repeat: false,
+                    modifiers: self.modifiers,
+                    physical_key: Some(egui::Key::from(key)),
+                });
+            }
+        }
+
+        // Handle key up
+        for event in events.iter_type::<KeyReleasedEvent>() {
+            
+           self.modifiers = event.modifiers.to_egui();
+            
+            if let Some(key) = sdl_to_egui_key(event.key) {
+                self.keys_pressed.remove(&key);
+                self.raw_input.events.push(egui::Event::Key {
+                    key,
+                    pressed: false,
+                    repeat: false,
+                    modifiers: self.modifiers,
+                    physical_key: Some(egui::Key::from(key)),
+                });
+            }
+        }
+
+        // Handle text input
+        for event in events.iter_type::<TextInputEvent>() {
+            self.raw_input.events.push(egui::Event::Text(event.text.clone()));
+        }
+
+        // Handle window resize
+        for event in events.iter_type::<WindowResizedEvent>() {
+            self.window_size = egui::Vec2::new(event.width as f32, event.height as f32);
+        }
     }
 }
 

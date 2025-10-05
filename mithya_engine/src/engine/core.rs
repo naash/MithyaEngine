@@ -4,14 +4,22 @@
 // https://opensource.org/licenses/MIT
 
 use crate::{
-    asset::AssetManager, core::EntityManager, engine::system::SystemsManager, input::InputSystem, physics::{
+    asset::AssetManager,
+    core::{
+        engine_events::{EngineActionQueue, EngineEventQueue, KeyModifiers, KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent, TextInputEvent, WindowResizedEvent
+        },
+        EntityManager
+    }, 
+    engine::system::{SystemRenderContext, SystemUpdateContext, SystemsManager},
+    input::InputSystem, physics::{
         CollisionSystem, 
         PhysicsConfig, 
         PhysicsSystem
     }, player::PlayerControlSystem, rendering::RenderingSystem, ui::UISystem, Component
 };
 
-use sdl2::{video::Window, EventPump, Sdl, event::Event};
+use glam::Vec2;
+use sdl2::{event::Event, video::Window, EventPump, Sdl};
 use gl;
 use std::{collections::HashSet, time::Instant};
 
@@ -45,6 +53,8 @@ pub struct Engine {
     pub systems_manager: SystemsManager,
     pub world: World,
     frame_timer: FrameTimer,
+    pub action_queue: EngineActionQueue,    
+    pub event_queue: EngineEventQueue,
 }
 
 pub struct World {
@@ -107,6 +117,57 @@ impl FrameTimer {
 }
 
 impl Engine {
+
+    pub fn process_sdl_events(&mut self, should_quit : &mut bool ) {
+        for sdl_event in self.event_pump.poll_iter() {
+            match sdl_event {
+                Event::Quit { .. } => {
+                    //No need to create event here, simply quit
+                    *should_quit = true;
+                }
+                Event::KeyDown { keycode: Some(key), keymod, repeat: false, .. } => {
+                    self.event_queue.push(KeyPressedEvent { key, modifiers: KeyModifiers::from_sdl(keymod) });
+                }
+                Event::KeyUp { keycode: Some(key), keymod, .. } => {
+                    self.event_queue.push(KeyReleasedEvent { key, modifiers: KeyModifiers::from_sdl(keymod) });
+                }
+                Event::MouseButtonDown { x, y, mouse_btn, .. } => {
+                    self.event_queue.push(MouseClickEvent {
+                        position: Vec2::new(x as f32, y as f32),
+                        button: mouse_btn,
+                    });
+                }
+                Event::MouseButtonUp { x, y, mouse_btn, .. } => {
+                    self.event_queue.push(MouseButtonReleasedEvent {
+                        position: Vec2::new(x as f32, y as f32),
+                        button: mouse_btn,
+                    });
+                }
+                Event::MouseMotion { x, y, .. } => {
+                    self.event_queue.push(MouseMoveEvent {
+                        position: Vec2::new(x as f32, y as f32),
+                    });
+                }
+                Event::MouseWheel { x, y, .. } => {
+                    self.event_queue.push(MouseWheelEvent {
+                        delta_x: x,
+                        delta_y: y,
+                    });
+                }
+                Event::TextInput { text, .. } => {
+                    self.event_queue.push(TextInputEvent { text });
+                }
+                Event::Window { win_event: sdl2::event::WindowEvent::Resized(width, height), .. } => {
+                    self.event_queue.push(WindowResizedEvent {
+                        width: width as u32,
+                        height: height as u32,
+                    });
+                }
+                _ => {}
+            }
+        }
+    }
+
     pub fn new(config: EngineConfig) -> Result<Self, Box<dyn std::error::Error>> {
         // Initialize SDL2
         let sdl = sdl2::init()?;
@@ -142,7 +203,7 @@ impl Engine {
             entity_manager: EntityManager::new(),
             physics_config: PhysicsConfig::default(),
             asset_manager: AssetManager::new()?,
-           fps: 0.0
+            fps: 0.0
         };
 
         // For input
@@ -176,6 +237,8 @@ impl Engine {
             systems_manager,
             world,
             frame_timer: FrameTimer::new(),
+            event_queue: EngineEventQueue::new(),
+            action_queue: EngineActionQueue::new()
         })
     }
 
@@ -191,19 +254,30 @@ impl Engine {
            
             self.world.fps = self.frame_timer.fps;
 
-            // Handle events
-            for event in self.event_pump.poll_iter() {
-                match event {
-                    Event::Quit { .. } => break 'main,
-                    _ => {
-                        //Event order is fixed -> UI -> Input -> Movement
-                        self.systems_manager.handle_event_all(&event, &mut self.world);
-                    }
-                }
+            let mut should_quit = false;
+
+            self.process_sdl_events(&mut should_quit);
+
+            if should_quit {
+                break 'main;
             }
 
+            //Uncomment to debug events
+            //self.event_queue.debug_print();
+
+            self.systems_manager.handle_event_all(&mut self.event_queue, &mut self.action_queue);
+
+            self.action_queue.execute_all(&mut self.world);
+
+            // Create update context
+            let mut update_context = SystemUpdateContext {
+                world: &mut self.world,
+                events: &mut self.event_queue,
+                delta_time: delta_time,
+            };
+
             // Update systems
-            self.systems_manager.update_all(&mut self.world, delta_time);
+            self.systems_manager.update_all(&mut update_context);
 
             // Update game logic
             game.update(&mut self.world, delta_time);
@@ -213,11 +287,20 @@ impl Engine {
                 gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
             }
 
+            //Create Render context
+            let mut render_context = SystemRenderContext {
+                entity_manager : &mut self.world.entity_manager,
+                asset_manager : &mut self.world.asset_manager
+            };
+            
             //Render all systems. NOTE: Rendering is done in reverse so that UI is rendered at the top
-            self.systems_manager.render_all(&mut self.world);
+            self.systems_manager.render_all(&mut render_context);
 
             // Swap buffers
             self.window.gl_swap_window();
+
+            //Clear actions
+            self.action_queue.clear();
         }
 
         Ok(())

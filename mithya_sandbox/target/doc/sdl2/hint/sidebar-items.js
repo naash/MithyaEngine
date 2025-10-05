@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["Hint"],"fn":["get","get_video_minimize_on_focus_loss","set","set_video_minimize_on_focus_loss","set_video_minimize_on_focus_loss_with_priority","set_with_priority"]};

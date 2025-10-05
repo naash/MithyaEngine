@@ -3,15 +3,27 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::collections::HashSet;
+use std::{any::Any, collections::HashSet};
 
 use glam::{Vec2, Vec3Swizzles};
 
 use crate::{
-    core::Transform,
-    engine::{system::System, World}, 
+    core::{EngineEvent, Transform},
+    engine::{system::{System, SystemRenderContext, SystemUpdateContext}, World}, 
     physics::components::{Collider, ColliderShape, RigidBody},
 };
+
+#[derive(Debug, Clone)]
+pub struct CollisionEvent {
+    pub entity_a: u32,
+    pub entity_b: u32,
+}
+
+impl EngineEvent for CollisionEvent {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
 
 pub struct CollisionSystem;
 
@@ -20,12 +32,8 @@ impl System for CollisionSystem {
         Ok(())
     }
 
-    fn handle_event(&mut self, _event: &sdl2::event::Event, _world: &mut World) -> bool {
-        false
-    }
-
-    fn update(&mut self, world: &mut World, _delta_time: f32) {
-        let collider_entities = world.entity_manager
+    fn update(&mut self, update_context: &mut SystemUpdateContext) {
+        let collider_entities = update_context.world.entity_manager
             .query_two_components::<Transform, Collider>();
 
         let mut colliding_entities = HashSet::new();
@@ -37,19 +45,26 @@ impl System for CollisionSystem {
                 let entity_b = collider_entities[j];
 
                 if let (Some(transform_a), Some(collider_a)) = (
-                    world.entity_manager.get_component::<Transform>(entity_a),
-                    world.entity_manager.get_component::<Collider>(entity_a)
+                    update_context.world.entity_manager.get_component::<Transform>(entity_a),
+                    update_context.world.entity_manager.get_component::<Collider>(entity_a)
                 ) {
                     if let (Some(transform_b), Some(collider_b)) = (
-                        world.entity_manager.get_component::<Transform>(entity_b),
-                        world.entity_manager.get_component::<Collider>(entity_b)
+                        update_context.world.entity_manager.get_component::<Transform>(entity_b),
+                        update_context.world.entity_manager.get_component::<Collider>(entity_b)
                     ) {
                         if check_collision(transform_a, collider_a, transform_b, collider_b) {
-                            resolve_collision(world, entity_a, entity_b);
+
+                            //If collision is detected we resolve collision in 2 ways
+                            //change position 
+                            //update velocity 
+                            resolve_collision(update_context.world, entity_a, entity_b);
                             
                             // Track both entities as colliding
                             colliding_entities.insert(entity_a);
                             colliding_entities.insert(entity_b);
+
+                            //Log collision event
+                            update_context.events.push(CollisionEvent{entity_a, entity_b});
                         }
                     }
                 }
@@ -58,22 +73,13 @@ impl System for CollisionSystem {
 
         // Update collision data 
         for &entity in &collider_entities {
-            // Update collision flag
-            if let Some(collider) = world.entity_manager.get_component_mut::<Collider>(entity) {
+            if let Some(collider) = update_context.world.entity_manager.get_component_mut::<Collider>(entity) {
                 collider.is_colliding = colliding_entities.contains(&entity);
-            }
-
-            // Handle velocity bounce for colliding entities
-            if colliding_entities.contains(&entity) {
-                if let Some(rigid_body) = world.entity_manager.get_component_mut::<RigidBody>(entity) {
-                    // Simple bounce: flip velocity and apply bounce factor
-                    rigid_body.velocity = -rigid_body.velocity * rigid_body.bounce;
-                }
             }
         }
     }
 
-    fn render(&mut self, _world: &mut World) {
+    fn render(&mut self, _render_context: &mut SystemRenderContext) {
         // Collision system doesn't render anything, might render debug stuff?
     }
 }
@@ -86,17 +92,31 @@ fn check_collision(
 ) -> bool {
     let pos_a = transform_a.position + collider_a.offset;
     let pos_b = transform_b.position + collider_b.offset;
+
+    let scale_a = transform_a.scale;
+    let scale_b = transform_b.scale;
+
     //Collision logic is only for 2D
     match (&collider_a.shape, &collider_b.shape) {
         (ColliderShape::Circle { radius: r1 }, ColliderShape::Circle { radius: r2 }) => {
+            
+            let scaled_r1 = r1 * scale_a.x.max(scale_a.y);
+            let scaled_r2 = r2 * scale_b.x.max(scale_b.y);
+          
             let distance = (pos_a - pos_b).length();
-            distance < r1 + r2
+            distance < scaled_r1 + scaled_r2
         }
         (ColliderShape::Box { width: w1, height: h1 }, ColliderShape::Box { width: w2, height: h2 }) => {
-            let half_w1 = w1 / 2.0;
-            let half_h1 = h1 / 2.0;
-            let half_w2 = w2 / 2.0;
-            let half_h2 = h2 / 2.0;
+            
+            let scaled_w1 = w1 * scale_a.x;
+            let scaled_h1 = h1 * scale_a.y;
+            let scaled_w2 = w2 * scale_b.x;
+            let scaled_h2 = h2 * scale_b.y;
+            
+            let half_w1 = scaled_w1 / 2.0;
+            let half_h1 = scaled_h1 / 2.0;
+            let half_w2 = scaled_w2 / 2.0;
+            let half_h2 = scaled_h2 / 2.0;
 
             pos_a.x - half_w1 < pos_b.x + half_w2 &&
             pos_a.x + half_w1 > pos_b.x - half_w2 &&
@@ -105,11 +125,21 @@ fn check_collision(
         }
         // Circle-Box collision (circle A, box B)
         (ColliderShape::Circle { radius }, ColliderShape::Box { width, height }) => {
-            check_circle_box_collision(pos_a.xy(), *radius, pos_b.xy(), *width, *height)
+
+            let scaled_radius = radius * scale_a.x.max(scale_a.y);
+            let scaled_width = width * scale_b.x;
+            let scaled_height = height * scale_b.y;
+
+            check_circle_box_collision(pos_a.xy(), scaled_radius, pos_b.xy(), scaled_width, scaled_height)
         }
         // Box-Circle collision (box A, circle B)
         (ColliderShape::Box { width, height }, ColliderShape::Circle { radius }) => {
-            check_circle_box_collision(pos_b.xy(), *radius, pos_a.xy(), *width, *height)
+
+            let scaled_radius = radius * scale_b.x.max(scale_b.y);
+            let scaled_width = width * scale_a.x;
+            let scaled_height = height * scale_a.y;
+
+            check_circle_box_collision(pos_b.xy(), scaled_radius, pos_a.xy(), scaled_width, scaled_height)
         }
     }
 }
@@ -122,17 +152,12 @@ fn check_circle_box_collision(
     box_height: f32,
 ) -> bool {
     let closest_point = closest_point_on_box_to_circle(box_pos, circle_pos, box_width, box_height);
-    
-    // Calculate distance from circle center to closest point
     let distance = (circle_pos - closest_point).length();
-    //println!("distance {} radius {}", distance, circle_radius);
-    // Collision occurs if distance is less than circle radius
     distance < circle_radius
 }
 
 fn resolve_collision(world: &mut World, entity_a: u32, entity_b: u32) {
-    //println!("Collision between {} and {}", entity_a, entity_b);
-    //Collision response logic is only for 2D
+
     // Get the positions and colliders again to calculate separation
     let (separation_distance, collision_normal) = {
         let transform_a = world.entity_manager.get_component::<Transform>(entity_a).unwrap();
@@ -143,20 +168,14 @@ fn resolve_collision(world: &mut World, entity_a: u32, entity_b: u32) {
         let pos_a = transform_a.position + collider_a.offset;
         let pos_b = transform_b.position + collider_b.offset;
         
-        //println!("Entity {} pos: {:?}, Entity {} pos: {:?}", entity_a, pos_a, entity_b, pos_b);
-        
         // Calculate collision normal and separation distance
-        let (normal, separation) = calculate_collision_response(pos_a.xy(), pos_b.xy(), &collider_a, &collider_b);
-        
-        //println!("Raw collision normal from A to B: {:?}", normal);
-        
+        let (normal, separation) = calculate_collision_response(pos_a.xy(), pos_b.xy(), &collider_a, &collider_b, &transform_a, &transform_b);
+
         (separation, normal)
     };
     
-    //println!("Separation distance: {}, Normal: {:?}", separation_distance, collision_normal);
-    
     // Skip if separation distance is invalid
-    if separation_distance <= 0.0 {
+    if separation_distance <= 0.001 {
         println!("Invalid separation distance, skipping collision response");
         return;
     }
@@ -169,6 +188,7 @@ fn resolve_collision(world: &mut World, entity_a: u32, entity_b: u32) {
     // Normal points from A toward B, so:
     // - Move A in +normal direction (away from B)
     // - Move B in -normal direction (away from A)
+    // Add offset to positions
     if has_rigidbody_a && has_rigidbody_b {
         // Both have rigidbodies, split the movement
         let half_move = separation_distance / 2.0;
@@ -199,6 +219,47 @@ fn resolve_collision(world: &mut World, entity_a: u32, entity_b: u32) {
             //println!("Moved entity {} by {:?}", entity_b, Vec2::new(-collision_normal.x * separation_distance, -collision_normal.y * separation_distance));
         }
     }
+
+    if separation_distance > 0.5 {
+        // Dampen velocity to prevent jittering
+        if let Some(rigid_body_a) = world.entity_manager.get_component_mut::<RigidBody>(entity_a) {
+            rigid_body_a.velocity *= 0.95;
+        }
+        if let Some(rigid_body_b) = world.entity_manager.get_component_mut::<RigidBody>(entity_b) {
+            rigid_body_b.velocity *= 0.95;
+        }
+    }
+
+    //Reflect velocity if bounce exists
+        if has_rigidbody_a {
+        if let Some(rigid_body_a) = world.entity_manager.get_component_mut::<RigidBody>(entity_a) {
+            let velocity = Vec2::new(rigid_body_a.velocity.x, rigid_body_a.velocity.y);
+            let vel_along_normal = velocity.dot(collision_normal);
+            
+            // If velocity is opposite to normal (moving into B), reflect
+            if vel_along_normal < 0.0 {
+                // Reflect: v' = v - 2(v·n)n
+                let reflected = velocity - 2.0 * vel_along_normal * collision_normal;
+                rigid_body_a.velocity.x = reflected.x * rigid_body_a.bounce;
+                rigid_body_a.velocity.y = reflected.y * rigid_body_a.bounce;
+            }
+        }
+    }
+    
+    if has_rigidbody_b {
+        if let Some(rigid_body_b) = world.entity_manager.get_component_mut::<RigidBody>(entity_b) {
+            let velocity = Vec2::new(rigid_body_b.velocity.x, rigid_body_b.velocity.y);
+            let vel_along_normal = velocity.dot(collision_normal);
+            
+            // If velocity is same as normal (moving into A), reflect
+            if vel_along_normal > 0.0 {
+                // Reflect along the normal
+                let reflected = velocity - 2.0 * vel_along_normal * collision_normal;
+                rigid_body_b.velocity.x = reflected.x * rigid_body_b.bounce;
+                rigid_body_b.velocity.y = reflected.y * rigid_body_b.bounce;
+            }
+        }
+    }
 }
 
 // Combined function to calculate both collision normal and separation distance
@@ -209,12 +270,18 @@ fn calculate_collision_response(
     pos_b: Vec2,
     collider_a: &Collider,
     collider_b: &Collider,
+    transform_a: &Transform,
+    transform_b: &Transform
 ) -> (Vec2, f32) {
     match (&collider_a.shape, &collider_b.shape) {
         (ColliderShape::Circle { radius: r1 }, ColliderShape::Circle { radius: r2 }) => {
+            
+            let scaled_r1 = r1 * transform_a.scale.x.max(transform_a.scale.y);
+            let scaled_r2 = r2 * transform_b.scale.x.max(transform_b.scale.y);
+
             let diff = pos_a - pos_b;  // Vector from B to A
             let current_distance = diff.length();
-            let min_distance = r1 + r2;
+            let min_distance = scaled_r1 + scaled_r2;
             
             let normal = if current_distance > 0.0 {
                 diff / current_distance // Normalize - points from B to A
@@ -226,9 +293,15 @@ fn calculate_collision_response(
             (normal, separation)
         }
         (ColliderShape::Box { width: w1, height: h1 }, ColliderShape::Box { width: w2, height: h2 }) => {
+            
+            let scaled_w1 = w1 * transform_a.scale.x;
+            let scaled_h1 = h1 * transform_a.scale.y;
+            let scaled_w2 = w2 * transform_b.scale.x;
+            let scaled_h2 = h2 * transform_b.scale.y;
+            
             let diff = pos_a - pos_b;  // Vector from B to A
-            let overlap_x = (w1 + w2) / 2.0 - diff.x.abs();
-            let overlap_y = (h1 + h2) / 2.0 - diff.y.abs();
+            let overlap_x = (scaled_w1 + scaled_w2) / 2.0 - diff.x.abs();
+            let overlap_y = (scaled_h1 + scaled_h2) / 2.0 - diff.y.abs();
             
             let normal = if overlap_x < overlap_y {
                 Vec2::new(if diff.x > 0.0 { 1.0 } else { -1.0 }, 0.0)
@@ -240,12 +313,22 @@ fn calculate_collision_response(
             (normal, separation)
         }
         (ColliderShape::Circle { radius }, ColliderShape::Box { width, height }) => {
+            
+            let scaled_radius = radius * transform_a.scale.x.max(transform_a.scale.y);
+            let scaled_width = width * transform_b.scale.x;
+            let scaled_height = height * transform_b.scale.y;
+            
             // Circle A vs Box B - normal should point from box toward circle
-            calculate_circle_box_response(pos_a, *radius, pos_b, *width, *height)
+            calculate_circle_box_response(pos_a, scaled_radius, pos_b, scaled_width, scaled_height)
         }
         (ColliderShape::Box { width, height }, ColliderShape::Circle { radius }) => {
+            
+            let scaled_radius = radius * transform_b.scale.x.max(transform_b.scale.y);
+            let scaled_width = width * transform_a.scale.x;
+            let scaled_height = height * transform_a.scale.y;
+            
             // Box A vs Circle B - normal should point from circle toward box
-            let (normal, separation) = calculate_circle_box_response(pos_b, *radius, pos_a, *width, *height);
+            let (normal, separation) = calculate_circle_box_response(pos_b, scaled_radius, pos_a, scaled_width, scaled_height);
             (-normal, separation) // Flip the normal to point from A to B
         }
     }

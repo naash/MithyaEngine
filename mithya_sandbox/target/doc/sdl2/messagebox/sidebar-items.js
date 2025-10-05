@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["ClickedButton","ShowMessageError"],"fn":["show_message_box","show_simple_message_box"],"struct":["ButtonData","MessageBoxButtonFlag","MessageBoxColorScheme","MessageBoxFlag"]};

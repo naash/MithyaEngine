@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["collider","collision_system","physics_config","physics_system","rigidbody"]};

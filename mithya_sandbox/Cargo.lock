@@ -145,34 +145,11 @@ checksum = "43da5946c66ffcc7745f48db692ffbb10a83bfe0afd96235c5c2a4fb23994929"
 
 [[package]]
 name = "ecolor"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc4feb366740ded31a004a0e4452fbf84e80ef432ecf8314c485210229672fd1"
-dependencies = [
- "emath 0.31.1",
-]
-
-[[package]]
-name = "ecolor"
 version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4a631732d995184114016fab22fc7e3faf73d6841c2d7650395fe251fbcd9285"
 dependencies = [
- "emath 0.32.0",
-]
-
-[[package]]
-name = "egui"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25dd34cec49ab55d85ebf70139cb1ccd29c977ef6b6ba4fe85489d6877ee9ef3"
-dependencies = [
- "ahash",
- "bitflags 2.9.1",
- "emath 0.31.1",
- "epaint 0.31.1",
- "nohash-hasher",
- "profiling",
+ "emath",
 ]
 
 [[package]]
@@ -183,8 +160,8 @@ checksum = "8470210c95a42cc985d9ffebfd5067eea55bdb1c3f7611484907db9639675e28"
 dependencies = [
  "ahash",
  "bitflags 2.9.1",
- "emath 0.32.0",
- "epaint 0.32.0",
+ "emath",
+ "epaint",
  "nohash-hasher",
  "profiling",
  "smallvec",
@@ -193,12 +170,12 @@ dependencies = [
 
 [[package]]
 name = "egui_sdl2_gl"
-version = "0.31.0"
+version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e03e7b8d2ca3ed68fb7bac8e221a43b94694131963e1c1231ca1a6815564bdae"
+checksum = "a8a8653b5bb973f9bf6cecc2a4976cbbe2c0dee5780e315f0414eb2fc9b50244"
 dependencies = [
  "ahash",
- "egui 0.31.1",
+ "egui",
  "gl",
  "memoffset",
  "sdl2",
@@ -212,31 +189,9 @@ checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
 
 [[package]]
 name = "emath"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9e4cadcff7a5353ba72b7fea76bf2122b5ebdbc68e8155aa56dfdea90083fe1b"
-
-[[package]]
-name = "emath"
 version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "45f057b141e7e46340c321400be74b793543b1b213036f0f989c35d35957c32e"
-
-[[package]]
-name = "epaint"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41fcc0f5a7c613afd2dee5e4b30c3e6acafb8ad6f0edb06068811f708a67c562"
-dependencies = [
- "ab_glyph",
- "ahash",
- "ecolor 0.31.1",
- "emath 0.31.1",
- "epaint_default_fonts 0.31.1",
- "nohash-hasher",
- "parking_lot",
- "profiling",
-]
 
 [[package]]
 name = "epaint"
@@ -246,19 +201,13 @@ checksum = "94cca02195f0552c17cabdc02f39aa9ab6fbd815dac60ab1cd3d5b0aa6f9551c"
 dependencies = [
  "ab_glyph",
  "ahash",
- "ecolor 0.32.0",
- "emath 0.32.0",
- "epaint_default_fonts 0.32.0",
+ "ecolor",
+ "emath",
+ "epaint_default_fonts",
  "nohash-hasher",
  "parking_lot",
  "profiling",
 ]
-
-[[package]]
-name = "epaint_default_fonts"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc7e7a64c02cf7a5b51e745a9e45f60660a286f151c238b9d397b3e923f5082f"
 
 [[package]]
 name = "epaint_default_fonts"
@@ -463,7 +412,7 @@ dependencies = [
 name = "mithya_engine"
 version = "0.1.0"
 dependencies = [
- "egui 0.32.0",
+ "egui",
  "egui_sdl2_gl",
  "gl",
  "glam",
