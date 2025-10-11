@@ -31,7 +31,7 @@ impl GameLogic for Sandbox {
             .with(Render {
                 mesh: Mesh::new_quad_textured(),
                 material_id: world.asset_manager
-                    .get_material_by_name("unlit_texture_default")
+                    .get_material_by_name("unlit_texture_orange")
             })
             .with(Collider {
                 shape: ColliderShape::Box { width: 1.0, height: 1.0 },
@@ -49,7 +49,7 @@ impl GameLogic for Sandbox {
             .with(Render {
                 mesh: Mesh::new_quad_textured(),
                 material_id: world.asset_manager
-                    .get_material_by_name("unlit_texture_default")
+                    .get_material_by_name("unlit_texture_orange")
             })
             .with(Collider {
                 shape: ColliderShape::Box { width: 1.0, height: 1.0 },
@@ -67,7 +67,7 @@ impl GameLogic for Sandbox {
             .with(Render {
                 mesh: Mesh::new_quad_textured(),
                 material_id: world.asset_manager
-                    .get_material_by_name("unlit_texture_default")
+                    .get_material_by_name("unlit_texture_orange")
             })
             .with(Collider {
                 shape: ColliderShape::Box { width: 1.0, height: 1.0 },
@@ -106,7 +106,7 @@ impl GameLogic for Sandbox {
             .with(Render {
                 mesh: Mesh::new_quad_textured(),
                 material_id: world.asset_manager
-                    .get_material_by_name("unlit_texture_default")
+                    .get_material_by_name("unlit_texture_green")
             })
             .with(Collider {
                 shape: ColliderShape::Box { width: 1.0, height: 1.0 },
