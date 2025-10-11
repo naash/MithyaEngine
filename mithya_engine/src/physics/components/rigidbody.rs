@@ -17,7 +17,7 @@ pub struct RigidBody {
     pub gravity_scale: f32,
     pub drag: f32,
     pub bounce: f32, //0.0 to 1.0 | inverts % of velocity on collision
-    pub is_kinematic: bool
+    pub is_kinematic: bool //if true, such bodies are not affected by external force
     //More physical properties can be added here like drag etc
 }
 

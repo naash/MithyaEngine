@@ -231,32 +231,40 @@ fn resolve_collision(world: &mut World, entity_a: u32, entity_b: u32) {
     }
 
     //Reflect velocity if bounce exists
-        if has_rigidbody_a {
+    if has_rigidbody_a {
         if let Some(rigid_body_a) = world.entity_manager.get_component_mut::<RigidBody>(entity_a) {
-            let velocity = Vec2::new(rigid_body_a.velocity.x, rigid_body_a.velocity.y);
-            let vel_along_normal = velocity.dot(collision_normal);
+
+            if !rigid_body_a.is_kinematic {
+                
+                let velocity = Vec2::new(rigid_body_a.velocity.x, rigid_body_a.velocity.y);
+                let vel_along_normal = velocity.dot(collision_normal);
             
-            // If velocity is opposite to normal (moving into B), reflect
-            if vel_along_normal < 0.0 {
+                // If velocity is opposite to normal (moving into B), reflect
+                if vel_along_normal < 0.0 {
                 // Reflect: v' = v - 2(v·n)n
                 let reflected = velocity - 2.0 * vel_along_normal * collision_normal;
                 rigid_body_a.velocity.x = reflected.x * rigid_body_a.bounce;
                 rigid_body_a.velocity.y = reflected.y * rigid_body_a.bounce;
+                }
             }
         }
     }
     
     if has_rigidbody_b {
         if let Some(rigid_body_b) = world.entity_manager.get_component_mut::<RigidBody>(entity_b) {
-            let velocity = Vec2::new(rigid_body_b.velocity.x, rigid_body_b.velocity.y);
-            let vel_along_normal = velocity.dot(collision_normal);
+
+            if !rigid_body_b.is_kinematic {
+                
+                let velocity = Vec2::new(rigid_body_b.velocity.x, rigid_body_b.velocity.y);
+                let vel_along_normal = velocity.dot(collision_normal);
             
-            // If velocity is same as normal (moving into A), reflect
-            if vel_along_normal > 0.0 {
-                // Reflect along the normal
+                // If velocity is opposite to normal (moving into B), reflect
+                if vel_along_normal < 0.0 {
+                // Reflect: v' = v - 2(v·n)n
                 let reflected = velocity - 2.0 * vel_along_normal * collision_normal;
                 rigid_body_b.velocity.x = reflected.x * rigid_body_b.bounce;
                 rigid_body_b.velocity.y = reflected.y * rigid_body_b.bounce;
+                }
             }
         }
     }

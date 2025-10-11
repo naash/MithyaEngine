@@ -112,6 +112,12 @@ impl GameLogic for Sandbox {
                 shape: ColliderShape::Box { width: 1.0, height: 1.0 },
                 ..Default::default()
             })
+                        .with(RigidBody {
+                velocity: Vec3::ZERO,
+                bounce: 0.0,
+                is_kinematic: true,
+                ..Default::default()
+            })
             .with(Player)
             .build();
     }
