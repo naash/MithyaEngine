@@ -3,6 +3,13 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-pub mod core;
+pub mod game_loop;
 pub mod system;
-pub use core::{Engine, EngineConfig, World, GameLogic, EntityBuilder};
+pub mod entity_builder;
+pub mod frame_timer;
+pub mod world;
+
+pub use entity_builder::EntityBuilder;
+pub use frame_timer::FrameTimer;
+pub use world::{World, InputState};
+pub use game_loop::{Engine, EngineConfig, GameLogic};

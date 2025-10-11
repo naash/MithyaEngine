@@ -6,7 +6,13 @@
 use std::any::Any;
 
 use crate::{
-    asset::AssetManager, core::{EngineActionQueue, EngineEventListener, EngineEventQueue}, engine::core::World, EntityManager
+    asset::AssetManager,
+    core::{
+        EngineActionQueue, 
+        EngineEventListener, 
+        EngineEventQueue}, 
+    engine::World, 
+    EntityManager
 };
 
 pub struct SystemUpdateContext<'a> {

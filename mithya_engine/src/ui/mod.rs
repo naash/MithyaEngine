@@ -7,7 +7,7 @@ mod systems;
 pub mod context;
 pub mod window;
 pub mod element;
-pub mod events;
+pub mod ui_events;
 pub mod types;
 
 // Re-export the main types users will interact with

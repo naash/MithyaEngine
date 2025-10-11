@@ -4,7 +4,10 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World}, physics::{Collider, ColliderShape, RigidBody}, player::Player, rendering::{Mesh, Render}, Transform
+    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
+    physics::{Collider, ColliderShape, RigidBody}, 
+    player::Player, rendering::{Mesh, Render}, 
+    Transform
 };
 
 use glam::{Quat, Vec3};
