@@ -10,7 +10,9 @@ use crate::{
     core::{EngineEvent, Transform},
     engine::{system::{System, SystemRenderContext, SystemUpdateContext}, World}, 
     physics::{
-        collision_config::{DAMPING_THRESHOLD, MIN_SEPARATION, VELOCITY_DAMPING}, collision_utils::{self, CollisionInfo}, components::{Collider, RigidBody}
+        collision_config::{DAMPING_THRESHOLD, MIN_SEPARATION, VELOCITY_DAMPING},
+        collision_utils::{self, CollisionInfo},
+        components::{Collider, RigidBody},
     },
 };
 
@@ -21,22 +23,16 @@ pub struct CollisionEvent {
 }
 
 impl EngineEvent for CollisionEvent {
-    fn as_any(&self) -> &dyn Any {
-        self
-    }
+    fn as_any(&self) -> &dyn Any { self }
 }
 
 pub struct CollisionSystem;
 
 impl System for CollisionSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
-        Ok(())
-    }
+    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> { Ok(()) }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-        let collider_entities = update_context.world.entity_manager
-            .query_two_components::<Transform, Collider>();
-
+        let collider_entities = update_context.world.entity_manager.query_two_components::<Transform, Collider>();
         let mut colliding_entities = HashSet::new();
 
         // Check all pairs of entities
@@ -46,13 +42,9 @@ impl System for CollisionSystem {
                 let entity_b = collider_entities[j];
 
                 // Check and resolve collision
-                if let Some(collision) = self.check_collision(
-                    update_context.world,
-                    entity_a,
-                    entity_b
-                ) {
+                if let Some(collision) = self.check_collision(update_context.world, entity_a, entity_b) {
                     self.resolve_collision(update_context.world, entity_a, entity_b, collision);
-                    
+
                     colliding_entities.insert(entity_a);
                     colliding_entities.insert(entity_b);
 
@@ -63,9 +55,7 @@ impl System for CollisionSystem {
 
         // Update collision state
         for &entity in &collider_entities {
-            if let Some(collider) = update_context.world.entity_manager
-                .get_component_mut::<Collider>(entity) 
-            {
+            if let Some(collider) = update_context.world.entity_manager.get_component_mut::<Collider>(entity) {
                 collider.is_colliding = colliding_entities.contains(&entity);
             }
         }
@@ -78,12 +68,7 @@ impl System for CollisionSystem {
 
 impl CollisionSystem {
     /// Check collision and return collision info if colliding
-    fn check_collision(
-        &self,
-        world: &World,
-        entity_a: u32,
-        entity_b: u32,
-    ) -> Option<CollisionInfo> {
+    fn check_collision(&self, world: &World, entity_a: u32, entity_b: u32) -> Option<CollisionInfo> {
         let transform_a = world.entity_manager.get_component::<Transform>(entity_a)?;
         let transform_b = world.entity_manager.get_component::<Transform>(entity_b)?;
         let collider_a = world.entity_manager.get_component::<Collider>(entity_a)?;
@@ -94,21 +79,15 @@ impl CollisionSystem {
         let pos_b = transform_b.position + collider_b.offset;
 
         // Scale the colliders
-        let scaled_a = collider_a.shape.scaled(transform_a.scale);
-        let scaled_b = collider_b.shape.scaled(transform_b.scale);
+        let scaled_a = collider_a.get_scaled_shape(transform_a.scale);
+        let scaled_b = collider_b.get_scaled_shape(transform_b.scale);
 
         // Use collision_utils for detection
         collision_utils::detect_collision(pos_a.xy(), &scaled_a, pos_b.xy(), &scaled_b)
     }
 
     /// Resolve collision between two entities
-    fn resolve_collision(
-        &self,
-        world: &mut World,
-        entity_a: u32,
-        entity_b: u32,
-        collision: CollisionInfo,
-    ) {
+    fn resolve_collision(&self, world: &mut World, entity_a: u32, entity_b: u32, collision: CollisionInfo) {
         // Skip invalid collisions
         if collision.separation < MIN_SEPARATION {
             return;
@@ -132,15 +111,7 @@ impl CollisionSystem {
     }
 
     /// Separate overlapping entities
-    fn separate_entities(
-        &self,
-        world: &mut World,
-        entity_a: u32,
-        entity_b: u32,
-        collision: &CollisionInfo,
-        has_rb_a: bool,
-        has_rb_b: bool,
-    ) {
+    fn separate_entities(&self, world: &mut World, entity_a: u32, entity_b: u32, collision: &CollisionInfo, has_rb_a: bool, has_rb_b: bool) {
         match (has_rb_a, has_rb_b) {
             (true, true) => {
                 // Both dynamic: split movement
@@ -180,13 +151,7 @@ impl CollisionSystem {
     }
 
     /// Reflect velocity for an entity
-    fn reflect_velocity(
-        &self,
-        world: &mut World,
-        entity: u32,
-        normal: Vec2,
-        has_rigidbody: bool,
-    ) {
+    fn reflect_velocity(&self, world: &mut World, entity: u32, normal: Vec2, has_rigidbody: bool) {
         if !has_rigidbody {
             return;
         }

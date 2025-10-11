@@ -1,0 +1,1340 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      The system is: Windows - 10.0.26200 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: -D__FLTUSED__;-nologo;-MD;-Brepro
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.14.18+a338add32 for .NET Framework
+      Build started 2025-10-11 2:23:23 PM.
+      
+      Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
+      PrepareForBuild:
+        Creating directory "Debug\\".
+        Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+        Creating directory "Debug\\CompilerIdC.tlog\\".
+      InitializeBuildStatus:
+        Creating "Debug\\CompilerIdC.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+        Touching "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Deleting file "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+        Touching "Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate".
+      Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdC\\CompilerIdC.vcxproj" (default targets).
+      
+      Build succeeded.
+          0 Warning(s)
+          0 Error(s)
+      
+      Time Elapsed 00:00:01.20
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/3.30.2/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: -nologo;-MD;-Brepro
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.14.18+a338add32 for .NET Framework
+      Build started 2025-10-11 2:23:25 PM.
+      
+      Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" on node 1 (default targets).
+      PrepareForBuild:
+        Creating directory "Debug\\".
+        Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+        Creating directory "Debug\\CompilerIdCXX.tlog\\".
+      InitializeBuildStatus:
+        Creating "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+        Touching "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Deleting file "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+        Touching "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate".
+      Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" (default targets).
+      
+      Build succeeded.
+          0 Warning(s)
+          0 Error(s)
+      
+      Time Elapsed 00:00:01.01
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/3.30.2/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-5nr27i"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-5nr27i"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-5nr27i'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_7aba5.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:26 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5nr27i\\cmTC_7aba5.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_7aba5.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5nr27i\\Debug\\".
+          Creating directory "cmTC_7aba5.dir\\Debug\\cmTC_7aba5.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_7aba5.dir\\Debug\\cmTC_7aba5.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_7aba5.dir\\Debug\\cmTC_7aba5.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_7aba5.dir\\Debug\\\\" /Fd"cmTC_7aba5.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5nr27i\\Debug\\cmTC_7aba5.exe" /INCREMENTAL /ILK:"cmTC_7aba5.dir\\Debug\\cmTC_7aba5.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-5nr27i/Debug/cmTC_7aba5.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-5nr27i/Debug/cmTC_7aba5.lib" /MACHINE:X64  /machine:x64 cmTC_7aba5.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_7aba5.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5nr27i\\Debug\\cmTC_7aba5.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_7aba5.dir\\Debug\\cmTC_7aba5.tlog\\unsuccessfulbuild".
+          Touching "cmTC_7aba5.dir\\Debug\\cmTC_7aba5.tlog\\cmTC_7aba5.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5nr27i\\cmTC_7aba5.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.10
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.44.35214.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-hf9ifq"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-hf9ifq"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -nologo -MD -Brepro"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-hf9ifq'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_b8f73.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:28 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hf9ifq\\cmTC_b8f73.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_b8f73.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hf9ifq\\Debug\\".
+          Creating directory "cmTC_b8f73.dir\\Debug\\cmTC_b8f73.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_b8f73.dir\\Debug\\cmTC_b8f73.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_b8f73.dir\\Debug\\cmTC_b8f73.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b8f73.dir\\Debug\\\\" /Fd"cmTC_b8f73.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue  -Brepro "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCXXCompilerABI.cpp"
+          CMakeCXXCompilerABI.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hf9ifq\\Debug\\cmTC_b8f73.exe" /INCREMENTAL /ILK:"cmTC_b8f73.dir\\Debug\\cmTC_b8f73.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-hf9ifq/Debug/cmTC_b8f73.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-hf9ifq/Debug/cmTC_b8f73.lib" /MACHINE:X64  /machine:x64 cmTC_b8f73.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_b8f73.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hf9ifq\\Debug\\cmTC_b8f73.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_b8f73.dir\\Debug\\cmTC_b8f73.tlog\\unsuccessfulbuild".
+          Touching "cmTC_b8f73.dir\\Debug\\cmTC_b8f73.tlog\\cmTC_b8f73.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hf9ifq\\cmTC_b8f73.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.86
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.44.35214.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckSymbolExists.cmake:66 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:81 (check_symbol_exists)"
+    checks:
+      - "Looking for __GLIBC__"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vk41jx"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vk41jx"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "LIBC_IS_GLIBC"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vk41jx'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_d27c3.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:29 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\cmTC_d27c3.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_d27c3.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\Debug\\".
+          Creating directory "cmTC_d27c3.dir\\Debug\\cmTC_d27c3.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_d27c3.dir\\Debug\\cmTC_d27c3.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_d27c3.dir\\Debug\\cmTC_d27c3.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d27c3.dir\\Debug\\\\" /Fd"cmTC_d27c3.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\CheckSymbolExists.c(8,19): error C2065: '__GLIBC__': undeclared identifier [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\cmTC_d27c3.vcxproj]
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\cmTC_d27c3.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\cmTC_d27c3.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\CheckSymbolExists.c(8,19): error C2065: '__GLIBC__': undeclared identifier [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk41jx\\cmTC_d27c3.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.51
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:953 (check_include_file)"
+    checks:
+      - "Looking for immintrin.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9qycc8"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9qycc8"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_IMMINTRIN_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9qycc8'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_60c28.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:30 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9qycc8\\cmTC_60c28.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_60c28.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9qycc8\\Debug\\".
+          Creating directory "cmTC_60c28.dir\\Debug\\cmTC_60c28.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_60c28.dir\\Debug\\cmTC_60c28.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_60c28.dir\\Debug\\cmTC_60c28.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_60c28.dir\\Debug\\\\" /Fd"cmTC_60c28.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9qycc8\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9qycc8\\Debug\\cmTC_60c28.exe" /INCREMENTAL /ILK:"cmTC_60c28.dir\\Debug\\cmTC_60c28.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9qycc8/Debug/cmTC_60c28.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9qycc8/Debug/cmTC_60c28.lib" /MACHINE:X64  /machine:x64 cmTC_60c28.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_60c28.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9qycc8\\Debug\\cmTC_60c28.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_60c28.dir\\Debug\\cmTC_60c28.tlog\\unsuccessfulbuild".
+          Touching "cmTC_60c28.dir\\Debug\\cmTC_60c28.tlog\\cmTC_60c28.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9qycc8\\cmTC_60c28.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.87
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1103 (check_include_file)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zm79h2"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zm79h2"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zm79h2'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_dd644.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:31 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zm79h2\\cmTC_dd644.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_dd644.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zm79h2\\Debug\\".
+          Creating directory "cmTC_dd644.dir\\Debug\\cmTC_dd644.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_dd644.dir\\Debug\\cmTC_dd644.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_dd644.dir\\Debug\\cmTC_dd644.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_dd644.dir\\Debug\\\\" /Fd"cmTC_dd644.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zm79h2\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zm79h2\\Debug\\cmTC_dd644.exe" /INCREMENTAL /ILK:"cmTC_dd644.dir\\Debug\\cmTC_dd644.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zm79h2/Debug/cmTC_dd644.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zm79h2/Debug/cmTC_dd644.lib" /MACHINE:X64  /machine:x64 cmTC_dd644.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_dd644.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zm79h2\\Debug\\cmTC_dd644.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_dd644.dir\\Debug\\cmTC_dd644.tlog\\unsuccessfulbuild".
+          Touching "cmTC_dd644.dir\\Debug\\cmTC_dd644.tlog\\cmTC_dd644.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zm79h2\\cmTC_dd644.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.91
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1676 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_WIN32_CC"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vav7yy"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vav7yy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_WIN32_CC"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vav7yy'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e2808.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:32 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vav7yy\\cmTC_e2808.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_e2808.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vav7yy\\Debug\\".
+          Creating directory "cmTC_e2808.dir\\Debug\\cmTC_e2808.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_e2808.dir\\Debug\\cmTC_e2808.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_e2808.dir\\Debug\\cmTC_e2808.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_WIN32_CC /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_e2808.dir\\Debug\\\\" /Fd"cmTC_e2808.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vav7yy\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vav7yy\\Debug\\cmTC_e2808.exe" /INCREMENTAL /ILK:"cmTC_e2808.dir\\Debug\\cmTC_e2808.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vav7yy/Debug/cmTC_e2808.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vav7yy/Debug/cmTC_e2808.lib" /MACHINE:X64  /machine:x64 cmTC_e2808.dir\\Debug\\src.obj
+          cmTC_e2808.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vav7yy\\Debug\\cmTC_e2808.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_e2808.dir\\Debug\\cmTC_e2808.tlog\\unsuccessfulbuild".
+          Touching "cmTC_e2808.dir\\Debug\\cmTC_e2808.tlog\\cmTC_e2808.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vav7yy\\cmTC_e2808.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.19
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1718 (check_include_file)"
+    checks:
+      - "Looking for d3d9.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-0s00r4"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-0s00r4"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_D3D_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-0s00r4'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_3147f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:34 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0s00r4\\cmTC_3147f.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_3147f.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0s00r4\\Debug\\".
+          Creating directory "cmTC_3147f.dir\\Debug\\cmTC_3147f.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_3147f.dir\\Debug\\cmTC_3147f.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_3147f.dir\\Debug\\cmTC_3147f.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_3147f.dir\\Debug\\\\" /Fd"cmTC_3147f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0s00r4\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0s00r4\\Debug\\cmTC_3147f.exe" /INCREMENTAL /ILK:"cmTC_3147f.dir\\Debug\\cmTC_3147f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-0s00r4/Debug/cmTC_3147f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-0s00r4/Debug/cmTC_3147f.lib" /MACHINE:X64  /machine:x64 cmTC_3147f.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_3147f.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0s00r4\\Debug\\cmTC_3147f.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_3147f.dir\\Debug\\cmTC_3147f.tlog\\unsuccessfulbuild".
+          Touching "cmTC_3147f.dir\\Debug\\cmTC_3147f.tlog\\cmTC_3147f.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0s00r4\\cmTC_3147f.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.00
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1719 (check_include_file)"
+    checks:
+      - "Looking for d3d11_1.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9rd4fj"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9rd4fj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_D3D11_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9rd4fj'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_72a5e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:35 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9rd4fj\\cmTC_72a5e.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_72a5e.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9rd4fj\\Debug\\".
+          Creating directory "cmTC_72a5e.dir\\Debug\\cmTC_72a5e.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_72a5e.dir\\Debug\\cmTC_72a5e.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_72a5e.dir\\Debug\\cmTC_72a5e.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_72a5e.dir\\Debug\\\\" /Fd"cmTC_72a5e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9rd4fj\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9rd4fj\\Debug\\cmTC_72a5e.exe" /INCREMENTAL /ILK:"cmTC_72a5e.dir\\Debug\\cmTC_72a5e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9rd4fj/Debug/cmTC_72a5e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9rd4fj/Debug/cmTC_72a5e.lib" /MACHINE:X64  /machine:x64 cmTC_72a5e.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_72a5e.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9rd4fj\\Debug\\cmTC_72a5e.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_72a5e.dir\\Debug\\cmTC_72a5e.tlog\\unsuccessfulbuild".
+          Touching "cmTC_72a5e.dir\\Debug\\cmTC_72a5e.tlog\\cmTC_72a5e.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9rd4fj\\cmTC_72a5e.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.04
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1720 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_D3D12_H"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-3w1ub9"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-3w1ub9"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_D3D12_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-3w1ub9'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_5c714.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:36 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-3w1ub9\\cmTC_5c714.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_5c714.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-3w1ub9\\Debug\\".
+          Creating directory "cmTC_5c714.dir\\Debug\\cmTC_5c714.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_5c714.dir\\Debug\\cmTC_5c714.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_5c714.dir\\Debug\\cmTC_5c714.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_D3D12_H /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5c714.dir\\Debug\\\\" /Fd"cmTC_5c714.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-3w1ub9\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-3w1ub9\\Debug\\cmTC_5c714.exe" /INCREMENTAL /ILK:"cmTC_5c714.dir\\Debug\\cmTC_5c714.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-3w1ub9/Debug/cmTC_5c714.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-3w1ub9/Debug/cmTC_5c714.lib" /MACHINE:X64  /machine:x64 cmTC_5c714.dir\\Debug\\src.obj
+          cmTC_5c714.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-3w1ub9\\Debug\\cmTC_5c714.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_5c714.dir\\Debug\\cmTC_5c714.tlog\\unsuccessfulbuild".
+          Touching "cmTC_5c714.dir\\Debug\\cmTC_5c714.tlog\\cmTC_5c714.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-3w1ub9\\cmTC_5c714.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.99
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1728 (check_include_file)"
+    checks:
+      - "Looking for ddraw.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-ns2cnw"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-ns2cnw"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DDRAW_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-ns2cnw'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_b31de.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:37 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ns2cnw\\cmTC_b31de.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_b31de.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ns2cnw\\Debug\\".
+          Creating directory "cmTC_b31de.dir\\Debug\\cmTC_b31de.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_b31de.dir\\Debug\\cmTC_b31de.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_b31de.dir\\Debug\\cmTC_b31de.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b31de.dir\\Debug\\\\" /Fd"cmTC_b31de.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ns2cnw\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ns2cnw\\Debug\\cmTC_b31de.exe" /INCREMENTAL /ILK:"cmTC_b31de.dir\\Debug\\cmTC_b31de.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-ns2cnw/Debug/cmTC_b31de.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-ns2cnw/Debug/cmTC_b31de.lib" /MACHINE:X64  /machine:x64 cmTC_b31de.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_b31de.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ns2cnw\\Debug\\cmTC_b31de.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_b31de.dir\\Debug\\cmTC_b31de.tlog\\unsuccessfulbuild".
+          Touching "cmTC_b31de.dir\\Debug\\cmTC_b31de.tlog\\cmTC_b31de.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ns2cnw\\cmTC_b31de.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.92
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1729 (check_include_file)"
+    checks:
+      - "Looking for dsound.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-jee34y"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-jee34y"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DSOUND_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-jee34y'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_33e8a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:38 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jee34y\\cmTC_33e8a.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_33e8a.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jee34y\\Debug\\".
+          Creating directory "cmTC_33e8a.dir\\Debug\\cmTC_33e8a.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_33e8a.dir\\Debug\\cmTC_33e8a.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_33e8a.dir\\Debug\\cmTC_33e8a.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_33e8a.dir\\Debug\\\\" /Fd"cmTC_33e8a.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jee34y\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jee34y\\Debug\\cmTC_33e8a.exe" /INCREMENTAL /ILK:"cmTC_33e8a.dir\\Debug\\cmTC_33e8a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-jee34y/Debug/cmTC_33e8a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-jee34y/Debug/cmTC_33e8a.lib" /MACHINE:X64  /machine:x64 cmTC_33e8a.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_33e8a.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jee34y\\Debug\\cmTC_33e8a.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_33e8a.dir\\Debug\\cmTC_33e8a.tlog\\unsuccessfulbuild".
+          Touching "cmTC_33e8a.dir\\Debug\\cmTC_33e8a.tlog\\cmTC_33e8a.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jee34y\\cmTC_33e8a.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.96
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1730 (check_include_file)"
+    checks:
+      - "Looking for dinput.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-yzz7pg"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-yzz7pg"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DINPUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-yzz7pg'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_fe54f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:40 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yzz7pg\\cmTC_fe54f.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_fe54f.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yzz7pg\\Debug\\".
+          Creating directory "cmTC_fe54f.dir\\Debug\\cmTC_fe54f.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_fe54f.dir\\Debug\\cmTC_fe54f.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_fe54f.dir\\Debug\\cmTC_fe54f.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fe54f.dir\\Debug\\\\" /Fd"cmTC_fe54f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yzz7pg\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yzz7pg\\Debug\\cmTC_fe54f.exe" /INCREMENTAL /ILK:"cmTC_fe54f.dir\\Debug\\cmTC_fe54f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-yzz7pg/Debug/cmTC_fe54f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-yzz7pg/Debug/cmTC_fe54f.lib" /MACHINE:X64  /machine:x64 cmTC_fe54f.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_fe54f.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yzz7pg\\Debug\\cmTC_fe54f.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_fe54f.dir\\Debug\\cmTC_fe54f.tlog\\unsuccessfulbuild".
+          Touching "cmTC_fe54f.dir\\Debug\\cmTC_fe54f.tlog\\cmTC_fe54f.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yzz7pg\\cmTC_fe54f.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.99
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1734 (check_include_file)"
+    checks:
+      - "Looking for dxgi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-04vrg8"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-04vrg8"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DXGI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-04vrg8'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_341bb.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:41 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-04vrg8\\cmTC_341bb.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_341bb.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-04vrg8\\Debug\\".
+          Creating directory "cmTC_341bb.dir\\Debug\\cmTC_341bb.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_341bb.dir\\Debug\\cmTC_341bb.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_341bb.dir\\Debug\\cmTC_341bb.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_341bb.dir\\Debug\\\\" /Fd"cmTC_341bb.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-04vrg8\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-04vrg8\\Debug\\cmTC_341bb.exe" /INCREMENTAL /ILK:"cmTC_341bb.dir\\Debug\\cmTC_341bb.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-04vrg8/Debug/cmTC_341bb.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-04vrg8/Debug/cmTC_341bb.lib" /MACHINE:X64  /machine:x64 cmTC_341bb.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_341bb.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-04vrg8\\Debug\\cmTC_341bb.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_341bb.dir\\Debug\\cmTC_341bb.tlog\\unsuccessfulbuild".
+          Touching "cmTC_341bb.dir\\Debug\\cmTC_341bb.tlog\\cmTC_341bb.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-04vrg8\\cmTC_341bb.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.95
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1748 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_XINPUT_H"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-u9qzyk"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-u9qzyk"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_XINPUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-u9qzyk'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_23095.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:42 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-u9qzyk\\cmTC_23095.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_23095.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-u9qzyk\\Debug\\".
+          Creating directory "cmTC_23095.dir\\Debug\\cmTC_23095.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_23095.dir\\Debug\\cmTC_23095.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_23095.dir\\Debug\\cmTC_23095.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_XINPUT_H /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_23095.dir\\Debug\\\\" /Fd"cmTC_23095.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-u9qzyk\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-u9qzyk\\Debug\\cmTC_23095.exe" /INCREMENTAL /ILK:"cmTC_23095.dir\\Debug\\cmTC_23095.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-u9qzyk/Debug/cmTC_23095.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-u9qzyk/Debug/cmTC_23095.lib" /MACHINE:X64  /machine:x64 cmTC_23095.dir\\Debug\\src.obj
+          cmTC_23095.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-u9qzyk\\Debug\\cmTC_23095.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_23095.dir\\Debug\\cmTC_23095.tlog\\unsuccessfulbuild".
+          Touching "cmTC_23095.dir\\Debug\\cmTC_23095.tlog\\cmTC_23095.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-u9qzyk\\cmTC_23095.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.97
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1752 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_XINPUT_GAMEPAD_EX"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-4vpota"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-4vpota"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_XINPUT_GAMEPAD_EX"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-4vpota'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_4f2fd.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:43 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\cmTC_4f2fd.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_4f2fd.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\Debug\\".
+          Creating directory "cmTC_4f2fd.dir\\Debug\\cmTC_4f2fd.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_4f2fd.dir\\Debug\\cmTC_4f2fd.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_4f2fd.dir\\Debug\\cmTC_4f2fd.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_XINPUT_GAMEPAD_EX /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_4f2fd.dir\\Debug\\\\" /Fd"cmTC_4f2fd.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\src.c"
+          src.c
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\src.c(4,25): error C2061: syntax error: identifier 'x1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\cmTC_4f2fd.vcxproj]
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\src.c(4,25): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\cmTC_4f2fd.vcxproj]
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\cmTC_4f2fd.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\cmTC_4f2fd.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\src.c(4,25): error C2061: syntax error: identifier 'x1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\cmTC_4f2fd.vcxproj]
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\src.c(4,25): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4vpota\\cmTC_4f2fd.vcxproj]
+        
+            0 Warning(s)
+            2 Error(s)
+        
+        Time Elapsed 00:00:00.69
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1757 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_XINPUT_STATE_EX"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-h2ojc6"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-h2ojc6"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_XINPUT_STATE_EX"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-h2ojc6'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_bea48.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:44 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\cmTC_bea48.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_bea48.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\Debug\\".
+          Creating directory "cmTC_bea48.dir\\Debug\\cmTC_bea48.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_bea48.dir\\Debug\\cmTC_bea48.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_bea48.dir\\Debug\\cmTC_bea48.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_XINPUT_STATE_EX /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_bea48.dir\\Debug\\\\" /Fd"cmTC_bea48.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\src.c"
+          src.c
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\src.c(4,23): error C2061: syntax error: identifier 's1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\cmTC_bea48.vcxproj]
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\src.c(4,23): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\cmTC_bea48.vcxproj]
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\cmTC_bea48.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\cmTC_bea48.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\src.c(4,23): error C2061: syntax error: identifier 's1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\cmTC_bea48.vcxproj]
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\src.c(4,23): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-h2ojc6\\cmTC_bea48.vcxproj]
+        
+            0 Warning(s)
+            2 Error(s)
+        
+        Time Elapsed 00:00:00.64
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1762 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_WINDOWS_GAMING_INPUT_H"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-7cgfoj"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-7cgfoj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_WINDOWS_GAMING_INPUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-7cgfoj'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_baad2.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:45 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7cgfoj\\cmTC_baad2.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_baad2.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7cgfoj\\Debug\\".
+          Creating directory "cmTC_baad2.dir\\Debug\\cmTC_baad2.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_baad2.dir\\Debug\\cmTC_baad2.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_baad2.dir\\Debug\\cmTC_baad2.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_WINDOWS_GAMING_INPUT_H /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_baad2.dir\\Debug\\\\" /Fd"cmTC_baad2.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7cgfoj\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7cgfoj\\Debug\\cmTC_baad2.exe" /INCREMENTAL /ILK:"cmTC_baad2.dir\\Debug\\cmTC_baad2.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-7cgfoj/Debug/cmTC_baad2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-7cgfoj/Debug/cmTC_baad2.lib" /MACHINE:X64  /machine:x64 cmTC_baad2.dir\\Debug\\src.obj
+          cmTC_baad2.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7cgfoj\\Debug\\cmTC_baad2.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_baad2.dir\\Debug\\cmTC_baad2.tlog\\unsuccessfulbuild".
+          Touching "cmTC_baad2.dir\\Debug\\cmTC_baad2.tlog\\cmTC_baad2.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7cgfoj\\cmTC_baad2.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.72
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1770 (check_include_file)"
+    checks:
+      - "Looking for tpcshrd.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vtvq8a"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vtvq8a"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_TPCSHRD_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vtvq8a'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_bd576.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:47 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vtvq8a\\cmTC_bd576.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_bd576.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vtvq8a\\Debug\\".
+          Creating directory "cmTC_bd576.dir\\Debug\\cmTC_bd576.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_bd576.dir\\Debug\\cmTC_bd576.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_bd576.dir\\Debug\\cmTC_bd576.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_bd576.dir\\Debug\\\\" /Fd"cmTC_bd576.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vtvq8a\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vtvq8a\\Debug\\cmTC_bd576.exe" /INCREMENTAL /ILK:"cmTC_bd576.dir\\Debug\\cmTC_bd576.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vtvq8a/Debug/cmTC_bd576.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vtvq8a/Debug/cmTC_bd576.lib" /MACHINE:X64  /machine:x64 cmTC_bd576.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_bd576.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vtvq8a\\Debug\\cmTC_bd576.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_bd576.dir\\Debug\\cmTC_bd576.tlog\\unsuccessfulbuild".
+          Touching "cmTC_bd576.dir\\Debug\\cmTC_bd576.tlog\\cmTC_bd576.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vtvq8a\\cmTC_bd576.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.94
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1771 (check_include_file)"
+    checks:
+      - "Looking for roapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-wz1xxm"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-wz1xxm"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_ROAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-wz1xxm'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_3cb0b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:48 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wz1xxm\\cmTC_3cb0b.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_3cb0b.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wz1xxm\\Debug\\".
+          Creating directory "cmTC_3cb0b.dir\\Debug\\cmTC_3cb0b.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_3cb0b.dir\\Debug\\cmTC_3cb0b.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_3cb0b.dir\\Debug\\cmTC_3cb0b.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_3cb0b.dir\\Debug\\\\" /Fd"cmTC_3cb0b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wz1xxm\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wz1xxm\\Debug\\cmTC_3cb0b.exe" /INCREMENTAL /ILK:"cmTC_3cb0b.dir\\Debug\\cmTC_3cb0b.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-wz1xxm/Debug/cmTC_3cb0b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-wz1xxm/Debug/cmTC_3cb0b.lib" /MACHINE:X64  /machine:x64 cmTC_3cb0b.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_3cb0b.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wz1xxm\\Debug\\cmTC_3cb0b.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_3cb0b.dir\\Debug\\cmTC_3cb0b.tlog\\unsuccessfulbuild".
+          Touching "cmTC_3cb0b.dir\\Debug\\cmTC_3cb0b.tlog\\cmTC_3cb0b.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wz1xxm\\cmTC_3cb0b.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.93
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1772 (check_include_file)"
+    checks:
+      - "Looking for mmdeviceapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9zcq6b"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9zcq6b"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_MMDEVICEAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9zcq6b'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ab21b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:49 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9zcq6b\\cmTC_ab21b.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_ab21b.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9zcq6b\\Debug\\".
+          Creating directory "cmTC_ab21b.dir\\Debug\\cmTC_ab21b.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_ab21b.dir\\Debug\\cmTC_ab21b.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_ab21b.dir\\Debug\\cmTC_ab21b.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ab21b.dir\\Debug\\\\" /Fd"cmTC_ab21b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9zcq6b\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9zcq6b\\Debug\\cmTC_ab21b.exe" /INCREMENTAL /ILK:"cmTC_ab21b.dir\\Debug\\cmTC_ab21b.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9zcq6b/Debug/cmTC_ab21b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-9zcq6b/Debug/cmTC_ab21b.lib" /MACHINE:X64  /machine:x64 cmTC_ab21b.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_ab21b.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9zcq6b\\Debug\\cmTC_ab21b.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_ab21b.dir\\Debug\\cmTC_ab21b.tlog\\unsuccessfulbuild".
+          Touching "cmTC_ab21b.dir\\Debug\\cmTC_ab21b.tlog\\cmTC_ab21b.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9zcq6b\\cmTC_ab21b.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.96
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1773 (check_include_file)"
+    checks:
+      - "Looking for audioclient.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zsjrcn"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zsjrcn"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_AUDIOCLIENT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zsjrcn'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_6eb85.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:50 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zsjrcn\\cmTC_6eb85.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_6eb85.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zsjrcn\\Debug\\".
+          Creating directory "cmTC_6eb85.dir\\Debug\\cmTC_6eb85.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_6eb85.dir\\Debug\\cmTC_6eb85.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_6eb85.dir\\Debug\\cmTC_6eb85.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_6eb85.dir\\Debug\\\\" /Fd"cmTC_6eb85.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zsjrcn\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zsjrcn\\Debug\\cmTC_6eb85.exe" /INCREMENTAL /ILK:"cmTC_6eb85.dir\\Debug\\cmTC_6eb85.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zsjrcn/Debug/cmTC_6eb85.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-zsjrcn/Debug/cmTC_6eb85.lib" /MACHINE:X64  /machine:x64 cmTC_6eb85.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_6eb85.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zsjrcn\\Debug\\cmTC_6eb85.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_6eb85.dir\\Debug\\cmTC_6eb85.tlog\\unsuccessfulbuild".
+          Touching "cmTC_6eb85.dir\\Debug\\cmTC_6eb85.tlog\\cmTC_6eb85.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-zsjrcn\\cmTC_6eb85.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.01
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1774 (check_include_file)"
+    checks:
+      - "Looking for sensorsapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-o1jjfo"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-o1jjfo"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_SENSORSAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-o1jjfo'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_9780c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:52 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o1jjfo\\cmTC_9780c.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_9780c.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o1jjfo\\Debug\\".
+          Creating directory "cmTC_9780c.dir\\Debug\\cmTC_9780c.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_9780c.dir\\Debug\\cmTC_9780c.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_9780c.dir\\Debug\\cmTC_9780c.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_9780c.dir\\Debug\\\\" /Fd"cmTC_9780c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o1jjfo\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o1jjfo\\Debug\\cmTC_9780c.exe" /INCREMENTAL /ILK:"cmTC_9780c.dir\\Debug\\cmTC_9780c.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-o1jjfo/Debug/cmTC_9780c.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-o1jjfo/Debug/cmTC_9780c.lib" /MACHINE:X64  /machine:x64 cmTC_9780c.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_9780c.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o1jjfo\\Debug\\cmTC_9780c.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_9780c.dir\\Debug\\cmTC_9780c.tlog\\unsuccessfulbuild".
+          Touching "cmTC_9780c.dir\\Debug\\cmTC_9780c.tlog\\cmTC_9780c.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o1jjfo\\cmTC_9780c.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.98
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1775 (check_include_file)"
+    checks:
+      - "Looking for shellscalingapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vid8ir"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vid8ir"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_SHELLSCALINGAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vid8ir'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_6cdc5.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-11 2:23:53 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vid8ir\\cmTC_6cdc5.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_6cdc5.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vid8ir\\Debug\\".
+          Creating directory "cmTC_6cdc5.dir\\Debug\\cmTC_6cdc5.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_6cdc5.dir\\Debug\\cmTC_6cdc5.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_6cdc5.dir\\Debug\\cmTC_6cdc5.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_6cdc5.dir\\Debug\\\\" /Fd"cmTC_6cdc5.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vid8ir\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vid8ir\\Debug\\cmTC_6cdc5.exe" /INCREMENTAL /ILK:"cmTC_6cdc5.dir\\Debug\\cmTC_6cdc5.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vid8ir/Debug/cmTC_6cdc5.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/mithya_engine/target/debug/build/sdl2-sys-9c96436937eb2c5d/out/build/CMakeFiles/CMakeScratch/TryCompile-vid8ir/Debug/cmTC_6cdc5.lib" /MACHINE:X64  /machine:x64 cmTC_6cdc5.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_6cdc5.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vid8ir\\Debug\\cmTC_6cdc5.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_6cdc5.dir\\Debug\\cmTC_6cdc5.tlog\\unsuccessfulbuild".
+          Touching "cmTC_6cdc5.dir\\Debug\\cmTC_6cdc5.tlog\\cmTC_6cdc5.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\target\\debug\\build\\sdl2-sys-9c96436937eb2c5d\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vid8ir\\cmTC_6cdc5.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.95
+        
+      exitCode: 0
+...

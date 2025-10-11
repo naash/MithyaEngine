@@ -18,6 +18,22 @@ pub struct Collider {
     pub is_colliding: bool, // Shows if collider is colliding in a frame. This is a very simplistic version and should work for now. Incase we need more info, we can add collision events on the colliding entity.
 }
 
+impl Collider {
+    pub fn get_scaled_shape(&self, scale: Vec3) -> ColliderShape {
+        match self.shape {
+            ColliderShape::Circle {radius } => {
+                ColliderShape::Circle{radius: radius * scale.x.max(scale.y)}
+            }
+            ColliderShape::Box { width, height } => {
+                ColliderShape::Box {
+                    width: width * scale.x,
+                    height: height * scale.y,
+                }
+            }
+        }
+    }
+}
+
 impl Default for Collider {
     fn default() -> Self {
         Self {
