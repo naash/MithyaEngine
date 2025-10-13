@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    engine::{Engine, EngineConfig, EntityBuilder, GameLogic, World},
+    engine::{system::SystemsManager, Engine, EngineConfig, EntityBuilder, GameLogic, World},
     physics::{Collider, ColliderShape, RigidBody}, 
     player::Player, rendering::{Mesh, Render}, 
     Transform
@@ -18,8 +18,7 @@ struct Sandbox {
 }
 
 impl GameLogic for Sandbox {
-    fn initialize(&mut self, world: &mut World) {
-
+    fn initialize(&mut self, world: &mut World, _systems_manager: &mut SystemsManager) {
         //Wall
         // Left Wall
         let _left_wall = EntityBuilder::new(&mut world.entity_manager)
@@ -120,6 +119,8 @@ impl GameLogic for Sandbox {
             })
             .with(Player)
             .build();
+
+        //Add game specific systems like break breaker manager
     }
 
     fn update(&mut self, _world: &mut World, _delta_time: f32) {

@@ -212,8 +212,8 @@ impl Engine {
     }
 
     pub fn run<G: GameLogic>(mut self, mut game: G) -> Result<(), Box<dyn std::error::Error>> {
-        // Let the game initialize itself
-        game.initialize(&mut self.world);
+        // Let the game initialize itself also lets game add its own systems
+        game.initialize(&mut self.world, &mut self.systems_manager);
 
         // Main game loop
         'main: loop {
@@ -277,6 +277,6 @@ impl Engine {
 }
 
 pub trait GameLogic {
-    fn initialize(&mut self, world: &mut World);
+    fn initialize(&mut self, world: &mut World, systems_manager: &mut SystemsManager);
     fn update(&mut self, world: &mut World, delta_time: f32);
 }
