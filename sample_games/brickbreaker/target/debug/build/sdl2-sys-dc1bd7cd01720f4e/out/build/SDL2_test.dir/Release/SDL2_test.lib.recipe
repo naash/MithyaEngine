@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Programming Workbench\Rust\MithyaEngine\sample_games\brickbreaker\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out\build\x64\Release\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Programming Workbench\Rust\MithyaEngine\sample_games\brickbreaker\target\debug\build\sdl2-sys-dc1bd7cd01720f4e\out\build\x64\Release\sdl_headers_copy</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

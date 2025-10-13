@@ -1,0 +1,1340 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      The system is: Windows - 10.0.26200 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: -D__FLTUSED__;-nologo;-MD;-Brepro
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.14.18+a338add32 for .NET Framework
+      Build started 2025-10-13 3:56:43 PM.
+      
+      Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
+      PrepareForBuild:
+        Creating directory "Debug\\".
+        Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+        Creating directory "Debug\\CompilerIdC.tlog\\".
+      InitializeBuildStatus:
+        Creating "Debug\\CompilerIdC.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+        Touching "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Deleting file "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
+        Touching "Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate".
+      Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdC\\CompilerIdC.vcxproj" (default targets).
+      
+      Build succeeded.
+          0 Warning(s)
+          0 Error(s)
+      
+      Time Elapsed 00:00:01.03
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/3.30.2/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: -nologo;-MD;-Brepro
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.14.18+a338add32 for .NET Framework
+      Build started 2025-10-13 3:56:44 PM.
+      
+      Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" on node 1 (default targets).
+      PrepareForBuild:
+        Creating directory "Debug\\".
+        Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+        Creating directory "Debug\\CompilerIdCXX.tlog\\".
+      InitializeBuildStatus:
+        Creating "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+        Touching "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Deleting file "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+        Touching "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate".
+      Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\3.30.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" (default targets).
+      
+      Build succeeded.
+          0 Warning(s)
+          0 Error(s)
+      
+      Time Elapsed 00:00:01.06
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/3.30.2/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9v5hyw"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9v5hyw"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9v5hyw'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e6d26.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:45 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9v5hyw\\cmTC_e6d26.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_e6d26.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9v5hyw\\Debug\\".
+          Creating directory "cmTC_e6d26.dir\\Debug\\cmTC_e6d26.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_e6d26.dir\\Debug\\cmTC_e6d26.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_e6d26.dir\\Debug\\cmTC_e6d26.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_e6d26.dir\\Debug\\\\" /Fd"cmTC_e6d26.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9v5hyw\\Debug\\cmTC_e6d26.exe" /INCREMENTAL /ILK:"cmTC_e6d26.dir\\Debug\\cmTC_e6d26.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9v5hyw/Debug/cmTC_e6d26.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9v5hyw/Debug/cmTC_e6d26.lib" /MACHINE:X64  /machine:x64 cmTC_e6d26.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_e6d26.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9v5hyw\\Debug\\cmTC_e6d26.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_e6d26.dir\\Debug\\cmTC_e6d26.tlog\\unsuccessfulbuild".
+          Touching "cmTC_e6d26.dir\\Debug\\cmTC_e6d26.tlog\\cmTC_e6d26.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9v5hyw\\cmTC_e6d26.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.84
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.44.35214.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-2jfj8u"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-2jfj8u"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -nologo -MD -Brepro"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-2jfj8u'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_76697.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:47 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2jfj8u\\cmTC_76697.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_76697.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2jfj8u\\Debug\\".
+          Creating directory "cmTC_76697.dir\\Debug\\cmTC_76697.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_76697.dir\\Debug\\cmTC_76697.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_76697.dir\\Debug\\cmTC_76697.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_76697.dir\\Debug\\\\" /Fd"cmTC_76697.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue  -Brepro "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCXXCompilerABI.cpp"
+          CMakeCXXCompilerABI.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2jfj8u\\Debug\\cmTC_76697.exe" /INCREMENTAL /ILK:"cmTC_76697.dir\\Debug\\cmTC_76697.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-2jfj8u/Debug/cmTC_76697.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-2jfj8u/Debug/cmTC_76697.lib" /MACHINE:X64  /machine:x64 cmTC_76697.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_76697.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2jfj8u\\Debug\\cmTC_76697.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_76697.dir\\Debug\\cmTC_76697.tlog\\unsuccessfulbuild".
+          Touching "cmTC_76697.dir\\Debug\\cmTC_76697.tlog\\cmTC_76697.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2jfj8u\\cmTC_76697.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.76
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:6 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.44.35214.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckSymbolExists.cmake:66 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:81 (check_symbol_exists)"
+    checks:
+      - "Looking for __GLIBC__"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jh7uhf"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jh7uhf"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "LIBC_IS_GLIBC"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jh7uhf'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_98211.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:48 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\cmTC_98211.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_98211.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\Debug\\".
+          Creating directory "cmTC_98211.dir\\Debug\\cmTC_98211.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_98211.dir\\Debug\\cmTC_98211.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_98211.dir\\Debug\\cmTC_98211.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_98211.dir\\Debug\\\\" /Fd"cmTC_98211.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\CheckSymbolExists.c"
+          CheckSymbolExists.c
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\CheckSymbolExists.c(8,19): error C2065: '__GLIBC__': undeclared identifier [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\cmTC_98211.vcxproj]
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\cmTC_98211.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\cmTC_98211.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\CheckSymbolExists.c(8,19): error C2065: '__GLIBC__': undeclared identifier [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jh7uhf\\cmTC_98211.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.48
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:953 (check_include_file)"
+    checks:
+      - "Looking for immintrin.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-omrlan"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-omrlan"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_IMMINTRIN_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-omrlan'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_f1c16.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:48 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-omrlan\\cmTC_f1c16.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_f1c16.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-omrlan\\Debug\\".
+          Creating directory "cmTC_f1c16.dir\\Debug\\cmTC_f1c16.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_f1c16.dir\\Debug\\cmTC_f1c16.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_f1c16.dir\\Debug\\cmTC_f1c16.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f1c16.dir\\Debug\\\\" /Fd"cmTC_f1c16.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-omrlan\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-omrlan\\Debug\\cmTC_f1c16.exe" /INCREMENTAL /ILK:"cmTC_f1c16.dir\\Debug\\cmTC_f1c16.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-omrlan/Debug/cmTC_f1c16.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-omrlan/Debug/cmTC_f1c16.lib" /MACHINE:X64  /machine:x64 cmTC_f1c16.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_f1c16.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-omrlan\\Debug\\cmTC_f1c16.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_f1c16.dir\\Debug\\cmTC_f1c16.tlog\\unsuccessfulbuild".
+          Touching "cmTC_f1c16.dir\\Debug\\cmTC_f1c16.tlog\\cmTC_f1c16.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-omrlan\\cmTC_f1c16.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.97
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1103 (check_include_file)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kfa4qf"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kfa4qf"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kfa4qf'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_90559.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:50 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kfa4qf\\cmTC_90559.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_90559.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kfa4qf\\Debug\\".
+          Creating directory "cmTC_90559.dir\\Debug\\cmTC_90559.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_90559.dir\\Debug\\cmTC_90559.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_90559.dir\\Debug\\cmTC_90559.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_90559.dir\\Debug\\\\" /Fd"cmTC_90559.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kfa4qf\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kfa4qf\\Debug\\cmTC_90559.exe" /INCREMENTAL /ILK:"cmTC_90559.dir\\Debug\\cmTC_90559.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kfa4qf/Debug/cmTC_90559.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kfa4qf/Debug/cmTC_90559.lib" /MACHINE:X64  /machine:x64 cmTC_90559.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_90559.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kfa4qf\\Debug\\cmTC_90559.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_90559.dir\\Debug\\cmTC_90559.tlog\\unsuccessfulbuild".
+          Touching "cmTC_90559.dir\\Debug\\cmTC_90559.tlog\\cmTC_90559.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kfa4qf\\cmTC_90559.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.95
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1676 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_WIN32_CC"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ae4uv5"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ae4uv5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_WIN32_CC"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ae4uv5'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_edac1.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:51 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ae4uv5\\cmTC_edac1.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_edac1.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ae4uv5\\Debug\\".
+          Creating directory "cmTC_edac1.dir\\Debug\\cmTC_edac1.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_edac1.dir\\Debug\\cmTC_edac1.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_edac1.dir\\Debug\\cmTC_edac1.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_WIN32_CC /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_edac1.dir\\Debug\\\\" /Fd"cmTC_edac1.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ae4uv5\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ae4uv5\\Debug\\cmTC_edac1.exe" /INCREMENTAL /ILK:"cmTC_edac1.dir\\Debug\\cmTC_edac1.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ae4uv5/Debug/cmTC_edac1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ae4uv5/Debug/cmTC_edac1.lib" /MACHINE:X64  /machine:x64 cmTC_edac1.dir\\Debug\\src.obj
+          cmTC_edac1.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ae4uv5\\Debug\\cmTC_edac1.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_edac1.dir\\Debug\\cmTC_edac1.tlog\\unsuccessfulbuild".
+          Touching "cmTC_edac1.dir\\Debug\\cmTC_edac1.tlog\\cmTC_edac1.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ae4uv5\\cmTC_edac1.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.16
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1718 (check_include_file)"
+    checks:
+      - "Looking for d3d9.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v9sqic"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v9sqic"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_D3D_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v9sqic'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_0e8f8.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:52 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v9sqic\\cmTC_0e8f8.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_0e8f8.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v9sqic\\Debug\\".
+          Creating directory "cmTC_0e8f8.dir\\Debug\\cmTC_0e8f8.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_0e8f8.dir\\Debug\\cmTC_0e8f8.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_0e8f8.dir\\Debug\\cmTC_0e8f8.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_0e8f8.dir\\Debug\\\\" /Fd"cmTC_0e8f8.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v9sqic\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v9sqic\\Debug\\cmTC_0e8f8.exe" /INCREMENTAL /ILK:"cmTC_0e8f8.dir\\Debug\\cmTC_0e8f8.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v9sqic/Debug/cmTC_0e8f8.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v9sqic/Debug/cmTC_0e8f8.lib" /MACHINE:X64  /machine:x64 cmTC_0e8f8.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_0e8f8.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v9sqic\\Debug\\cmTC_0e8f8.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_0e8f8.dir\\Debug\\cmTC_0e8f8.tlog\\unsuccessfulbuild".
+          Touching "cmTC_0e8f8.dir\\Debug\\cmTC_0e8f8.tlog\\cmTC_0e8f8.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v9sqic\\cmTC_0e8f8.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.95
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1719 (check_include_file)"
+    checks:
+      - "Looking for d3d11_1.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-xd4ipu"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-xd4ipu"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_D3D11_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-xd4ipu'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_02e83.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:53 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xd4ipu\\cmTC_02e83.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_02e83.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xd4ipu\\Debug\\".
+          Creating directory "cmTC_02e83.dir\\Debug\\cmTC_02e83.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_02e83.dir\\Debug\\cmTC_02e83.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_02e83.dir\\Debug\\cmTC_02e83.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_02e83.dir\\Debug\\\\" /Fd"cmTC_02e83.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xd4ipu\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xd4ipu\\Debug\\cmTC_02e83.exe" /INCREMENTAL /ILK:"cmTC_02e83.dir\\Debug\\cmTC_02e83.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-xd4ipu/Debug/cmTC_02e83.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-xd4ipu/Debug/cmTC_02e83.lib" /MACHINE:X64  /machine:x64 cmTC_02e83.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_02e83.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xd4ipu\\Debug\\cmTC_02e83.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_02e83.dir\\Debug\\cmTC_02e83.tlog\\unsuccessfulbuild".
+          Touching "cmTC_02e83.dir\\Debug\\cmTC_02e83.tlog\\cmTC_02e83.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xd4ipu\\cmTC_02e83.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.98
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1720 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_D3D12_H"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-z9kqf2"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-z9kqf2"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_D3D12_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-z9kqf2'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e8026.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:55 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z9kqf2\\cmTC_e8026.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_e8026.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z9kqf2\\Debug\\".
+          Creating directory "cmTC_e8026.dir\\Debug\\cmTC_e8026.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_e8026.dir\\Debug\\cmTC_e8026.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_e8026.dir\\Debug\\cmTC_e8026.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_D3D12_H /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_e8026.dir\\Debug\\\\" /Fd"cmTC_e8026.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z9kqf2\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z9kqf2\\Debug\\cmTC_e8026.exe" /INCREMENTAL /ILK:"cmTC_e8026.dir\\Debug\\cmTC_e8026.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-z9kqf2/Debug/cmTC_e8026.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-z9kqf2/Debug/cmTC_e8026.lib" /MACHINE:X64  /machine:x64 cmTC_e8026.dir\\Debug\\src.obj
+          cmTC_e8026.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z9kqf2\\Debug\\cmTC_e8026.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_e8026.dir\\Debug\\cmTC_e8026.tlog\\unsuccessfulbuild".
+          Touching "cmTC_e8026.dir\\Debug\\cmTC_e8026.tlog\\cmTC_e8026.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z9kqf2\\cmTC_e8026.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.91
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1728 (check_include_file)"
+    checks:
+      - "Looking for ddraw.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jnfhn7"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jnfhn7"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DDRAW_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jnfhn7'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_856da.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:56 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jnfhn7\\cmTC_856da.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_856da.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jnfhn7\\Debug\\".
+          Creating directory "cmTC_856da.dir\\Debug\\cmTC_856da.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_856da.dir\\Debug\\cmTC_856da.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_856da.dir\\Debug\\cmTC_856da.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_856da.dir\\Debug\\\\" /Fd"cmTC_856da.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jnfhn7\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jnfhn7\\Debug\\cmTC_856da.exe" /INCREMENTAL /ILK:"cmTC_856da.dir\\Debug\\cmTC_856da.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jnfhn7/Debug/cmTC_856da.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-jnfhn7/Debug/cmTC_856da.lib" /MACHINE:X64  /machine:x64 cmTC_856da.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_856da.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jnfhn7\\Debug\\cmTC_856da.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_856da.dir\\Debug\\cmTC_856da.tlog\\unsuccessfulbuild".
+          Touching "cmTC_856da.dir\\Debug\\cmTC_856da.tlog\\cmTC_856da.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jnfhn7\\cmTC_856da.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.90
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1729 (check_include_file)"
+    checks:
+      - "Looking for dsound.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ktjq0k"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ktjq0k"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DSOUND_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ktjq0k'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_a1762.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:57 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktjq0k\\cmTC_a1762.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_a1762.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktjq0k\\Debug\\".
+          Creating directory "cmTC_a1762.dir\\Debug\\cmTC_a1762.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_a1762.dir\\Debug\\cmTC_a1762.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_a1762.dir\\Debug\\cmTC_a1762.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a1762.dir\\Debug\\\\" /Fd"cmTC_a1762.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktjq0k\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktjq0k\\Debug\\cmTC_a1762.exe" /INCREMENTAL /ILK:"cmTC_a1762.dir\\Debug\\cmTC_a1762.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ktjq0k/Debug/cmTC_a1762.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ktjq0k/Debug/cmTC_a1762.lib" /MACHINE:X64  /machine:x64 cmTC_a1762.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_a1762.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktjq0k\\Debug\\cmTC_a1762.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_a1762.dir\\Debug\\cmTC_a1762.tlog\\unsuccessfulbuild".
+          Touching "cmTC_a1762.dir\\Debug\\cmTC_a1762.tlog\\cmTC_a1762.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ktjq0k\\cmTC_a1762.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.86
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1730 (check_include_file)"
+    checks:
+      - "Looking for dinput.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9ztz40"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9ztz40"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DINPUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9ztz40'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_f5d8e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:58 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9ztz40\\cmTC_f5d8e.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_f5d8e.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9ztz40\\Debug\\".
+          Creating directory "cmTC_f5d8e.dir\\Debug\\cmTC_f5d8e.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_f5d8e.dir\\Debug\\cmTC_f5d8e.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_f5d8e.dir\\Debug\\cmTC_f5d8e.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f5d8e.dir\\Debug\\\\" /Fd"cmTC_f5d8e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9ztz40\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+          C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9ztz40\\Debug\\cmTC_f5d8e.exe" /INCREMENTAL /ILK:"cmTC_f5d8e.dir\\Debug\\cmTC_f5d8e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9ztz40/Debug/cmTC_f5d8e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9ztz40/Debug/cmTC_f5d8e.lib" /MACHINE:X64  /machine:x64 cmTC_f5d8e.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_f5d8e.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9ztz40\\Debug\\cmTC_f5d8e.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_f5d8e.dir\\Debug\\cmTC_f5d8e.tlog\\unsuccessfulbuild".
+          Touching "cmTC_f5d8e.dir\\Debug\\cmTC_f5d8e.tlog\\cmTC_f5d8e.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9ztz40\\cmTC_f5d8e.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.88
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1734 (check_include_file)"
+    checks:
+      - "Looking for dxgi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-hj5k4y"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-hj5k4y"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_DXGI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-hj5k4y'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_d706c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:56:59 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hj5k4y\\cmTC_d706c.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_d706c.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hj5k4y\\Debug\\".
+          Creating directory "cmTC_d706c.dir\\Debug\\cmTC_d706c.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_d706c.dir\\Debug\\cmTC_d706c.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_d706c.dir\\Debug\\cmTC_d706c.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d706c.dir\\Debug\\\\" /Fd"cmTC_d706c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hj5k4y\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hj5k4y\\Debug\\cmTC_d706c.exe" /INCREMENTAL /ILK:"cmTC_d706c.dir\\Debug\\cmTC_d706c.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-hj5k4y/Debug/cmTC_d706c.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-hj5k4y/Debug/cmTC_d706c.lib" /MACHINE:X64  /machine:x64 cmTC_d706c.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_d706c.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hj5k4y\\Debug\\cmTC_d706c.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_d706c.dir\\Debug\\cmTC_d706c.tlog\\unsuccessfulbuild".
+          Touching "cmTC_d706c.dir\\Debug\\cmTC_d706c.tlog\\cmTC_d706c.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-hj5k4y\\cmTC_d706c.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.88
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1748 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_XINPUT_H"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ts5xx3"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ts5xx3"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_XINPUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ts5xx3'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1e0e3.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:00 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ts5xx3\\cmTC_1e0e3.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_1e0e3.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ts5xx3\\Debug\\".
+          Creating directory "cmTC_1e0e3.dir\\Debug\\cmTC_1e0e3.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_1e0e3.dir\\Debug\\cmTC_1e0e3.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_1e0e3.dir\\Debug\\cmTC_1e0e3.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_XINPUT_H /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1e0e3.dir\\Debug\\\\" /Fd"cmTC_1e0e3.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ts5xx3\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ts5xx3\\Debug\\cmTC_1e0e3.exe" /INCREMENTAL /ILK:"cmTC_1e0e3.dir\\Debug\\cmTC_1e0e3.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ts5xx3/Debug/cmTC_1e0e3.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-ts5xx3/Debug/cmTC_1e0e3.lib" /MACHINE:X64  /machine:x64 cmTC_1e0e3.dir\\Debug\\src.obj
+          cmTC_1e0e3.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ts5xx3\\Debug\\cmTC_1e0e3.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_1e0e3.dir\\Debug\\cmTC_1e0e3.tlog\\unsuccessfulbuild".
+          Touching "cmTC_1e0e3.dir\\Debug\\cmTC_1e0e3.tlog\\cmTC_1e0e3.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ts5xx3\\cmTC_1e0e3.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.86
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1752 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_XINPUT_GAMEPAD_EX"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-1g8uzc"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-1g8uzc"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_XINPUT_GAMEPAD_EX"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-1g8uzc'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_40652.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:01 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\cmTC_40652.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_40652.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\Debug\\".
+          Creating directory "cmTC_40652.dir\\Debug\\cmTC_40652.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_40652.dir\\Debug\\cmTC_40652.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_40652.dir\\Debug\\cmTC_40652.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_XINPUT_GAMEPAD_EX /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_40652.dir\\Debug\\\\" /Fd"cmTC_40652.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\src.c"
+          src.c
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\src.c(4,25): error C2061: syntax error: identifier 'x1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\cmTC_40652.vcxproj]
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\src.c(4,25): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\cmTC_40652.vcxproj]
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\cmTC_40652.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\cmTC_40652.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\src.c(4,25): error C2061: syntax error: identifier 'x1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\cmTC_40652.vcxproj]
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\src.c(4,25): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1g8uzc\\cmTC_40652.vcxproj]
+        
+            0 Warning(s)
+            2 Error(s)
+        
+        Time Elapsed 00:00:00.59
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1757 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_XINPUT_STATE_EX"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-pibpfy"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-pibpfy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_XINPUT_STATE_EX"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-pibpfy'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1ae9c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:02 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\cmTC_1ae9c.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_1ae9c.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\Debug\\".
+          Creating directory "cmTC_1ae9c.dir\\Debug\\cmTC_1ae9c.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_1ae9c.dir\\Debug\\cmTC_1ae9c.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_1ae9c.dir\\Debug\\cmTC_1ae9c.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_XINPUT_STATE_EX /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_1ae9c.dir\\Debug\\\\" /Fd"cmTC_1ae9c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\src.c"
+          src.c
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\src.c(4,23): error C2061: syntax error: identifier 's1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\cmTC_1ae9c.vcxproj]
+        C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\src.c(4,23): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\cmTC_1ae9c.vcxproj]
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\cmTC_1ae9c.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\cmTC_1ae9c.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\src.c(4,23): error C2061: syntax error: identifier 's1' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\cmTC_1ae9c.vcxproj]
+          C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\src.c(4,23): error C2059: syntax error: ';' [C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-pibpfy\\cmTC_1ae9c.vcxproj]
+        
+            0 Warning(s)
+            2 Error(s)
+        
+        Time Elapsed 00:00:00.58
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:1762 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_WINDOWS_GAMING_INPUT_H"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9bfdkq"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9bfdkq"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_WINDOWS_GAMING_INPUT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9bfdkq'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_4e7e0.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:03 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9bfdkq\\cmTC_4e7e0.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_4e7e0.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9bfdkq\\Debug\\".
+          Creating directory "cmTC_4e7e0.dir\\Debug\\cmTC_4e7e0.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_4e7e0.dir\\Debug\\cmTC_4e7e0.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_4e7e0.dir\\Debug\\cmTC_4e7e0.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D HAVE_WINDOWS_GAMING_INPUT_H /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_4e7e0.dir\\Debug\\\\" /Fd"cmTC_4e7e0.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9bfdkq\\src.c"
+          src.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9bfdkq\\Debug\\cmTC_4e7e0.exe" /INCREMENTAL /ILK:"cmTC_4e7e0.dir\\Debug\\cmTC_4e7e0.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9bfdkq/Debug/cmTC_4e7e0.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-9bfdkq/Debug/cmTC_4e7e0.lib" /MACHINE:X64  /machine:x64 cmTC_4e7e0.dir\\Debug\\src.obj
+          cmTC_4e7e0.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9bfdkq\\Debug\\cmTC_4e7e0.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_4e7e0.dir\\Debug\\cmTC_4e7e0.tlog\\unsuccessfulbuild".
+          Touching "cmTC_4e7e0.dir\\Debug\\cmTC_4e7e0.tlog\\cmTC_4e7e0.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9bfdkq\\cmTC_4e7e0.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.60
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1770 (check_include_file)"
+    checks:
+      - "Looking for tpcshrd.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-85jcu4"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-85jcu4"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_TPCSHRD_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-85jcu4'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_c606c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:05 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-85jcu4\\cmTC_c606c.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_c606c.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-85jcu4\\Debug\\".
+          Creating directory "cmTC_c606c.dir\\Debug\\cmTC_c606c.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_c606c.dir\\Debug\\cmTC_c606c.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_c606c.dir\\Debug\\cmTC_c606c.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_c606c.dir\\Debug\\\\" /Fd"cmTC_c606c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-85jcu4\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-85jcu4\\Debug\\cmTC_c606c.exe" /INCREMENTAL /ILK:"cmTC_c606c.dir\\Debug\\cmTC_c606c.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-85jcu4/Debug/cmTC_c606c.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-85jcu4/Debug/cmTC_c606c.lib" /MACHINE:X64  /machine:x64 cmTC_c606c.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_c606c.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-85jcu4\\Debug\\cmTC_c606c.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_c606c.dir\\Debug\\cmTC_c606c.tlog\\unsuccessfulbuild".
+          Touching "cmTC_c606c.dir\\Debug\\cmTC_c606c.tlog\\cmTC_c606c.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-85jcu4\\cmTC_c606c.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.88
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1771 (check_include_file)"
+    checks:
+      - "Looking for roapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-7psnv4"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-7psnv4"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_ROAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-7psnv4'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_32f43.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:06 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7psnv4\\cmTC_32f43.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_32f43.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7psnv4\\Debug\\".
+          Creating directory "cmTC_32f43.dir\\Debug\\cmTC_32f43.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_32f43.dir\\Debug\\cmTC_32f43.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_32f43.dir\\Debug\\cmTC_32f43.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_32f43.dir\\Debug\\\\" /Fd"cmTC_32f43.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7psnv4\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7psnv4\\Debug\\cmTC_32f43.exe" /INCREMENTAL /ILK:"cmTC_32f43.dir\\Debug\\cmTC_32f43.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-7psnv4/Debug/cmTC_32f43.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-7psnv4/Debug/cmTC_32f43.lib" /MACHINE:X64  /machine:x64 cmTC_32f43.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_32f43.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7psnv4\\Debug\\cmTC_32f43.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_32f43.dir\\Debug\\cmTC_32f43.tlog\\unsuccessfulbuild".
+          Touching "cmTC_32f43.dir\\Debug\\cmTC_32f43.tlog\\cmTC_32f43.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7psnv4\\cmTC_32f43.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.86
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1772 (check_include_file)"
+    checks:
+      - "Looking for mmdeviceapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-mfkz6f"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-mfkz6f"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_MMDEVICEAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-mfkz6f'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_80764.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:07 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mfkz6f\\cmTC_80764.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_80764.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mfkz6f\\Debug\\".
+          Creating directory "cmTC_80764.dir\\Debug\\cmTC_80764.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_80764.dir\\Debug\\cmTC_80764.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_80764.dir\\Debug\\cmTC_80764.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_80764.dir\\Debug\\\\" /Fd"cmTC_80764.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mfkz6f\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mfkz6f\\Debug\\cmTC_80764.exe" /INCREMENTAL /ILK:"cmTC_80764.dir\\Debug\\cmTC_80764.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-mfkz6f/Debug/cmTC_80764.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-mfkz6f/Debug/cmTC_80764.lib" /MACHINE:X64  /machine:x64 cmTC_80764.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_80764.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mfkz6f\\Debug\\cmTC_80764.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_80764.dir\\Debug\\cmTC_80764.tlog\\unsuccessfulbuild".
+          Touching "cmTC_80764.dir\\Debug\\cmTC_80764.tlog\\cmTC_80764.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mfkz6f\\cmTC_80764.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.89
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1773 (check_include_file)"
+    checks:
+      - "Looking for audioclient.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-6qlgnf"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-6qlgnf"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_AUDIOCLIENT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-6qlgnf'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_fc25d.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:08 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6qlgnf\\cmTC_fc25d.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_fc25d.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6qlgnf\\Debug\\".
+          Creating directory "cmTC_fc25d.dir\\Debug\\cmTC_fc25d.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_fc25d.dir\\Debug\\cmTC_fc25d.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_fc25d.dir\\Debug\\cmTC_fc25d.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fc25d.dir\\Debug\\\\" /Fd"cmTC_fc25d.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6qlgnf\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6qlgnf\\Debug\\cmTC_fc25d.exe" /INCREMENTAL /ILK:"cmTC_fc25d.dir\\Debug\\cmTC_fc25d.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-6qlgnf/Debug/cmTC_fc25d.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-6qlgnf/Debug/cmTC_fc25d.lib" /MACHINE:X64  /machine:x64 cmTC_fc25d.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_fc25d.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6qlgnf\\Debug\\cmTC_fc25d.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_fc25d.dir\\Debug\\cmTC_fc25d.tlog\\unsuccessfulbuild".
+          Touching "cmTC_fc25d.dir\\Debug\\cmTC_fc25d.tlog\\cmTC_fc25d.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-6qlgnf\\cmTC_fc25d.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.88
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1774 (check_include_file)"
+    checks:
+      - "Looking for sensorsapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5k2gx"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5k2gx"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_SENSORSAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5k2gx'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_f6110.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:09 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v5k2gx\\cmTC_f6110.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_f6110.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v5k2gx\\Debug\\".
+          Creating directory "cmTC_f6110.dir\\Debug\\cmTC_f6110.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_f6110.dir\\Debug\\cmTC_f6110.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_f6110.dir\\Debug\\cmTC_f6110.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f6110.dir\\Debug\\\\" /Fd"cmTC_f6110.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v5k2gx\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v5k2gx\\Debug\\cmTC_f6110.exe" /INCREMENTAL /ILK:"cmTC_f6110.dir\\Debug\\cmTC_f6110.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5k2gx/Debug/cmTC_f6110.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5k2gx/Debug/cmTC_f6110.lib" /MACHINE:X64  /machine:x64 cmTC_f6110.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_f6110.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v5k2gx\\Debug\\cmTC_f6110.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_f6110.dir\\Debug\\cmTC_f6110.tlog\\unsuccessfulbuild".
+          Touching "cmTC_f6110.dir\\Debug\\cmTC_f6110.tlog\\cmTC_f6110.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v5k2gx\\cmTC_f6110.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.89
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:1775 (check_include_file)"
+    checks:
+      - "Looking for shellscalingapi.h"
+    directories:
+      source: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kplul7"
+      binary: "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kplul7"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -D__FLTUSED__ -nologo -MD -Brepro"
+      CMAKE_MODULE_PATH: "C:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL/cmake"
+    buildResult:
+      variable: "HAVE_SHELLSCALINGAPI_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kplul7'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_39d72.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.18+a338add32 for .NET Framework
+        Build started 2025-10-13 3:57:10 PM.
+        
+        Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kplul7\\cmTC_39d72.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_39d72.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kplul7\\Debug\\".
+          Creating directory "cmTC_39d72.dir\\Debug\\cmTC_39d72.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_39d72.dir\\Debug\\cmTC_39d72.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_39d72.dir\\Debug\\cmTC_39d72.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /nologo /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D __FLTUSED__ /D _GNU_SOURCE=1 /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_39d72.dir\\Debug\\\\" /Fd"cmTC_39d72.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue  -Brepro "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kplul7\\CheckIncludeFile.c"
+          CheckIncludeFile.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kplul7\\Debug\\cmTC_39d72.exe" /INCREMENTAL /ILK:"cmTC_39d72.dir\\Debug\\cmTC_39d72.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kplul7/Debug/cmTC_39d72.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-dc1bd7cd01720f4e/out/build/CMakeFiles/CMakeScratch/TryCompile-kplul7/Debug/cmTC_39d72.lib" /MACHINE:X64  /machine:x64 cmTC_39d72.dir\\Debug\\CheckIncludeFile.obj
+          cmTC_39d72.vcxproj -> C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kplul7\\Debug\\cmTC_39d72.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_39d72.dir\\Debug\\cmTC_39d72.tlog\\unsuccessfulbuild".
+          Touching "cmTC_39d72.dir\\Debug\\cmTC_39d72.tlog\\cmTC_39d72.lastbuildstate".
+        Done Building Project "C:\\Programming Workbench\\Rust\\MithyaEngine\\sample_games\\brickbreaker\\target\\debug\\build\\sdl2-sys-dc1bd7cd01720f4e\\out\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kplul7\\cmTC_39d72.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.90
+        
+      exitCode: 0
+...
