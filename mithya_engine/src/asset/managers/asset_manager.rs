@@ -79,6 +79,10 @@ impl AssetManager {
          "shaders/unlit_texture.vert",
          "shaders/unlit_texture.frag")?;
 
+        self.load_material("unlit_texture_purple",
+         "shaders/unlit_texture.vert",
+         "shaders/unlit_texture.frag")?;
+
         self.load_material("unlit_texture_circle",
          "shaders/unlit_texture.vert",
          "shaders/unlit_texture.frag")?;
@@ -89,7 +93,9 @@ impl AssetManager {
         let blue_texture_id = self.texture_manager.load_texture("blue_texture.png")?;
         let yellow_texture_id = self.texture_manager.load_texture("yellow_texture.png")?;
         let orange_texture_id = self.texture_manager.load_texture("orange_texture.png")?;
+        let purple_texture_id = self.texture_manager.load_texture("purple_texture.png")?;
 
+        //This should be loaded from game not from engine
         let circle_texture_id = self.texture_manager.load_texture("pinkCircle.png")?;
 
         if let Some(material_id) = self.material_manager.get_material_id("unlit_texture_green") {
@@ -133,6 +139,15 @@ impl AssetManager {
                 material_id,
                 "u_texture",
                 orange_texture_id,
+                0
+            )?;
+        }
+
+        if let Some(material_id) = self.material_manager.get_material_id("unlit_texture_purple") {
+            self.material_manager.add_texture_to_material(
+                material_id,
+                "u_texture",
+                purple_texture_id,
                 0
             )?;
         }

@@ -6,5 +6,5 @@
 mod collision_system;
 mod physics_system;
 
-pub use collision_system::CollisionSystem;
+pub use collision_system::{CollisionSystem, CollisionEvent};
 pub use physics_system::PhysicsSystem;

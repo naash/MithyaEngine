@@ -8,7 +8,7 @@ pub mod components;
 pub mod transform;
 pub mod engine_events;
 
-pub use entity_manager::{EntityManager, EntityId};
+pub use entity_manager::{EntityManager, EntityId, DestroyEntityAction};
 pub use transform::Transform;
 pub use components::Component;
 pub use engine_events::{
@@ -17,5 +17,7 @@ pub use engine_events::{
     EngineEventQueue,
     EngineActionQueue,
     EngineEventListener,
-    KeyModifiers
+    KeyModifiers,
+    KeyPressedEvent,
+    KeyReleasedEvent
 };

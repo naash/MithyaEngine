@@ -68,6 +68,8 @@ dependencies = [
  "glam",
  "mithya_engine",
  "sdl2",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

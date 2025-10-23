@@ -4,14 +4,28 @@
 // https://opensource.org/licenses/MIT
 
 use std::collections::{HashMap, HashSet};
-use std::any::{Any, TypeId};
+use std::any::TypeId;
 use super::Transform;
 use super::Component;
 
+use crate::core::EngineAction;
 use crate::rendering::Render;
+use crate::World;
 
 // Simple entity ID system
 pub type EntityId = u32;
+
+#[derive(Debug)]
+pub struct DestroyEntityAction {
+    pub entity_id: u32,
+}
+
+impl EngineAction for DestroyEntityAction {
+    fn execute(&mut self, world: &mut World) {
+        world.entity_manager.destroy_entity(self.entity_id);
+    }
+}
+
 
 //Archetype is a collection of entities that share the same component types
 #[derive(Debug)]
@@ -111,6 +125,18 @@ impl EntityManager {
             .as_any()
             .downcast_ref::<T>()
     }
+
+    pub fn get_two_components<T: Component>(
+        & self,
+        a: EntityId,
+        b: EntityId
+    ) -> (Option<&T>, Option<&T>) {
+        assert!(a != b);
+        (
+            self.get_component::<T>(a),
+            self.get_component::<T>(b),
+        )
+    }
     
     pub fn get_component_mut<T: Component>(&mut self, entity_id: EntityId) -> Option<&mut T> {
         let type_id = TypeId::of::<T>();
@@ -120,6 +146,21 @@ impl EntityManager {
             .as_mut()
             .as_any_mut()
             .downcast_mut::<T>()
+    }
+
+    pub fn get_two_components_mut<T: Component>(
+        &mut self,
+        a: EntityId,
+        b: EntityId
+    ) -> (Option<&mut T>, Option<&mut T>) {
+        assert!(a != b);
+        let ptr = self as *mut Self;
+        unsafe {
+            (
+                (*ptr).get_component_mut::<T>(a),
+                (*ptr).get_component_mut::<T>(b),
+            )
+        }
     }
 
     pub fn remove_component<T: Component + Clone>(&mut self, entity_id: EntityId) -> Option<T> {
@@ -177,7 +218,7 @@ impl EntityManager {
         }
         
         // Clean up empty archetypes
-        self.archetypes.retain(|arch| !arch.entities.is_empty());
+        //self.archetypes.retain(|arch| !arch.entities.is_empty());
     }
 
      // Get entities that have ALL specified component types
@@ -210,6 +251,11 @@ impl EntityManager {
         result
     }
     
+    pub fn query_component<T1: Component>(&self) -> Vec<EntityId> {
+        let types = vec![TypeId::of::<T1>()];
+        self.query_entities(&types)
+    }
+
     // Convenience method for two component types
     pub fn query_two_components<T1: Component, T2: Component>(&self) -> Vec<EntityId> {
         let types = vec![TypeId::of::<T1>(), TypeId::of::<T2>()];

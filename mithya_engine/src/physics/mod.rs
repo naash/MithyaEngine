@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 mod components;
-mod systems;
+pub mod systems;
 mod physics_config;
 mod collision_utils;
 mod collision_config;

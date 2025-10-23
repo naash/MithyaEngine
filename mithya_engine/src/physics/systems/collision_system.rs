@@ -10,7 +10,7 @@ use crate::{
     core::{EngineEvent, Transform},
     engine::{system::{System, SystemRenderContext, SystemUpdateContext}, World}, 
     physics::{
-        collision_config::{DAMPING_THRESHOLD, MIN_SEPARATION, VELOCITY_DAMPING},
+        collision_config::{DAMPING_THRESHOLD, MIN_SEPARATION, MIN_VELOCITY, VELOCITY_DAMPING},
         collision_utils::{self, CollisionInfo},
         components::{Collider, RigidBody},
     },
@@ -101,7 +101,7 @@ impl CollisionSystem {
         self.separate_entities(world, entity_a, entity_b, &collision, has_rb_a, has_rb_b);
 
         // Apply velocity damping if needed
-        if collision.separation > DAMPING_THRESHOLD {
+        if collision.separation > DAMPING_THRESHOLD && has_rb_a && has_rb_b {
             self.apply_damping(world, entity_a, entity_b);
         }
 
@@ -142,7 +142,7 @@ impl CollisionSystem {
     }
 
     /// Apply velocity damping to both entities
-    fn apply_damping(&self, world: &mut World, entity_a: u32, entity_b: u32) {
+    fn apply_damping(&self, world: &mut World, entity_a: u32, entity_b: u32) {        
         for &entity in &[entity_a, entity_b] {
             if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(entity) {
                 rb.velocity *= VELOCITY_DAMPING;
@@ -163,6 +163,13 @@ impl CollisionSystem {
             }
 
             let velocity = Vec2::new(rb.velocity.x, rb.velocity.y);
+
+            // Stop if velocity is too small
+            if velocity.length() < MIN_VELOCITY {
+                rb.velocity = Vec2::ZERO.extend(rb.velocity.z);
+                return;
+            }
+
             let vel_along_normal = velocity.dot(normal);
 
             // Only reflect if moving into the collision
