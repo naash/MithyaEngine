@@ -38,24 +38,20 @@ pub struct BallPaddleCollisionAction {
 
 impl EngineAction for BallPaddleCollisionAction {
     fn execute(&mut self, world: &mut World) {
-        let em = &mut world.entity_manager;
+        let entity_manager = &mut world.entity_manager;
 
         // Borrow both transforms in one immutable fetch
         let (paddle_t, ball_t) =
-            em.get_two_components::<Transform>(self.paddle_id, self.ball_id);
+            entity_manager.get_two_components::<Transform>(self.paddle_id, self.ball_id);
 
         let paddle_t = paddle_t.expect("Paddle transform missing");
         let ball_t   = ball_t.expect("Ball transform missing");
 
-        // Compute offset relative to paddle
+        //Here scope of borrows end so we can use mut borrow again
         let dx = ball_t.position.x - paddle_t.position.x;
 
-        // Now borrow RB separately (after immutable borrows go out of scope)
-        // They go out of scope because paddle_t and ball_t are just &Transform
-        let ball_rb = em.get_component_mut::<RigidBody>(self.ball_id)
+        let ball_rb = entity_manager.get_component_mut::<RigidBody>(self.ball_id)
             .expect("Ball rigidbody missing");
-
-
 
         // Apply new velocity
         ball_rb.velocity.x = dx * 2.0;
