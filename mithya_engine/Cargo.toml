@@ -14,3 +14,6 @@ sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
 egui = "0.32"
 egui_sdl2_gl = "0.32"
 thiserror = "2.0.16"
+
+[env]
+CMAKE_POLICY_VERSION_MINIMUM = "3.5"

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Solution>
+	<Configurations>
+		<BuildType Name="Release"/>
+		<Platform Name="x64"/>
+	</Configurations>
+	<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="d44d4af2-68aa-36b5-94d6-f7d50e4454a6" DefaultStartup="true">
+		<BuildDependency Project="SDL2-static.vcxproj"/>
+		<BuildDependency Project="SDL2_test.vcxproj"/>
+		<BuildDependency Project="SDL2main.vcxproj"/>
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="INSTALL.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="7153bbdf-e035-318e-8874-32dd1f499640">
+		<BuildDependency Project="ALL_BUILD.vcxproj"/>
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<Build Solution="Release|*" Project="false"/>
+	</Project>
+	<Project Path="SDL2-static.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="4ad87055-b590-3a22-a852-684f15749846">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="sdl_headers_copy.vcxproj"/>
+	</Project>
+	<Project Path="SDL2_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="6039bc67-dfae-32ef-8685-b33f20e66e50">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="sdl_headers_copy.vcxproj"/>
+	</Project>
+	<Project Path="SDL2main.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="745a7bec-d7b9-30d8-82f3-a06b02fc7f2f">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="sdl_headers_copy.vcxproj"/>
+	</Project>
+	<Project Path="ZERO_CHECK.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ff82070d-8901-35f6-b0c7-cffc4ce4752d"/>
+	<Project Path="sdl_headers_copy.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="afb4457b-b086-38b6-94b0-0a176fac6b67">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="uninstall.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ff7b168f-b0e5-3dee-8bcc-00afc8c7ff07">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<Build Solution="Release|*" Project="false"/>
+	</Project>
+</Solution>

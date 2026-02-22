@@ -1,0 +1,10 @@
+^C:\PROGRAMMING WORKBENCH\RUST\MITHYAENGINE\SAMPLE_GAMES\BRICKBREAKER\TARGET\DEBUG\BUILD\SDL2-SYS-4130C74087F0E1FE\OUT\BUILD\CMAKEFILES\30486169F68636300FCC38668D4BD2C4\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/nisha/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sdl2-sys-0.37.0/SDL "-BC:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/SDL2.slnx"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

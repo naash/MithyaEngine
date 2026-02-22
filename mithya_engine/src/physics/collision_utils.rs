@@ -236,7 +236,6 @@ pub fn ray_intersects_circle(ray_origin: Vec2, ray_direction: Vec2, circle_pos: 
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn test_circle_collision() {
         assert!(circles_colliding(Vec2::new(0.0, 0.0), 5.0, Vec2::new(8.0, 0.0), 5.0));

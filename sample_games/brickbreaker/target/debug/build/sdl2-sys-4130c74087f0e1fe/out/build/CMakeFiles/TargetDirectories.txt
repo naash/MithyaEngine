@@ -1,0 +1,8 @@
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/sdl_headers_copy.dir
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/SDL2main.dir
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/SDL2-static.dir
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/SDL2_test.dir
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/uninstall.dir
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/INSTALL.dir
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/ALL_BUILD.dir
+C:/Programming Workbench/Rust/MithyaEngine/sample_games/brickbreaker/target/debug/build/sdl2-sys-4130c74087f0e1fe/out/build/CMakeFiles/ZERO_CHECK.dir
