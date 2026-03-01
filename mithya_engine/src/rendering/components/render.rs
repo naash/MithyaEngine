@@ -12,7 +12,7 @@ use crate::{rendering::components::mesh::MeshType, Component};
 use super::Mesh;
 
 // Renderable component - marks an entity as something that should be rendered
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Render {
     pub mesh: Mesh,
     pub material_id: Option<u32>,

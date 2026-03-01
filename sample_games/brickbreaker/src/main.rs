@@ -59,10 +59,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ..Default::default()
     };
 
-    let engine = Engine::new(config)?;
     let game = Brickbreaker { /* initialize game state */ };
-    
-    engine.run(game)
+
+    let engine = Engine::new(config, game);
+
+    engine.run()
 }
 
 

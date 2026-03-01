@@ -3,21 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use crate::ui::UIWindow;
-use egui_sdl2_gl::egui;
+// UIContext is stubbed pending migration to egui-wgpu
+pub struct UIContext;
 
-pub struct UIContext<'a> {
-    pub(crate) ctx: &'a egui::Context,
-}
-
-impl<'a> UIContext<'a> {
-    pub fn window(&self, title: &str) -> UIWindow {
-        UIWindow {
-            title: title.to_string(),
-            size: None,
-            position: None,
-            resizable: true,
-            collapsible: true,
-        }
+impl UIContext {
+    pub fn new() -> Self {
+        Self
     }
 }

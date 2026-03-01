@@ -3,6 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use std::sync::Arc;
+
 use crate::{
     asset::AssetManager,
     core::{
@@ -38,25 +40,22 @@ use crate::{
     }, 
     player::PlayerControlSystem, 
     rendering::RenderingSystem, 
-    ui::UISystem, 
     World
 };
 
 use glam::Vec2;
-use sdl2::{
-    event::Event, 
-    video::Window, 
-    EventPump, 
-    Sdl
+use winit::{
+    application::ApplicationHandler,
+    event::{WindowEvent, ElementState, MouseButton},
+    event_loop::{ActiveEventLoop, ControlFlow, EventLoop},
+    window::{Window, WindowId, WindowAttributes},
+    dpi::LogicalSize,
 };
-use gl;
 
 pub struct EngineConfig {
     pub window_title: String,
     pub window_width: u32,
     pub window_height: u32,
-    pub gl_major_version: u8,
-    pub gl_minor_version: u8,
     pub resizable: bool,
 }
 
@@ -66,213 +65,164 @@ impl Default for EngineConfig {
             window_title: "Mithya Engine".to_string(),
             window_width: 800,
             window_height: 600,
-            gl_major_version: 4,
-            gl_minor_version: 1,
             resizable: true,
         }
     }
 }
 
-pub struct Engine {
-    _sdl: Sdl,
-    window: Window,
-    _gl_context: sdl2::video::GLContext,
-    event_pump: EventPump,
-    pub systems_manager: SystemsManager,
-    pub world: World,
+// Separate struct to hold all initialized state
+// This is None until winit gives us a window in resumed()
+struct EngineState {
+    window: Arc<Window>,
+    rendering_system: RenderingSystem,
+    systems_manager: SystemsManager,
+    world: World,
     frame_timer: FrameTimer,
-    pub action_queue: EngineActionQueue,    
-    pub event_queue: EngineEventQueue,
+    action_queue: EngineActionQueue,
+    event_queue: EngineEventQueue,
 }
 
-impl Engine {
+pub struct Engine<G: GameLogic> {
+    config: EngineConfig,
+    game: G,
+    state: Option<EngineState>,
+}
 
-    pub fn process_sdl_events(&mut self, should_quit : &mut bool ) {
-        for sdl_event in self.event_pump.poll_iter() {
-            match sdl_event {
-                Event::Quit { .. } => {
-                    //No need to create event here, simply quit
-                    *should_quit = true;
-                }
-                Event::KeyDown { keycode: Some(key), keymod, repeat: false, .. } => {
-                    self.event_queue.push(KeyPressedEvent { key, modifiers: KeyModifiers::from_sdl(keymod) });
-                }
-                Event::KeyUp { keycode: Some(key), keymod, .. } => {
-                    self.event_queue.push(KeyReleasedEvent { key, modifiers: KeyModifiers::from_sdl(keymod) });
-                }
-                Event::MouseButtonDown { x, y, mouse_btn, .. } => {
-                    self.event_queue.push(MouseClickEvent {
-                        position: Vec2::new(x as f32, y as f32),
-                        button: mouse_btn,
-                    });
-                }
-                Event::MouseButtonUp { x, y, mouse_btn, .. } => {
-                    self.event_queue.push(MouseButtonReleasedEvent {
-                        position: Vec2::new(x as f32, y as f32),
-                        button: mouse_btn,
-                    });
-                }
-                Event::MouseMotion { x, y, .. } => {
-                    self.event_queue.push(MouseMoveEvent {
-                        position: Vec2::new(x as f32, y as f32),
-                    });
-                }
-                Event::MouseWheel { x, y, .. } => {
-                    self.event_queue.push(MouseWheelEvent {
-                        delta_x: x,
-                        delta_y: y,
-                    });
-                }
-                Event::TextInput { text, .. } => {
-                    self.event_queue.push(TextInputEvent { text });
-                }
-                Event::Window { win_event: sdl2::event::WindowEvent::Resized(width, height), .. } => {
-                    self.event_queue.push(WindowResizedEvent {
-                        width: width as u32,
-                        height: height as u32,
-                    });
-                }
-                _ => {}
-            }
+impl<G: GameLogic> Engine<G> {
+    pub fn new(config: EngineConfig, game: G) -> Self {
+        Self {
+            config,
+            game,
+            state: None,
         }
     }
 
-    pub fn new(config: EngineConfig) -> Result<Self, Box<dyn std::error::Error>> {
-        // Initialize SDL2
-        let sdl = sdl2::init()?;
-        let video_subsystem = sdl.video()?;
+    pub fn run(mut self) -> Result<(), Box<dyn std::error::Error>> {
+        let event_loop = EventLoop::new()?;
+        event_loop.set_control_flow(ControlFlow::Poll);
+        event_loop.run_app(&mut self)?;
+        Ok(())
+    }
+}
 
-        // Set up OpenGL attributes
-        let gl_attr = video_subsystem.gl_attr();
-        gl_attr.set_context_profile(sdl2::video::GLProfile::Core);
-        gl_attr.set_context_version(config.gl_major_version, config.gl_minor_version);
+impl<G: GameLogic> ApplicationHandler for Engine<G> {
+    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
+        // This is where we create the window and initialize wgpu
+        // winit requires window creation to happen here, not in new()
+        let window_attrs = WindowAttributes::default()
+            .with_title(&self.config.window_title)
+            .with_inner_size(LogicalSize::new(self.config.window_width, self.config.window_height))
+            .with_resizable(self.config.resizable);
 
-        // Create window
-        let window = if config.resizable {
-            video_subsystem
-                .window(&config.window_title, config.window_width, config.window_height)
-                .opengl()
-                .resizable()
-                .build()?
-        } else {
-            video_subsystem
-                .window(&config.window_title, config.window_width, config.window_height)
-                .opengl()
-                .build()?
-        };
+        let window = Arc::new(event_loop.create_window(window_attrs).unwrap());
 
-        let gl_context = window.gl_create_context()?;
-        let _gl = gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
-
-        // Initialize systems
-        let mut systems_manager = SystemsManager::new();
+        // Initialize wgpu
+        let rendering_system = pollster::block_on(RenderingSystem::new(window.clone()));
 
         let mut world = World {
             input_state: InputState::default(),
             entity_manager: EntityManager::new(),
             physics_config: PhysicsConfig::default(),
-            asset_manager: AssetManager::new()?,
-            fps: 0.0
+            asset_manager: AssetManager::new().unwrap(),
+            fps: 0.0,
         };
 
-        // For input
-        systems_manager.add_system(UISystem::new(&window)); //UI will be at the top to consume event if required
-        systems_manager.add_system(InputSystem::new()); //Input manager is then followed so that it caches input state on the world... There should be a better way?
+        let mut systems_manager = SystemsManager::new();
+        systems_manager.add_system(InputSystem::new());
         systems_manager.add_system(PlayerControlSystem::default());
-        
-        // For rendering
-        systems_manager.add_system(RenderingSystem::new(&window));
-        
-        // For physics
         systems_manager.add_system(PhysicsSystem);
-        systems_manager.add_system(CollisionSystem); 
-        
+        systems_manager.add_system(CollisionSystem);
+        // Note: RenderingSystem is no longer in SystemsManager
+        // It owns wgpu state and is managed directly by Engine
 
         systems_manager.initialize_all(&mut world);
+
+        rendering_system.initialize_assets(&mut world.asset_manager);
         
-        // Set viewport
-        unsafe {
-            gl::Viewport(0, 0, config.window_width as i32, config.window_height as i32);
-        }
+        self.game.initialize(&mut world, &mut systems_manager);
 
-        // Get SDL2 event pump
-        let event_pump = sdl.event_pump()?;
-
-        Ok(Engine {
-            _sdl: sdl,
+        self.state = Some(EngineState {
             window,
-            _gl_context: gl_context,
-            event_pump,
+            rendering_system,
             systems_manager,
             world,
             frame_timer: FrameTimer::new(),
+            action_queue: EngineActionQueue::new(),
             event_queue: EngineEventQueue::new(),
-            action_queue: EngineActionQueue::new()
-        })
+        });
     }
 
-    pub fn run<G: GameLogic>(mut self, mut game: G) -> Result<(), Box<dyn std::error::Error>> {
-        // Let the game initialize itself also lets game add its own systems
-        game.initialize(&mut self.world, &mut self.systems_manager);
+    fn window_event(&mut self, event_loop: &ActiveEventLoop, _id: WindowId, event: WindowEvent) {
+        let state = match self.state.as_mut() {
+            Some(s) => s,
+            None => return,
+        };
 
-        // Main game loop
-        'main: loop {
-            // Update frame timer
-            self.frame_timer.update();
-            let delta_time = self.frame_timer.get_delta_time();
-           
-            self.world.fps = self.frame_timer.get_fps();
-
-            let mut should_quit = false;
-
-            self.process_sdl_events(&mut should_quit);
-
-            if should_quit {
-                break 'main;
+        match event {
+            WindowEvent::CloseRequested => {
+                event_loop.exit();
             }
-
-            //Uncomment to debug events
-            //self.event_queue.debug_print();
-
-            self.systems_manager.handle_event_all(&mut self.event_queue, &mut self.action_queue);
-
-            self.action_queue.execute_all(&mut self.world);
-
-            // Create update context
-            let mut update_context = SystemUpdateContext {
-                world: &mut self.world,
-                events: &mut self.event_queue,
-                delta_time: delta_time,
-            };
-
-            // Update systems
-            self.systems_manager.update_all(&mut update_context);
-
-            // Update game logic
-            game.update(&mut self.world, delta_time);
-
-            // Clear the screen
-            unsafe {
-                gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+            WindowEvent::KeyboardInput { event: key_event, .. } => {
+                // TODO: map winit key events to your EngineEventQueue
+                // Your KeyPressedEvent/KeyReleasedEvent will need keycode mapping from winit
             }
+            WindowEvent::MouseInput { state: btn_state, button, .. } => {
+                // TODO: map mouse button events
+            }
+            WindowEvent::CursorMoved { position, .. } => {
+                state.event_queue.push(MouseMoveEvent {
+                    position: Vec2::new(position.x as f32, position.y as f32),
+                });
+            }
+            WindowEvent::MouseWheel { delta, .. } => {
+                use winit::event::MouseScrollDelta;
+                if let MouseScrollDelta::LineDelta(x, y) = delta {
+                    state.event_queue.push(MouseWheelEvent {
+                        delta_x: x as i32,
+                        delta_y: y as i32,
+                    });
+                }
+            }
+            WindowEvent::Resized(size) => {
+                state.rendering_system.resize(size.width, size.height);
+                state.event_queue.push(WindowResizedEvent {
+                    width: size.width,
+                    height: size.height,
+                });
+            }
+            WindowEvent::RedrawRequested => {
+                // This is the main loop — winit calls this each frame
+                let s = state;
+                
+                s.frame_timer.update();
+                let delta_time = s.frame_timer.get_delta_time();
+                s.world.fps = s.frame_timer.get_fps();
 
-            //Create Render context
-            let mut render_context = SystemRenderContext {
-                entity_manager : &mut self.world.entity_manager,
-                asset_manager : &mut self.world.asset_manager
-            };
-            
-            //Render all systems. NOTE: Rendering is done in reverse so that UI is rendered at the top
-            self.systems_manager.render_all(&mut render_context);
+                s.systems_manager.handle_event_all(&mut s.event_queue, &mut s.action_queue);
+                s.action_queue.execute_all(&mut s.world);
 
-            // Swap buffers
-            self.window.gl_swap_window();
+                let mut update_context = SystemUpdateContext {
+                    world: &mut s.world,
+                    events: &mut s.event_queue,
+                    delta_time,
+                };
+                s.systems_manager.update_all(&mut update_context);
+                self.game.update(&mut s.world, delta_time);
 
-            //Clear actions
-            self.action_queue.clear();
+                let mut render_context = SystemRenderContext {
+                    entity_manager: &mut s.world.entity_manager,
+                    asset_manager: &mut s.world.asset_manager,
+                };
+                s.systems_manager.render_all(&mut render_context);
+
+                // RenderingSystem handles its own frame
+                s.rendering_system.render(&mut render_context);
+
+                s.action_queue.clear();
+                s.window.request_redraw();
+            }
+            _ => {}
         }
-
-        Ok(())
     }
 }
 

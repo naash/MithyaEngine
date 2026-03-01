@@ -4,6 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use std::collections::HashSet;
+use winit::keyboard::KeyCode;
 
 use crate::{
     asset::AssetManager, 
@@ -14,7 +15,7 @@ use crate::{
 #[derive(Default)]
 pub struct InputState {
     pub movement: (f32, f32),
-    pub keys_pressed: HashSet<sdl2::keyboard::Keycode>,
+    pub keys_pressed: HashSet<KeyCode>,
     pub mouse_position: (i32, i32),
 }
 

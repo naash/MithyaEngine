@@ -156,12 +156,12 @@ impl EngineEventListener for BrickBreakerSystem {
             }
 
             if let Some(key) = ev.as_any().downcast_ref::<KeyPressedEvent>() {
-               if key.key == sdl2::keyboard::Keycode::Space && !self.has_ball_launched {
-                    self.has_ball_launched = true;
-                    println!("Launch ball");
-                    actions.push(LaunchBallAction { ball_id : self.ball_id })
-                    //Launch ball action
-                }
+            //    if key.key == sdl2::keyboard::Keycode::Space && !self.has_ball_launched {
+            //         self.has_ball_launched = true;
+            //         println!("Launch ball");
+            //         actions.push(LaunchBallAction { ball_id : self.ball_id })
+            //         //Launch ball action
+            //     }
                 continue;
             }
         }

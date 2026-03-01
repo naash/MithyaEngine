@@ -3,27 +3,27 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::{collections::HashSet};
-use sdl2::keyboard::Keycode;
+use std::collections::HashSet;
+use winit::keyboard::KeyCode;
 
 use crate::{
     core::{
         engine_events::{
-        KeyPressedEvent, 
-        KeyReleasedEvent
+            KeyPressedEvent, 
+            KeyReleasedEvent,
         }, 
-        EngineEventListener
-        }, 
-        engine::system::{
+        EngineEventListener,
+    }, 
+    engine::system::{
         System, SystemRenderContext, SystemUpdateContext
-        },
+    },
     World
 };
 
 pub struct InputSystem {
-    pressed_keys: HashSet<Keycode>,
-    just_pressed: HashSet<Keycode>,
-    just_released: HashSet<Keycode>,
+    pressed_keys: HashSet<KeyCode>,
+    just_pressed: HashSet<KeyCode>,
+    just_released: HashSet<KeyCode>,
 }
 
 impl InputSystem {
@@ -35,15 +35,15 @@ impl InputSystem {
         }
     }
 
-    pub fn is_key_pressed(&self, keycode: Keycode) -> bool {
+    pub fn is_key_pressed(&self, keycode: KeyCode) -> bool {
         self.pressed_keys.contains(&keycode)
     }
 
-    pub fn is_key_just_pressed(&self, keycode: Keycode) -> bool {
+    pub fn is_key_just_pressed(&self, keycode: KeyCode) -> bool {
         self.just_pressed.contains(&keycode)
     }
 
-    pub fn is_key_just_released(&self, keycode: Keycode) -> bool {
+    pub fn is_key_just_released(&self, keycode: KeyCode) -> bool {
         self.just_released.contains(&keycode)
     }
 
@@ -51,16 +51,16 @@ impl InputSystem {
         let mut dx = 0.0;
         let mut dy = 0.0;
 
-        if self.is_key_pressed(Keycode::A) || self.is_key_pressed(Keycode::Left) {
+        if self.is_key_pressed(KeyCode::KeyA) || self.is_key_pressed(KeyCode::ArrowLeft) {
             dx -= 1.0;
         }
-        if self.is_key_pressed(Keycode::D) || self.is_key_pressed(Keycode::Right) {
+        if self.is_key_pressed(KeyCode::KeyD) || self.is_key_pressed(KeyCode::ArrowRight) {
             dx += 1.0;
         }
-        if self.is_key_pressed(Keycode::W) || self.is_key_pressed(Keycode::Up) {
+        if self.is_key_pressed(KeyCode::KeyW) || self.is_key_pressed(KeyCode::ArrowUp) {
             dy += 1.0;
         }
-        if self.is_key_pressed(Keycode::S) || self.is_key_pressed(Keycode::Down) {
+        if self.is_key_pressed(KeyCode::KeyS) || self.is_key_pressed(KeyCode::ArrowDown) {
             dy -= 1.0;
         }
 
@@ -74,20 +74,15 @@ impl System for InputSystem {
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-
         update_context.world.input_state.movement = self.get_movement_input();
-        // Clear the "just pressed" and "just released" states at the end of each frame
         self.just_pressed.clear();
         self.just_released.clear();
     }
 
-    fn render(&mut self, _render_context: &mut SystemRenderContext) {
-        // Input system doesn't render
-    }
-    
+    fn render(&mut self, _render_context: &mut SystemRenderContext) {}
+
     fn cleanup(&mut self, _world: &mut World) {}
 
-    //Has a listener, I don't like this but can't find a better way
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
         Some(self)
     }
@@ -98,8 +93,8 @@ impl EngineEventListener for InputSystem {
         use std::any::TypeId;
         vec![
             TypeId::of::<KeyPressedEvent>(),
-            TypeId::of::<KeyReleasedEvent>()
-            ]
+            TypeId::of::<KeyReleasedEvent>(),
+        ]
     }
 
     fn on_events(
@@ -107,7 +102,6 @@ impl EngineEventListener for InputSystem {
         events: &crate::core::EngineEventQueue,
         _actions: &mut crate::core::EngineActionQueue,
     ) {
-        // Process KeyPressed events
         for event in events.iter_type::<KeyPressedEvent>() {
             if !self.pressed_keys.contains(&event.key) {
                 self.just_pressed.insert(event.key);
@@ -115,7 +109,6 @@ impl EngineEventListener for InputSystem {
             self.pressed_keys.insert(event.key);
         }
 
-        // Process KeyReleased events
         for event in events.iter_type::<KeyReleasedEvent>() {
             if self.pressed_keys.contains(&event.key) {
                 self.just_released.insert(event.key);

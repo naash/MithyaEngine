@@ -4,83 +4,106 @@
 // https://opensource.org/licenses/MIT
 
 use std::collections::HashMap;
-
 use crate::asset::error::TextureLoadError;
 
+pub struct TextureEntry {
+    pub texture: wgpu::Texture,
+    pub view: wgpu::TextureView,
+}
+
 pub struct TextureManager {
-    texture_cache: HashMap<String, u32>, // path -> OpenGL texture ID
+    path_to_id: HashMap<String, u32>,
+    textures_by_id: HashMap<u32, TextureEntry>,
+    next_id: u32,
 }
 
 impl TextureManager {
     pub fn new() -> Self {
         Self {
-            texture_cache: HashMap::new(),
+            path_to_id: HashMap::new(),
+            textures_by_id: HashMap::new(),
+            next_id: 1,
         }
     }
 
-    pub fn load_texture(&mut self, path: &str) -> Result<u32, TextureLoadError> {
-        // Return cached texture if already loaded
-        
-        if let Some(&texture_id) = self.texture_cache.get(path) {
-            return Ok(texture_id);
+    pub fn load_texture(
+        &mut self,
+        path: &str,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+    ) -> Result<u32, TextureLoadError> {
+        // Return cached id if already loaded
+        if let Some(&id) = self.path_to_id.get(path) {
+            return Ok(id);
         }
 
-        let texture_id = self.create_gl_texture(path)?;
-        println!("Generated texture ID: {}", texture_id);
-        self.texture_cache.insert(path.to_string(), texture_id);
-        Ok(texture_id)
+        let entry = self.create_wgpu_texture(path, device, queue)?;
+        let id = self.next_id;
+        self.next_id += 1;
+
+        println!("Loaded texture: {} -> id {}", path, id);
+        self.path_to_id.insert(path.to_string(), id);
+        self.textures_by_id.insert(id, entry);
+        Ok(id)
     }
 
-    fn create_gl_texture(&self, texture_name: &str) -> Result<u32, TextureLoadError> {
+    pub fn get_texture(&self, id: &u32) -> Option<&TextureEntry> {
+        self.textures_by_id.get(id)
+    }
+
+    fn create_wgpu_texture(
+        &self,
+        texture_name: &str,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+    ) -> Result<TextureEntry, TextureLoadError> {
         let mut path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        //All textures need to be inside textures folder
         path.push("textures");
         path.push(texture_name);
 
         let img = image::open(&path)
-        .map_err(|e| {
-            println!("Failed to load image: {:?}", e);
-            TextureLoadError::ImageError(e)
-        })?
-        .to_rgba8();
-        
+            .map_err(|e| {
+                println!("Failed to load image: {:?}", e);
+                TextureLoadError::ImageError(e)
+            })?
+            .to_rgba8();
+
         let (width, height) = img.dimensions();
-        let mut texture_id = 0;
+        let size = wgpu::Extent3d { width, height, depth_or_array_layers: 1 };
 
-        unsafe {
-            gl::GenTextures(1, &mut texture_id);
-            gl::BindTexture(gl::TEXTURE_2D, texture_id);
-            
-            gl::TexImage2D(
-                gl::TEXTURE_2D,
-                0,
-                gl::RGBA as i32,
-                width as i32,
-                height as i32,
-                0,
-                gl::RGBA,
-                gl::UNSIGNED_BYTE,
-                img.as_ptr() as *const std::ffi::c_void,
-            );
+        let texture = device.create_texture(&wgpu::TextureDescriptor {
+            label: Some(texture_name),
+            size,
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
+            format: wgpu::TextureFormat::Rgba8UnormSrgb,
+            usage: wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::COPY_DST,
+            view_formats: &[],
+        });
 
-            gl::GenerateMipmap(gl::TEXTURE_2D);
-            
-            // Set texture parameters
-            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::LINEAR as i32);
-            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR as i32);
-            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE as i32);
-            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE as i32);
-        }
+        queue.write_texture(
+            wgpu::ImageCopyTextureBase {
+                texture: &texture,
+                mip_level: 0,
+                origin: wgpu::Origin3d::ZERO,
+                aspect: wgpu::TextureAspect::All,
+            },
+            &img,
+            wgpu::ImageDataLayout {
+                offset: 0,
+                bytes_per_row: Some(4 * width),
+                rows_per_image: Some(height),
+            },
+            size,
+        );
 
-        Ok(texture_id)
+        let view = texture.create_view(&wgpu::TextureViewDescriptor::default());
+        Ok(TextureEntry { texture, view })
     }
 
     pub fn cleanup(&mut self) {
-        unsafe {
-            for &texture_id in self.texture_cache.values() {
-                gl::DeleteTextures(1, &texture_id);
-            }
-        }
-        self.texture_cache.clear();
+        self.textures_by_id.clear();
+        self.path_to_id.clear();
     }
 }

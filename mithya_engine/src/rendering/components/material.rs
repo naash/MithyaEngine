@@ -5,14 +5,12 @@
 
 use crate::asset::asset_data::{MaterialData, UniformValue};
 
-// Material - How should the geometry be displayed, which shaders should it use
 #[derive(Clone, Debug)]
 pub struct Material {
     pub data: MaterialData,
     pub render_state: RenderState,
 }
 
-// Render state for material
 #[derive(Clone, Debug)]
 pub struct RenderState {
     pub blend_enabled: bool,
@@ -50,6 +48,50 @@ impl Default for RenderState {
     }
 }
 
+impl RenderState {
+    /// Convert blend mode to wgpu blend state for pipeline creation
+    pub fn to_wgpu_blend(&self) -> Option<wgpu::BlendState> {
+        if !self.blend_enabled {
+            return None;
+        }
+        match self.blend_mode {
+            BlendMode::Alpha => Some(wgpu::BlendState::ALPHA_BLENDING),
+            BlendMode::Additive => Some(wgpu::BlendState {
+                color: wgpu::BlendComponent {
+                    src_factor: wgpu::BlendFactor::One,
+                    dst_factor: wgpu::BlendFactor::One,
+                    operation: wgpu::BlendOperation::Add,
+                },
+                alpha: wgpu::BlendComponent::OVER,
+            }),
+            BlendMode::Multiply => Some(wgpu::BlendState {
+                color: wgpu::BlendComponent {
+                    src_factor: wgpu::BlendFactor::Dst,
+                    dst_factor: wgpu::BlendFactor::Zero,
+                    operation: wgpu::BlendOperation::Add,
+                },
+                alpha: wgpu::BlendComponent::OVER,
+            }),
+            BlendMode::None => None,
+        }
+    }
+
+    /// Convert cull face to wgpu face for pipeline creation
+    pub fn to_wgpu_cull(&self) -> Option<wgpu::Face> {
+        match self.cull_face {
+            CullFace::None => None,
+            CullFace::Front => Some(wgpu::Face::Front),
+            CullFace::Back => Some(wgpu::Face::Back),
+            CullFace::FrontAndBack => Some(wgpu::Face::Back), // wgpu doesn't support both, Back is safest default
+        }
+    }
+
+    /// Convert depth write to wgpu bool
+    pub fn to_wgpu_depth_write(&self) -> bool {
+        self.depth_write
+    }
+}
+
 impl Material {
     pub fn from_data(data: MaterialData) -> Self {
         Self {
@@ -58,7 +100,7 @@ impl Material {
         }
     }
 
-    // Uniform setters
+    // Uniform setters — unchanged, these just update CPU-side data
     pub fn set_float(&mut self, name: &str, value: f32) {
         self.data.uniforms.insert(name.to_string(), UniformValue::Float(value));
     }
@@ -83,112 +125,7 @@ impl Material {
         self.data.uniforms.insert(name.to_string(), UniformValue::Bool(value));
     }
 
-    // Get uniform value
     pub fn get_uniform(&self, name: &str) -> Option<&UniformValue> {
         self.data.uniforms.get(name)
-    }
-
-    // Apply material state (called before rendering)
-    pub fn apply(&self) {
-        if let Some(program_id) = self.data.shader_program_id {
-            unsafe {
-                gl::UseProgram(program_id);
-            }
-        }
-
-        // Apply uniforms
-        self.apply_uniforms();
-        
-        // Apply textures
-        self.apply_textures();
-        
-        // Apply render state
-        self.apply_render_state();
-    }
-
-    fn apply_uniforms(&self) {
-        if let Some(program_id) = self.data.shader_program_id {
-            for (name, value) in &self.data.uniforms {
-                let location = unsafe {
-                    let c_name = std::ffi::CString::new(name.as_str()).unwrap();
-                    gl::GetUniformLocation(program_id, c_name.as_ptr())
-                };
-
-                if location != -1 {
-                    unsafe {
-                        match value {
-                            UniformValue::Float(v) => gl::Uniform1f(location, *v),
-                            UniformValue::Vec2(v) => gl::Uniform2fv(location, 1, v.as_ptr()),
-                            UniformValue::Vec3(v) => gl::Uniform3fv(location, 1, v.as_ptr()),
-                            UniformValue::Vec4(v) => gl::Uniform4fv(location, 1, v.as_ptr()),
-                            UniformValue::Int(v) => gl::Uniform1i(location, *v),
-                            UniformValue::Mat4(v) => gl::UniformMatrix4fv(location, 1, gl::FALSE, v.as_ptr()),
-                            UniformValue::Bool(v) => gl::Uniform1i(location, if *v { 1 } else { 0 }),
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    fn apply_textures(&self) {
-        for (uniform_name, binding) in &self.data.textures {
-            unsafe {
-                gl::ActiveTexture(gl::TEXTURE0 + binding.slot);
-                gl::BindTexture(gl::TEXTURE_2D, binding.texture_id);
-                
-                if let Some(program_id) = self.data.shader_program_id {
-                    let c_name = std::ffi::CString::new(uniform_name.as_str()).unwrap();
-                    let location = gl::GetUniformLocation(program_id, c_name.as_ptr());
-                    if location != -1 {
-                        gl::Uniform1i(location, binding.slot as i32);
-                    }
-                }
-            }
-        }
-    }
-
-    fn apply_render_state(&self) {
-        unsafe {
-            // Depth testing
-            if self.render_state.depth_test {
-                gl::Enable(gl::DEPTH_TEST);
-            } else {
-                gl::Disable(gl::DEPTH_TEST);
-            }
-
-            // Depth writing
-            gl::DepthMask(if self.render_state.depth_write { gl::TRUE } else { gl::FALSE });
-
-            // Face culling
-            match self.render_state.cull_face {
-                CullFace::None => gl::Disable(gl::CULL_FACE),
-                CullFace::Front => {
-                    gl::Enable(gl::CULL_FACE);
-                    gl::CullFace(gl::FRONT);
-                }
-                CullFace::Back => {
-                    gl::Enable(gl::CULL_FACE);
-                    gl::CullFace(gl::BACK);
-                }
-                CullFace::FrontAndBack => {
-                    gl::Enable(gl::CULL_FACE);
-                    gl::CullFace(gl::FRONT_AND_BACK);
-                }
-            }
-
-            // Blending
-            if self.render_state.blend_enabled {
-                gl::Enable(gl::BLEND);
-                match self.render_state.blend_mode {
-                    BlendMode::Alpha => gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA),
-                    BlendMode::Additive => gl::BlendFunc(gl::ONE, gl::ONE),
-                    BlendMode::Multiply => gl::BlendFunc(gl::DST_COLOR, gl::ZERO),
-                    _ => {}
-                }
-            } else {
-                gl::Disable(gl::BLEND);
-            }
-        }
     }
 }

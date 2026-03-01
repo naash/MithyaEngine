@@ -3,9 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use crate::ui::{UIContext, UIElement};
-use egui_sdl2_gl::egui;
-
+// UIWindow is stubbed pending migration to egui-wgpu
 pub struct UIWindow {
     pub title: String,
     pub size: Option<(f32, f32)>,
@@ -19,41 +17,26 @@ impl UIWindow {
         self.size = Some((width, height));
         self
     }
-    
+
     pub fn position(mut self, x: f32, y: f32) -> Self {
         self.position = Some((x, y));
         self
     }
-    
+
     pub fn resizable(mut self, resizable: bool) -> Self {
         self.resizable = resizable;
         self
     }
-    
+
     pub fn collapsible(mut self, collapsible: bool) -> Self {
         self.collapsible = collapsible;
         self
     }
-    
-    pub fn show<F>(self, ctx: &UIContext, mut content: F) 
+
+    pub fn show<F>(self, _ctx: &crate::ui::UIContext, _content: F)
     where
-    F: FnMut(&mut UIElement),
+        F: FnMut(),
     {
-        let mut window = egui::Window::new(self.title)
-            .resizable(self.resizable)
-            .collapsible(self.collapsible);
-        
-        if let Some((width, height)) = self.size {
-            window = window.default_size(egui::vec2(width, height));
-        }
-        
-        if let Some((x, y)) = self.position {
-            window = window.default_pos(egui::pos2(x, y));
-        }
-        
-        window.show(ctx.ctx, |ui| {
-            let mut ui_element = UIElement { ui };
-            content(&mut ui_element);
-        });
+        // Stubbed — no-op until egui-wgpu backend is implemented
     }
 }

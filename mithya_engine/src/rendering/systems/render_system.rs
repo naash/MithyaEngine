@@ -3,280 +3,539 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use std::sync::Arc;
+use std::collections::HashMap;
 use glam::Mat4;
-use sdl2::event::Event;
-use sdl2::video::Window;
+use wgpu::util::DeviceExt;
+use winit::window::Window;
 
 use crate::{
-    asset::{managers::AssetManager, MaterialData, UniformValue}, 
-    core::Transform, engine::system::{System, SystemRenderContext, SystemUpdateContext}, rendering::components::{ Mesh, Render}, World
+    asset::{managers::AssetManager, MaterialData},
+    core::Transform,
+    engine::system::{SystemRenderContext},
+    rendering::components::{Mesh, Render},
 };
 
-// Rendering system - handles all rendering logic
+// GPU-side uniform buffer layout must match WGSL struct exactly
+// 3 mat4x4 = 3 * 64 = 192 bytes
+#[repr(C)]
+#[derive(Debug, Copy, Clone, bytemuck::Pod, bytemuck::Zeroable)]
+struct TransformUniforms {
+    model: [[f32; 4]; 4],
+    view: [[f32; 4]; 4],
+    projection: [[f32; 4]; 4],
+}
+
+// Color uniform — vec3 + padding to reach 16 bytes
+#[repr(C)]
+#[derive(Debug, Copy, Clone, bytemuck::Pod, bytemuck::Zeroable)]
+struct ColorUniforms {
+    color: [f32; 3],
+    _pad: f32,
+}
+
+pub enum PipelineType {
+    UnlitColor,
+    UnlitTexture,
+}
+
 pub struct RenderingSystem {
+    // Core wgpu state
+    device: wgpu::Device,
+    queue: wgpu::Queue,
+    surface: wgpu::Surface<'static>,
+    surface_config: wgpu::SurfaceConfiguration,
+    
+    // Pipelines
+    unlit_color_pipeline: wgpu::RenderPipeline,
+    unlit_texture_pipeline: wgpu::RenderPipeline,
+    
+    // Bind group layouts
+    transform_bind_group_layout: wgpu::BindGroupLayout,
+    color_bind_group_layout: wgpu::BindGroupLayout,
+    texture_bind_group_layout: wgpu::BindGroupLayout,
+
+    // Default sampler shared across all textures
+    default_sampler: wgpu::Sampler,
+
     pub aspect_ratio: f32,
 }
 
 impl RenderingSystem {
-    pub fn new(window: &Window) -> Self {
+    pub async fn new(window: Arc<Window>) -> Self {
+        let size = window.inner_size();
+        let aspect_ratio = size.width as f32 / size.height as f32;
 
-        let (width, height) = window.size();
+        // Instance is the entry point to wgpu
+        let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
+            backends: wgpu::Backends::all(),
+            ..Default::default()
+        });
 
-        Self {
-            aspect_ratio: width as f32 / height as f32
-        }
-    }
+        // Surface is the thing we draw onto — tied to the window
+        let surface = instance.create_surface(window).unwrap();
 
-    // Prepare mesh for rendering by creating OpenGL buffers
-    pub fn prepare_mesh(&self, mesh: &mut Mesh) {
-        unsafe {
-            let mut vao = 0;
-            let mut vbo = 0;
-            let mut ebo = 0;
+        // Adapter is a handle to the physical GPU
+        let adapter = instance.request_adapter(&wgpu::RequestAdapterOptions {
+            power_preference: wgpu::PowerPreference::HighPerformance,
+            compatible_surface: Some(&surface),
+            force_fallback_adapter: false,
+        }).await.unwrap();
 
-            gl::GenVertexArrays(1, &mut vao);
+        // Device is the logical GPU, queue is where we submit commands
+        let (device, queue) = adapter.request_device(
+            &wgpu::DeviceDescriptor {
+                label: Some("Mithya Engine Device"),
+                required_features: wgpu::Features::empty(),
+                required_limits: wgpu::Limits::default(),
+                memory_hints: Default::default(),
+            },
+            None,
+        ).await.unwrap();
 
-            println!("Generated VAO: {}", vao);
-            self.check_gl_error("GenVertexArrays");
-            gl::GenBuffers(1, &mut vbo);
+        // Configure the surface
+        let surface_caps = surface.get_capabilities(&adapter);
+        let surface_format = surface_caps.formats.iter()
+            .find(|f| f.is_srgb())
+            .copied()
+            .unwrap_or(surface_caps.formats[0]);
 
-            println!("Generated VBO: {}", vbo);
-            self.check_gl_error("GenBuffers VBO");
-            gl::GenBuffers(1, &mut ebo);
-            println!("Generated EBO: {}", ebo);
-            self.check_gl_error("GenBuffers EBO");
+        let surface_config = wgpu::SurfaceConfiguration {
+            usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
+            format: surface_format,
+            width: size.width,
+            height: size.height,
+            present_mode: wgpu::PresentMode::Fifo, // vsync
+            alpha_mode: surface_caps.alpha_modes[0],
+            view_formats: vec![],
+            desired_maximum_frame_latency: 2,
+        };
+        surface.configure(&device, &surface_config);
 
-            gl::BindVertexArray(vao);
+        // --- Bind group layouts ---
 
-            // Vertex buffer
-            gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
-            gl::BufferData(
-                gl::ARRAY_BUFFER,
-                (mesh.vertices.len() * std::mem::size_of::<f32>()) as gl::types::GLsizeiptr,
-                mesh.vertices.as_ptr() as *const gl::types::GLvoid,
-                gl::STATIC_DRAW,
-            );
-
-            // Element buffer
-            gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, ebo);
-            gl::BufferData(
-                gl::ELEMENT_ARRAY_BUFFER,
-                (mesh.indices.len() * std::mem::size_of::<u32>()) as gl::types::GLsizeiptr,
-                mesh.indices.as_ptr() as *const gl::types::GLvoid,
-                gl::STATIC_DRAW,
-            );
-
-            // Configure all attributes
-            for attr in &mesh.attributes {
-                gl::EnableVertexAttribArray(attr.location);
-                gl::VertexAttribPointer(
-                    attr.location,
-                    attr.size,
-                    gl::FLOAT,
-                    gl::FALSE,
-                    mesh.vertex_stride as gl::types::GLint,
-                    attr.offset as *const gl::types::GLvoid,
-                );
+        // Transforms: binding 0 = transform uniform buffer
+        let transform_bind_group_layout = device.create_bind_group_layout(
+            &wgpu::BindGroupLayoutDescriptor {
+                label: Some("Transform Bind Group Layout"),
+                entries: &[
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 0,
+                        visibility: wgpu::ShaderStages::VERTEX,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Uniform,
+                            has_dynamic_offset: false,
+                            min_binding_size: None,
+                        },
+                        count: None,
+                    },
+                ],
             }
-
-            //Clear buffers. Note that ebo is not cleared as it is part of vao
-            gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-            gl::BindVertexArray(0);
-
-            mesh.vao = Some(vao);
-            mesh.vbo = Some(vbo);
-            mesh.ebo = Some(ebo);
-        }
-    }
-
-    fn render_entity(&mut self, transform: &Transform, render: &mut Render, asset_manager: &mut AssetManager) {
-        // Prepare mesh if not already prepared
-
-        if render.mesh.vao.is_none() {
-            self.prepare_mesh(&mut render.mesh);
-        }
-
-        // Get material or use default
-        let material_id = render.material_id.unwrap_or(
-            0
         );
 
-        if let Some(material) = asset_manager.get_material_mut(material_id) {
+        // Color: binding 0 = color uniform buffer (unlit_color only)
+        let color_bind_group_layout = device.create_bind_group_layout(
+            &wgpu::BindGroupLayoutDescriptor {
+                label: Some("Color Bind Group Layout"),
+                entries: &[
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 0,
+                        visibility: wgpu::ShaderStages::VERTEX | wgpu::ShaderStages::FRAGMENT,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Uniform,
+                            has_dynamic_offset: false,
+                            min_binding_size: None,
+                        },
+                        count: None,
+                    },
+                ],
+            }
+        );
 
-            // Use glam to create the transformation matrix
-            let translation = glam::Mat4::from_translation(transform.position);
-            let rotation = glam::Mat4::from_quat(transform.rotation);
-            let scale = glam::Mat4::from_scale(transform.scale);
-            
-            // Combine transformations: Translation * Rotation * Scale
-            let model_matrix = translation * rotation * scale;
+        // Texture: binding 0 = texture, binding 1 = sampler (unlit_texture only)
+        let texture_bind_group_layout = device.create_bind_group_layout(
+            &wgpu::BindGroupLayoutDescriptor {
+                label: Some("Texture Bind Group Layout"),
+                entries: &[
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 0,
+                        visibility: wgpu::ShaderStages::FRAGMENT,
+                        ty: wgpu::BindingType::Texture {
+                            sample_type: wgpu::TextureSampleType::Float { filterable: true },
+                            view_dimension: wgpu::TextureViewDimension::D2,
+                            multisampled: false,
+                        },
+                        count: None,
+                    },
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 1,
+                        visibility: wgpu::ShaderStages::FRAGMENT,
+                        ty: wgpu::BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
+                        count: None,
+                    },
+                ],
+            }
+        );
 
-            // TODO: Update when camera system is implemented
-            let identity_matrix = [
-                1.0, 0.0, 0.0, 0.0,
-                0.0, 1.0, 0.0, 0.0,
-                0.0, 0.0, 1.0, 0.0,
-                0.0, 0.0, 0.0, 1.0,
-            ];
+        // Default sampler — linear filtering, clamp to edge
+        let default_sampler = device.create_sampler(&wgpu::SamplerDescriptor {
+            label: Some("Default Sampler"),
+            address_mode_u: wgpu::AddressMode::ClampToEdge,
+            address_mode_v: wgpu::AddressMode::ClampToEdge,
+            address_mode_w: wgpu::AddressMode::ClampToEdge,
+            mag_filter: wgpu::FilterMode::Linear,
+            min_filter: wgpu::FilterMode::Linear,
+            mipmap_filter: wgpu::FilterMode::Nearest,
+            ..Default::default()
+        });
 
-            let projection = Mat4::orthographic_rh(-20.0 * self.aspect_ratio, 20.0 * self.aspect_ratio, -20.0, 20.0, -1.0, 1.0);
+        // --- Pipelines ---
+        let unlit_color_pipeline = Self::create_unlit_color_pipeline(
+            &device,
+            surface_format,
+            &transform_bind_group_layout,
+            &color_bind_group_layout,
+        );
 
-            material.uniforms.insert("u_model".to_string(), UniformValue::Mat4(model_matrix.to_cols_array()));
-            material.uniforms.insert("u_view".to_string(), UniformValue::Mat4(identity_matrix));
-            material.uniforms.insert("u_projection".to_string(), UniformValue::Mat4(projection.to_cols_array()));
-            material.uniforms.insert("u_color".to_string(), UniformValue::Vec3([0.1, 0.5, 0.5]));
+        let unlit_texture_pipeline = Self::create_unlit_texture_pipeline(
+            &device,
+            surface_format,
+            &transform_bind_group_layout,
+            &texture_bind_group_layout,
+        );
 
-            // Apply the material
-            self.apply_material(material);
-            self.render_mesh(&render.mesh);
-        }      
+        Self {
+            device,
+            queue,
+            surface,
+            surface_config,
+            unlit_color_pipeline,
+            unlit_texture_pipeline,
+            transform_bind_group_layout,
+            color_bind_group_layout,
+            texture_bind_group_layout,
+            default_sampler,
+            aspect_ratio,
+        }
     }
 
-    fn apply_material(&self, material: &MaterialData) {
-        // Apply shader program
-        if let Some(program_id) = material.shader_program_id {
-            unsafe {
-                gl::UseProgram(program_id);
-                //self.debug_shader_uniforms(program_id);
-            }
+    fn create_unlit_color_pipeline(
+        device: &wgpu::Device,
+        format: wgpu::TextureFormat,
+        transform_layout: &wgpu::BindGroupLayout,
+        color_layout: &wgpu::BindGroupLayout,
+    ) -> wgpu::RenderPipeline {
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("Unlit Color Shader"),
+            source: wgpu::ShaderSource::Wgsl(
+                include_str!("../../../shaders/unlit_color.wgsl").into()
+            ),
+        });
+
+        let layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("Unlit Color Pipeline Layout"),
+            bind_group_layouts: &[transform_layout, color_layout],
+            push_constant_ranges: &[],
+        });
+
+        device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+            label: Some("Unlit Color Pipeline"),
+            layout: Some(&layout),
+            vertex: wgpu::VertexState {
+                module: &shader,
+                entry_point: "vs_main",
+                buffers: &[
+                    // Position only: location 0, 3 floats, stride 12 bytes
+                    wgpu::VertexBufferLayout {
+                        array_stride: 12,
+                        step_mode: wgpu::VertexStepMode::Vertex,
+                        attributes: &[
+                            wgpu::VertexAttribute {
+                                shader_location: 0,
+                                offset: 0,
+                                format: wgpu::VertexFormat::Float32x3,
+                            },
+                        ],
+                    },
+                ],
+                compilation_options: Default::default(),
+            },
+            fragment: Some(wgpu::FragmentState {
+                module: &shader,
+                entry_point: "fs_main",
+                targets: &[Some(wgpu::ColorTargetState {
+                    format,
+                    blend: Some(wgpu::BlendState::ALPHA_BLENDING),
+                    write_mask: wgpu::ColorWrites::ALL,
+                })],
+                compilation_options: Default::default(),
+            }),
+            primitive: wgpu::PrimitiveState {
+                topology: wgpu::PrimitiveTopology::TriangleList,
+                strip_index_format: None,
+                front_face: wgpu::FrontFace::Ccw,
+                cull_mode: None,
+                ..Default::default()
+            },
+            depth_stencil: None,
+            multisample: wgpu::MultisampleState::default(),
+            multiview: None,
+            cache: None,
+        })
+    }
+
+    fn create_unlit_texture_pipeline(
+        device: &wgpu::Device,
+        format: wgpu::TextureFormat,
+        transform_layout: &wgpu::BindGroupLayout,
+        texture_layout: &wgpu::BindGroupLayout,
+    ) -> wgpu::RenderPipeline {
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("Unlit Texture Shader"),
+            source: wgpu::ShaderSource::Wgsl(
+                include_str!("../../../shaders/unlit_texture.wgsl").into()
+            ),
+        });
+
+        let layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("Unlit Texture Pipeline Layout"),
+            bind_group_layouts: &[transform_layout, texture_layout],
+            push_constant_ranges: &[],
+        });
+
+        device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+            label: Some("Unlit Texture Pipeline"),
+            layout: Some(&layout),
+            vertex: wgpu::VertexState {
+                module: &shader,
+                entry_point: "vs_main",
+                buffers: &[
+                    // Position + UV: stride 20 bytes
+                    wgpu::VertexBufferLayout {
+                        array_stride: 20,
+                        step_mode: wgpu::VertexStepMode::Vertex,
+                        attributes: &[
+                            wgpu::VertexAttribute {
+                                shader_location: 0,
+                                offset: 0,
+                                format: wgpu::VertexFormat::Float32x3,
+                            },
+                            wgpu::VertexAttribute {
+                                shader_location: 1,
+                                offset: 12,
+                                format: wgpu::VertexFormat::Float32x2,
+                            },
+                        ],
+                    },
+                ],
+                compilation_options: Default::default(),
+            },
+            fragment: Some(wgpu::FragmentState {
+                module: &shader,
+                entry_point: "fs_main",
+                targets: &[Some(wgpu::ColorTargetState {
+                    format,
+                    blend: Some(wgpu::BlendState::ALPHA_BLENDING),
+                    write_mask: wgpu::ColorWrites::ALL,
+                })],
+                compilation_options: Default::default(),
+            }),
+            primitive: wgpu::PrimitiveState {
+                topology: wgpu::PrimitiveTopology::TriangleList,
+                front_face: wgpu::FrontFace::Ccw,
+                cull_mode: None,
+                ..Default::default()
+            },
+            depth_stencil: None,
+            multisample: wgpu::MultisampleState::default(),
+            multiview: None,
+            cache: None,
+        })
+    }
+
+    pub fn resize(&mut self, width: u32, height: u32) {
+        if width > 0 && height > 0 {
+            self.surface_config.width = width;
+            self.surface_config.height = height;
+            self.surface.configure(&self.device, &self.surface_config);
+            self.aspect_ratio = width as f32 / height as f32;
         }
+    }
 
-        // Apply uniforms
-        for (name, value) in &material.uniforms {
-            unsafe {
-                
-                let location = gl::GetUniformLocation(
-                    material.shader_program_id.unwrap(),
-                    std::ffi::CString::new(name.as_str()).unwrap().as_ptr()
-                );
+    pub fn render(&mut self, render_context: &mut SystemRenderContext) {
+        // Acquire the next frame from the surface
+        let output = match self.surface.get_current_texture() {
+            Ok(t) => t,
+            Err(wgpu::SurfaceError::Lost) => {
+                self.surface.configure(&self.device, &self.surface_config);
+                return;
+            }
+            Err(e) => {
+                eprintln!("Surface error: {:?}", e);
+                return;
+            }
+        };
 
-                if location != -1 {
-                    match value {
-                        UniformValue::Mat4(v) => gl::UniformMatrix4fv(location, 1, gl::FALSE, v.as_ptr()),
-                        UniformValue::Vec2(v) => gl::Uniform2fv(location, 1, v.as_ptr()),
-                        UniformValue::Vec3(v) => gl::Uniform3fv(location, 1, v.as_ptr()),
-                        UniformValue::Vec4(v) => gl::Uniform4fv(location, 1, v.as_ptr()),
-                        UniformValue::Float(v) => gl::Uniform1f(location, *v),
-                        UniformValue::Int(v) => gl::Uniform1i(location, *v),
-                        UniformValue::Bool(v) => gl::Uniform1i(location, if *v { 1 } else { 0 }),
-                    }
+        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
+        let mut encoder = self.device.create_command_encoder(
+            &wgpu::CommandEncoderDescriptor { label: Some("Render Encoder") }
+        );
+
+        {
+            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("Main Render Pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: &view,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(wgpu::Color {
+                            r: 0.0, g: 0.3, b: 0.5, a: 1.0,
+                        }),
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                depth_stencil_attachment: None,
+                timestamp_writes: None,
+                occlusion_query_set: None,
+            });
+
+            let entities = render_context.entity_manager.get_renderable_entities();
+
+            for entity_id in entities {
+                if let (Some(transform), Some(render)) = (
+                    render_context.entity_manager.get_component::<Transform>(entity_id).cloned(),
+                    render_context.entity_manager.get_component_mut::<Render>(entity_id),
+                ) {
+                    self.render_entity(
+                        &transform,
+                        render,
+                        &mut render_context.asset_manager,
+                        &mut render_pass,
+                    );
                 }
             }
         }
 
-        // Apply textures
-        for (_name, binding) in &material.textures {
-            unsafe {
-                gl::ActiveTexture(gl::TEXTURE0 + binding.slot);
-                gl::BindTexture(gl::TEXTURE_2D, binding.texture_id);
-            }
-        }
+        self.queue.submit(std::iter::once(encoder.finish()));
+        output.present();
     }
 
-    fn render_mesh(&self, mesh: &Mesh) {
-        // Render the mesh
-        if let Some(vao) = mesh.vao {
-            unsafe {
-                gl::BindVertexArray(vao);
-                gl::DrawElements(
-                    gl::TRIANGLES,
-                    mesh.indices.len() as i32,
-                    gl::UNSIGNED_INT,
-                    std::ptr::null(),
-                );
-                gl::BindVertexArray(0);
-            }
-        }
-    }
-
-    // Add this debugging function to check OpenGL errors
-    fn check_gl_error(&self, operation: &str) {
-        unsafe {
-            let error = gl::GetError();
-            if error != gl::NO_ERROR {
-                println!("OpenGL error after {}: {}", operation, error);
-            }
-        }
-    }
-
-    fn debug_shader_uniforms(&self, program_id: u32) {
-    unsafe {
-        let mut uniform_count = 0;
-        gl::GetProgramiv(program_id, gl::ACTIVE_UNIFORMS, &mut uniform_count);
-        println!("Shader program {} has {} active uniforms:", program_id, uniform_count);
-        
-        for i in 0..uniform_count {
-            let mut name = vec![0u8; 256];
-            let mut length = 0;
-            let mut size = 0;
-            let mut uniform_type = 0;
-            
-            gl::GetActiveUniform(
-                program_id,
-                i as u32,
-                256,
-                &mut length,
-                &mut size,
-                &mut uniform_type,
-                name.as_mut_ptr() as *mut i8,
-            );
-            
-            name.truncate(length as usize);
-            let uniform_name = String::from_utf8_lossy(&name);
-            let location = gl::GetUniformLocation(
-                program_id,
-                std::ffi::CString::new(uniform_name.as_ref()).unwrap().as_ptr()
-            );
-            
-            println!("  Uniform {}: '{}' (location: {})", i, uniform_name, location);
-        }
-    }
-}
-}
-
-impl System for RenderingSystem
-{
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
-        
-        //Create default program
-        let _ = _world.asset_manager.create_default_materials();
-
-        unsafe {
-            gl::Enable(gl::DEPTH_TEST);
-            gl::ClearColor(0.0, 0.3, 0.5, 1.0);
+    fn render_entity(
+        &self,
+        transform: &Transform,
+        render: &mut Render,
+        asset_manager: &mut AssetManager,
+        render_pass: &mut wgpu::RenderPass,
+    ) {
+        // Upload mesh to GPU if not done yet
+        if !render.mesh.is_uploaded() {
+            render.mesh.upload(&self.device);
         }
 
-        Ok(())
-    }
+        let material_id = render.material_id.unwrap_or(0);
+        let material = match asset_manager.get_material(material_id) {
+            Some(m) => m,
+            None => return,
+        };
 
-    fn update(&mut self, _update_context: &mut SystemUpdateContext) {
-        //Nothing to update just render
-    }
+        // Build transform matrices
+        let model = (Mat4::from_translation(transform.position)
+            * Mat4::from_quat(transform.rotation)
+            * Mat4::from_scale(transform.scale))
+            .to_cols_array_2d();
 
-    fn render(&mut self, render_context: &mut SystemRenderContext) {
-        unsafe {
-            gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+        let view = Mat4::IDENTITY.to_cols_array_2d();
 
-            gl::Enable(gl::BLEND);
-            gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
-        }
+        let projection = Mat4::orthographic_rh(
+            -20.0 * self.aspect_ratio, 20.0 * self.aspect_ratio,
+            -20.0, 20.0,
+            -1.0, 1.0,
+        ).to_cols_array_2d();
 
-        // Collect entity IDs first to avoid borrowing conflicts
-        let entities = render_context.entity_manager.get_renderable_entities();
-        
-        for entity_id in entities {
-            if let (Some(transform), Some(render)) = (
-            render_context.entity_manager.get_component::<Transform>(entity_id).cloned(), //Need to clone to fix mutability issue
-            render_context.entity_manager.get_component_mut::<Render>(entity_id)
-            ) 
+        let transform_uniforms = TransformUniforms { model, view, projection };
+
+        // Upload transform uniform buffer
+        let transform_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Transform Buffer"),
+            contents: bytemuck::cast_slice(&[transform_uniforms]),
+            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let transform_bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: Some("Transform Bind Group"),
+            layout: &self.transform_bind_group_layout,
+            entries: &[wgpu::BindGroupEntry {
+                binding: 0,
+                resource: transform_buffer.as_entire_binding(),
+            }],
+        });
+
+        // Decide pipeline based on whether material has textures
+        if material.textures.is_empty() {
+            // Unlit color pipeline
+            let color = match material.uniforms.get("u_color") {
+                Some(crate::asset::UniformValue::Vec3(v)) => *v,
+                _ => [1.0, 1.0, 1.0],
+            };
+
+            let color_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Color Buffer"),
+                contents: bytemuck::cast_slice(&[ColorUniforms { color, _pad: 0.0 }]),
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            });
+
+            let color_bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+                label: Some("Color Bind Group"),
+                layout: &self.color_bind_group_layout,
+                entries: &[wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: color_buffer.as_entire_binding(),
+                }],
+            });
+
+            render_pass.set_pipeline(&self.unlit_color_pipeline);
+            render_pass.set_bind_group(0, &transform_bind_group, &[]);
+            render_pass.set_bind_group(1, &color_bind_group, &[]);
+
+        } else {
+            // Unlit texture pipeline — use first texture binding
+            let texture_entry = match material.textures.values().next()
+                .and_then(|b| asset_manager.get_texture(&b.texture_id))
             {
-                self.render_entity(&transform, render, &mut render_context.asset_manager);
-            }
+                Some(t) => t,
+                None => return,
+            };
+
+            let texture_bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+                label: Some("Texture Bind Group"),
+                layout: &self.texture_bind_group_layout,
+                entries: &[
+                    wgpu::BindGroupEntry {
+                        binding: 0,
+                        resource: wgpu::BindingResource::TextureView(&texture_entry.view),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 1,
+                        resource: wgpu::BindingResource::Sampler(&self.default_sampler),
+                    },
+                ],
+            });
+
+            render_pass.set_pipeline(&self.unlit_texture_pipeline);
+            render_pass.set_bind_group(0, &transform_bind_group, &[]);
+            render_pass.set_bind_group(1, &texture_bind_group, &[]);
         }
+
+        let vertex_buffer = render.mesh.vertex_buffer.as_ref().unwrap();
+        let index_buffer = render.mesh.index_buffer.as_ref().unwrap();
+        let index_count = render.mesh.indices.len() as u32;
+
+        render_pass.set_vertex_buffer(0, vertex_buffer.slice(..));
+        render_pass.set_index_buffer(index_buffer.slice(..), wgpu::IndexFormat::Uint32);
+        render_pass.draw_indexed(0..index_count, 0, 0..1);
     }
 
-    fn cleanup(&mut self, _world: &mut World) {
-        // Any cleanup logic specific to the UI system
-        // The painter and context will be dropped automatically
+    pub fn initialize_assets(&self, asset_manager: &mut AssetManager) {
+        asset_manager.create_default_materials(&self.device, &self.queue).unwrap();
     }
 }

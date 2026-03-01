@@ -8,12 +8,12 @@ crate-type = ["cdylib", "lib"]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 glam = { version = "0.24", features = ["serde"] }
-gl = "0.14.0"
 image = "0.24"
-sdl2 = { version = "0.37.0", features = ["bundled", "static-link"] }
-egui = "0.32"
-egui_sdl2_gl = "0.32"
 thiserror = "2.0.16"
-
-[env]
-CMAKE_POLICY_VERSION_MINIMUM = "3.5"
+winit = "0.30"
+wgpu = "22"
+egui = "0.29"
+egui-wgpu = "0.29"
+egui-winit = "0.29"
+bytemuck = "1"
+pollster = "0.3"
