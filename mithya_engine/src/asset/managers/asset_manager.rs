@@ -16,70 +16,34 @@ pub struct AssetManager {
 }
 
 impl AssetManager {
-    pub fn new() -> Result<Self, AssetError> {
-        Ok(Self {
-            texture_manager: TextureManager::new(),
+    pub fn new(asset_root: std::path::PathBuf) -> Result<Self, AssetError> {
+        let mut manager = Self {
+            texture_manager: TextureManager::new(asset_root),
             material_manager: MaterialManager::new(),
             loaded_materials: HashMap::new(),
-        })
+        };
+        manager.load_material("unlit_color")?; //Support unlit color material as default
+        Ok(manager)
     }
 
     pub fn load_material(&mut self, name: &str) -> Result<u32, AssetError> {
         if let Some(&id) = self.loaded_materials.get(name) {
             return Ok(id);
         }
-
         let material_id = self.material_manager.create_material(name)?;
         self.loaded_materials.insert(name.to_string(), material_id);
         Ok(material_id)
     }
 
-    pub fn create_default_materials(
-        &mut self,
-        device: &wgpu::Device,
-        queue: &wgpu::Queue,
-    ) -> Result<(), AssetError> {
-        // Create materials — no shader paths needed, pipelines are in RenderingSystem
-        self.load_material("unlit_color")?;
-        self.load_material("unlit_texture_green")?;
-        self.load_material("unlit_texture_orange")?;
-        self.load_material("unlit_texture_blue")?;
-        self.load_material("unlit_texture_red")?;
-        self.load_material("unlit_texture_yellow")?;
-        self.load_material("unlit_texture_purple")?;
-        self.load_material("unlit_texture_circle")?;
-
-        // Load textures
-        let green_id   = self.texture_manager.load_texture("green_texture.png", device, queue)?;
-        let red_id     = self.texture_manager.load_texture("red_texture.png", device, queue)?;
-        let blue_id    = self.texture_manager.load_texture("blue_texture.png", device, queue)?;
-        let yellow_id  = self.texture_manager.load_texture("yellow_texture.png", device, queue)?;
-        let orange_id  = self.texture_manager.load_texture("orange_texture.png", device, queue)?;
-        let purple_id  = self.texture_manager.load_texture("purple_texture.png", device, queue)?;
-        let circle_id  = self.texture_manager.load_texture("pinkCircle.png", device, queue)?;
-
-        // Bind textures to materials
-        let bindings = [
-            ("unlit_texture_green",  green_id),
-            ("unlit_texture_red",    red_id),
-            ("unlit_texture_blue",   blue_id),
-            ("unlit_texture_yellow", yellow_id),
-            ("unlit_texture_orange", orange_id),
-            ("unlit_texture_purple", purple_id),
-            ("unlit_texture_circle", circle_id),
-        ];
-
-        for (material_name, texture_id) in bindings {
-            if let Some(material_id) = self.material_manager.get_material_id(material_name) {
-                self.material_manager.add_texture_to_material(
-                    material_id,
-                    "u_texture",
-                    texture_id,
-                    0,
-                )?;
-            }
-        }
-
+    pub fn load_texture_for_material(
+    &mut self,
+    material_name: &str,
+    texture_file: &str,
+    device: &wgpu::Device,
+    queue: &wgpu::Queue) -> Result<(), AssetError> {
+        let material_id = self.load_material(material_name)?;
+        let texture_id = self.texture_manager.load_texture(texture_file, device, queue)?;
+        self.material_manager.add_texture_to_material(material_id, "u_texture", texture_id, 0)?;
         Ok(())
     }
 

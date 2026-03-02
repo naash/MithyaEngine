@@ -4,16 +4,12 @@
 // https://opensource.org/licenses/MIT
 
 use std::sync::Arc;
-use std::collections::HashMap;
 use glam::Mat4;
 use wgpu::util::DeviceExt;
 use winit::window::Window;
 
 use crate::{
-    asset::{managers::AssetManager, MaterialData},
-    core::Transform,
-    engine::system::{SystemRenderContext},
-    rendering::components::{Mesh, Render},
+    World, asset::managers::AssetManager, core::Transform, engine::system::{System, SystemRenderContext, SystemUpdateContext}, rendering::components::Render
 };
 
 // GPU-side uniform buffer layout must match WGSL struct exactly
@@ -32,11 +28,6 @@ struct TransformUniforms {
 struct ColorUniforms {
     color: [f32; 3],
     _pad: f32,
-}
-
-pub enum PipelineType {
-    UnlitColor,
-    UnlitTexture,
 }
 
 pub struct RenderingSystem {
@@ -59,6 +50,71 @@ pub struct RenderingSystem {
     default_sampler: wgpu::Sampler,
 
     pub aspect_ratio: f32,
+}
+
+impl System for RenderingSystem {
+    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> { Ok(()) }
+
+    fn update(&mut self, _update_context: &mut SystemUpdateContext) {
+    }
+
+    fn render(&mut self, render_context: &mut SystemRenderContext) {
+        // Acquire the next frame from the surface
+        let output = match self.surface.get_current_texture() {
+            Ok(t) => t,
+            Err(wgpu::SurfaceError::Lost) => {
+                self.surface.configure(&self.device, &self.surface_config);
+                return;
+            }
+            Err(e) => {
+                eprintln!("Surface error: {:?}", e);
+                return;
+            }
+        };
+
+        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
+        let mut encoder = self.device.create_command_encoder(
+            &wgpu::CommandEncoderDescriptor { label: Some("Render Encoder") }
+        );
+
+        {
+            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("Main Render Pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: &view,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(wgpu::Color {
+                            r: 0.0, g: 0.3, b: 0.5, a: 1.0,
+                        }),
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                depth_stencil_attachment: None,
+                timestamp_writes: None,
+                occlusion_query_set: None,
+            });
+
+            let entities = render_context.entity_manager.get_renderable_entities();
+
+            for entity_id in entities {
+                if let (Some(transform), Some(render)) = (
+                    render_context.entity_manager.get_component::<Transform>(entity_id).cloned(),
+                    render_context.entity_manager.get_component_mut::<Render>(entity_id),
+                ) {
+                    self.render_entity(
+                        &transform,
+                        render,
+                        &mut render_context.asset_manager,
+                        &mut render_pass,
+                    );
+                }
+            }
+        }
+
+        self.queue.submit(std::iter::once(encoder.finish()));
+        output.present();
+    }
 }
 
 impl RenderingSystem {
@@ -362,64 +418,6 @@ impl RenderingSystem {
         }
     }
 
-    pub fn render(&mut self, render_context: &mut SystemRenderContext) {
-        // Acquire the next frame from the surface
-        let output = match self.surface.get_current_texture() {
-            Ok(t) => t,
-            Err(wgpu::SurfaceError::Lost) => {
-                self.surface.configure(&self.device, &self.surface_config);
-                return;
-            }
-            Err(e) => {
-                eprintln!("Surface error: {:?}", e);
-                return;
-            }
-        };
-
-        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
-        let mut encoder = self.device.create_command_encoder(
-            &wgpu::CommandEncoderDescriptor { label: Some("Render Encoder") }
-        );
-
-        {
-            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
-                label: Some("Main Render Pass"),
-                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-                    view: &view,
-                    resolve_target: None,
-                    ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(wgpu::Color {
-                            r: 0.0, g: 0.3, b: 0.5, a: 1.0,
-                        }),
-                        store: wgpu::StoreOp::Store,
-                    },
-                })],
-                depth_stencil_attachment: None,
-                timestamp_writes: None,
-                occlusion_query_set: None,
-            });
-
-            let entities = render_context.entity_manager.get_renderable_entities();
-
-            for entity_id in entities {
-                if let (Some(transform), Some(render)) = (
-                    render_context.entity_manager.get_component::<Transform>(entity_id).cloned(),
-                    render_context.entity_manager.get_component_mut::<Render>(entity_id),
-                ) {
-                    self.render_entity(
-                        &transform,
-                        render,
-                        &mut render_context.asset_manager,
-                        &mut render_pass,
-                    );
-                }
-            }
-        }
-
-        self.queue.submit(std::iter::once(encoder.finish()));
-        output.present();
-    }
-
     fn render_entity(
         &self,
         transform: &Transform,
@@ -535,7 +533,10 @@ impl RenderingSystem {
         render_pass.draw_indexed(0..index_count, 0, 0..1);
     }
 
-    pub fn initialize_assets(&self, asset_manager: &mut AssetManager) {
-        asset_manager.create_default_materials(&self.device, &self.queue).unwrap();
+    pub fn load_assets<F>(&self, asset_manager: &mut AssetManager, f: F)
+    where
+        F: FnOnce(&mut AssetManager, &wgpu::Device, &wgpu::Queue),
+    {
+        f(asset_manager, &self.device, &self.queue);
     }
 }

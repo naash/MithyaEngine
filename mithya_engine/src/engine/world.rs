@@ -7,9 +7,10 @@ use std::collections::HashSet;
 use winit::keyboard::KeyCode;
 
 use crate::{
+    EntityManager, 
     asset::AssetManager, 
-    physics::PhysicsConfig, 
-    EntityManager
+    core::KeyModifiers, 
+    physics::PhysicsConfig
 };
 
 #[derive(Default)]
@@ -17,6 +18,7 @@ pub struct InputState {
     pub movement: (f32, f32),
     pub keys_pressed: HashSet<KeyCode>,
     pub mouse_position: (i32, i32),
+    pub current_modifiers: KeyModifiers,
 }
 
 pub struct World {

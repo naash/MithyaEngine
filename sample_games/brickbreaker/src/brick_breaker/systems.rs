@@ -14,6 +14,7 @@ use mithya_engine::{
 use glam::Vec3;
 use super::components::{Ball, Brick, BrickBreakerState};
 use std::any::TypeId;
+use winit::keyboard::KeyCode;
 
 #[derive(Debug)]
 pub struct LaunchBallAction {
@@ -59,18 +60,75 @@ impl EngineAction for BallPaddleCollisionAction {
     }
 }
 
+#[derive(Debug)]
+pub struct ResetBallAction {
+    pub ball_id: u32,
+}
+
+impl EngineAction for ResetBallAction {
+    fn execute(&mut self, world: &mut World) {
+        if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(self.ball_id) {
+            rb.velocity = Vec3::ZERO;
+            rb.is_kinematic = true;
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct AddScoreAction {
+    pub game_manager_id: u32,
+    pub points: u32,
+}
+
+impl EngineAction for AddScoreAction {
+    fn execute(&mut self, world: &mut World) {
+        if let Some(state) = world.entity_manager
+            .get_component_mut::<BrickBreakerState>(self.game_manager_id) 
+        {
+            state.score += self.points;
+            println!("Score: {}", state.score);
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct LoseLifeAction {
+    pub game_manager_id: u32,
+}
+
+impl EngineAction for LoseLifeAction {
+    fn execute(&mut self, world: &mut World) {
+        if let Some(state) = world.entity_manager
+            .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+        {
+            if state.lives > 0 {
+                state.lives -= 1;
+                println!("Lives remaining: {}", state.lives);
+            }
+            if state.lives == 0 {
+                state.game_over = true;
+                println!("Game over!");
+            }
+        }
+    }
+}
+
 pub struct BrickBreakerSystem {
     pub ball_id: u32,
     pub paddle_id: u32,
-    pub has_ball_launched: bool
+    pub game_manager_id: u32,
+    pub has_ball_launched: bool,
+    pub paddle_start_x: f32,
 }
 
 impl BrickBreakerSystem {
-    pub fn new(new_ball_id: u32, new_paddle_id: u32) -> Self {
+    pub fn new(ball_id: u32, paddle_id: u32, game_manager_id: u32, paddle_start_x: f32) -> Self {
         Self {
-            ball_id: new_ball_id,
-            paddle_id: new_paddle_id,
-            has_ball_launched: false
+            ball_id,
+            paddle_id,
+            game_manager_id,
+            has_ball_launched: false,
+            paddle_start_x,
         }
     }
 }
@@ -81,31 +139,78 @@ impl System for BrickBreakerSystem {
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-        // Check if all bricks are destroyed
-        let brick_entities: Vec<u32> = update_context.world.entity_manager
-            .query_component::<Brick>();    
+        // Check game over state first, skip everything if game over
+        let game_over = update_context.world.entity_manager
+            .get_component::<BrickBreakerState>(self.game_manager_id)
+            .map(|s| s.game_over)
+            .unwrap_or(false);
 
-        //Check level finished
-        if brick_entities.is_empty() {
-            println!("Game won!");
+        if game_over {
+            return;
         }
 
-        //Let ball stick to the paddle
-        if !self.has_ball_launched
-        {
-            let (option_paddle_transform, mut option_ball_transform) = update_context.world.entity_manager.get_two_components_mut::<Transform>(self.paddle_id, self.ball_id);
+        // Check win condition
+        let brick_count = update_context.world.entity_manager
+            .query_component::<Brick>()
+            .len();
 
-            // unwrap early
-            let paddle_transform = option_paddle_transform.expect("Paddle transform missing");
-            let ball_transform   = option_ball_transform.expect("Ball transform missing");
-
-
-            ball_transform.position.x = paddle_transform.position.x;
-            ball_transform.position.y = paddle_transform.position.y + 1.0; // place above paddle
+        if brick_count == 0 {
+            println!("You win! Final score: {}", 
+                update_context.world.entity_manager
+                    .get_component::<BrickBreakerState>(self.game_manager_id)
+                    .map(|s| s.score)
+                    .unwrap_or(0)
+            );
+            if let Some(state) = update_context.world.entity_manager
+                .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+            {
+                state.game_over = true;
+            }
+            return;
         }
 
-        // Check if ball fell off screen
-        self.check_ball_death(update_context);
+        // Stick ball to paddle before launch
+        if !self.has_ball_launched {
+            let (paddle_t, ball_t) = update_context.world.entity_manager
+                .get_two_components_mut::<Transform>(self.paddle_id, self.ball_id);
+            let paddle_t = paddle_t.expect("Paddle transform missing");
+            let ball_t = ball_t.expect("Ball transform missing");
+            ball_t.position.x = paddle_t.position.x;
+            ball_t.position.y = paddle_t.position.y + 1.0;
+            return;
+        }
+
+        // Check ball death
+        let ball_y = update_context.world.entity_manager
+            .get_component::<Transform>(self.ball_id)
+            .map(|t| t.position.y)
+            .unwrap_or(0.0);
+
+        if ball_y < -20.0 {
+            self.has_ball_launched = false;
+
+            // Reset ball
+            if let Some(rb) = update_context.world.entity_manager
+                .get_component_mut::<RigidBody>(self.ball_id)
+            {
+                rb.velocity = Vec3::ZERO;
+                rb.is_kinematic = true;
+            }
+
+            // Lose a life
+            if let Some(state) = update_context.world.entity_manager
+                .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+            {
+                if state.lives > 0 {
+                    state.lives -= 1;
+                    println!("Ball lost! Lives remaining: {}", state.lives);
+                }
+                if state.lives == 0 {
+                    state.game_over = true;
+                    println!("Game over! Final score: {}", state.score);
+                }
+            }
+        }
     }
 
     fn render(&mut self, _render_context: &mut SystemRenderContext) {
@@ -114,20 +219,6 @@ impl System for BrickBreakerSystem {
 
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
         Some(self)
-    }
-}
-
-impl BrickBreakerSystem {
-    fn check_ball_death(&self, update_context: &mut SystemUpdateContext) {
-        if let Some(transform) = update_context.world.entity_manager
-                .get_component::<Transform>(self.ball_id) 
-        {
-            // Ball fell below paddle area
-            if transform.position.y < -20.0 {
-                println!("Ball lost! Lives remaining...");
-                // TODO: Reset ball position or lose life
-            }
-        }
     }
 }
 
@@ -145,23 +236,26 @@ impl EngineEventListener for BrickBreakerSystem {
             let ev = ev.as_ref();
 
             if let Some(col) = ev.as_any().downcast_ref::<CollisionEvent>() {
-                println!("Collision detected: {} <-> {}", col.entity_a, col.entity_b);
-                if col.entity_b != self.paddle_id && col.entity_a == self.ball_id {
-                    actions.push(DestroyEntityAction { entity_id : col.entity_b })
+                if col.entity_a == self.ball_id && col.entity_b != self.paddle_id {
+                    actions.push(DestroyEntityAction { entity_id: col.entity_b });
+                    actions.push(AddScoreAction { 
+                        game_manager_id: self.game_manager_id, 
+                        points: 10  // fixed for now, improve later
+                    });
+                } else if col.entity_a == self.ball_id && col.entity_b == self.paddle_id {
+                    actions.push(BallPaddleCollisionAction { 
+                        ball_id: self.ball_id, 
+                        paddle_id: self.paddle_id 
+                    });
                 }
-                else if col.entity_a == self.ball_id && col.entity_b == self.paddle_id {
-                    actions.push(BallPaddleCollisionAction { ball_id : self.ball_id, paddle_id : self.paddle_id })
-                }
-                continue;
             }
 
             if let Some(key) = ev.as_any().downcast_ref::<KeyPressedEvent>() {
-            //    if key.key == sdl2::keyboard::Keycode::Space && !self.has_ball_launched {
-            //         self.has_ball_launched = true;
-            //         println!("Launch ball");
-            //         actions.push(LaunchBallAction { ball_id : self.ball_id })
-            //         //Launch ball action
-            //     }
+                if key.key == winit::keyboard::KeyCode::Space && !self.has_ball_launched {
+                    self.has_ball_launched = true;
+                    println!("Launch ball");
+                    actions.push(LaunchBallAction { ball_id: self.ball_id });
+                }
                 continue;
             }
         }

@@ -57,6 +57,7 @@ pub struct EngineConfig {
     pub window_width: u32,
     pub window_height: u32,
     pub resizable: bool,
+    pub asset_root: std::path::PathBuf,
 }
 
 impl Default for EngineConfig {
@@ -66,6 +67,7 @@ impl Default for EngineConfig {
             window_width: 800,
             window_height: 600,
             resizable: true,
+            asset_root: std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         }
     }
 }
@@ -74,7 +76,6 @@ impl Default for EngineConfig {
 // This is None until winit gives us a window in resumed()
 struct EngineState {
     window: Arc<Window>,
-    rendering_system: RenderingSystem,
     systems_manager: SystemsManager,
     world: World,
     frame_timer: FrameTimer,
@@ -123,7 +124,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             input_state: InputState::default(),
             entity_manager: EntityManager::new(),
             physics_config: PhysicsConfig::default(),
-            asset_manager: AssetManager::new().unwrap(),
+            asset_manager: AssetManager::new(self.config.asset_root.clone()).unwrap(),
             fps: 0.0,
         };
 
@@ -132,18 +133,16 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         systems_manager.add_system(PlayerControlSystem::default());
         systems_manager.add_system(PhysicsSystem);
         systems_manager.add_system(CollisionSystem);
+        systems_manager.add_system(rendering_system);
         // Note: RenderingSystem is no longer in SystemsManager
         // It owns wgpu state and is managed directly by Engine
 
         systems_manager.initialize_all(&mut world);
-
-        rendering_system.initialize_assets(&mut world.asset_manager);
         
         self.game.initialize(&mut world, &mut systems_manager);
 
         self.state = Some(EngineState {
             window,
-            rendering_system,
             systems_manager,
             world,
             frame_timer: FrameTimer::new(),
@@ -163,13 +162,36 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 event_loop.exit();
             }
             WindowEvent::KeyboardInput { event: key_event, .. } => {
-                // TODO: map winit key events to your EngineEventQueue
-                // Your KeyPressedEvent/KeyReleasedEvent will need keycode mapping from winit
+                use winit::keyboard::PhysicalKey;
+                let modifiers = state.world.input_state.current_modifiers;
+
+                if let PhysicalKey::Code(keycode) = key_event.physical_key {
+                    match key_event.state {
+                        ElementState::Pressed => {
+                            state.event_queue.push(KeyPressedEvent { key: keycode, modifiers });
+                        }
+                        ElementState::Released => {
+                            state.event_queue.push(KeyReleasedEvent { key: keycode, modifiers });
+                        }
+                    }
+                }
             }
             WindowEvent::MouseInput { state: btn_state, button, .. } => {
-                // TODO: map mouse button events
+                let position = Vec2::new(
+                    state.world.input_state.mouse_position.0 as f32,
+                    state.world.input_state.mouse_position.1 as f32,
+                );
+                match btn_state {
+                    ElementState::Pressed => {
+                        state.event_queue.push(MouseClickEvent { position, button });
+                    }
+                    ElementState::Released => {
+                        state.event_queue.push(MouseButtonReleasedEvent { position, button });
+                    }
+                }
             }
             WindowEvent::CursorMoved { position, .. } => {
+                state.world.input_state.mouse_position = (position.x as i32, position.y as i32);
                 state.event_queue.push(MouseMoveEvent {
                     position: Vec2::new(position.x as f32, position.y as f32),
                 });
@@ -183,8 +205,16 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                     });
                 }
             }
+            WindowEvent::ModifiersChanged(modifiers) => {
+                // Store current modifiers state so keyboard events can read them
+                state.world.input_state.current_modifiers = KeyModifiers::from_winit(&modifiers);
+            }
             WindowEvent::Resized(size) => {
-                state.rendering_system.resize(size.width, size.height);
+                
+                if let Some(renderer) = state.systems_manager.get_system_mut::<RenderingSystem>() {
+                    renderer.resize(size.width, size.height);
+                }
+
                 state.event_queue.push(WindowResizedEvent {
                     width: size.width,
                     height: size.height,
@@ -214,9 +244,6 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                     asset_manager: &mut s.world.asset_manager,
                 };
                 s.systems_manager.render_all(&mut render_context);
-
-                // RenderingSystem handles its own frame
-                s.rendering_system.render(&mut render_context);
 
                 s.action_queue.clear();
                 s.window.request_redraw();

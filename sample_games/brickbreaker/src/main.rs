@@ -6,16 +6,16 @@
 use mithya_engine::{
     engine::{system::SystemsManager, Engine, EngineConfig, EntityBuilder, GameLogic, World},
     physics::{Collider, ColliderShape, RigidBody},
+    rendering::RenderingSystem,
     player::Player, rendering::{Mesh, Render}, 
     Transform
 };
 
 mod brick_breaker;
 
-use crate::brick_breaker::{
-    components::{Brick, Ball, Paddle, BrickType},
+use crate::brick_breaker::{components::{Brick, Ball, Paddle, BrickType, BrickBreakerState},
     systems::BrickBreakerSystem,
-    brick_spawner::*,
+    brick_spawner::*
 };
 
 use glam::{Quat, Vec3};
@@ -28,6 +28,20 @@ struct Brickbreaker {
 impl GameLogic for Brickbreaker {
     fn initialize(&mut self, world: &mut World, systems_manager: &mut SystemsManager) {
         println!("Initializing Brick Breaker...");
+        // === TEXTURES ===
+        // load_assets
+        if let Some(renderer) = systems_manager.get_system_mut::<RenderingSystem>() {
+            renderer.load_assets(&mut world.asset_manager, |assets, device, queue| {
+                assets.load_texture_for_material("unlit_texture_green", "green_texture.png", device, queue).unwrap();
+                assets.load_texture_for_material("unlit_texture_red", "red_texture.png", device, queue).unwrap();
+                assets.load_texture_for_material("unlit_texture_blue", "blue_texture.png", device, queue).unwrap();
+                assets.load_texture_for_material("unlit_texture_yellow", "yellow_texture.png", device, queue).unwrap();
+                assets.load_texture_for_material("unlit_texture_orange", "orange_texture.png", device, queue).unwrap();
+                assets.load_texture_for_material("unlit_texture_purple", "purple_texture.png", device, queue).unwrap();
+                assets.load_texture_for_material("unlit_texture_circle", "pinkCircle.png", device, queue).unwrap();
+            });
+        }
+
         // === WALLS ===
         spawn_walls(world);
         
@@ -40,7 +54,9 @@ impl GameLogic for Brickbreaker {
         // === BRICKS ===
         spawn_bricks(world);
         
-        let mut brickerBreakerSystem = BrickBreakerSystem::new(ball_id, paddle_id);
+        let game_manager_id = spawn_game_manager(world);
+
+        let mut brickerBreakerSystem = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0);
         systems_manager.add_system(brickerBreakerSystem);
 
         println!("Brick Breaker ready!");
@@ -56,6 +72,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         window_title: "Brick breaker".to_string(),
         window_width: 960,
         window_height: 540,
+        asset_root: std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")),
         ..Default::default()
     };
 
@@ -189,6 +206,12 @@ fn spawn_bricks(world: &mut World) {
     // Option 2: Spawn a pattern (uncomment to try)
     
     // Option 3: Spawn individual test bricks (for debugging);
+}
+
+fn spawn_game_manager(world: &mut World) -> u32 {
+    EntityBuilder::new(&mut world.entity_manager)
+        .with(BrickBreakerState::default())
+        .build()
 }
 
 // Helper function for testing individual bricks

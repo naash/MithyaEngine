@@ -15,14 +15,16 @@ pub struct TextureManager {
     path_to_id: HashMap<String, u32>,
     textures_by_id: HashMap<u32, TextureEntry>,
     next_id: u32,
+    asset_root: std::path::PathBuf,
 }
 
 impl TextureManager {
-    pub fn new() -> Self {
+    pub fn new(asset_root: std::path::PathBuf) -> Self {
         Self {
             path_to_id: HashMap::new(),
             textures_by_id: HashMap::new(),
             next_id: 1,
+            asset_root,
         }
     }
 
@@ -57,9 +59,7 @@ impl TextureManager {
         device: &wgpu::Device,
         queue: &wgpu::Queue,
     ) -> Result<TextureEntry, TextureLoadError> {
-        let mut path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        path.push("textures");
-        path.push(texture_name);
+        let path = self.asset_root.join("textures").join(texture_name);
 
         let img = image::open(&path)
             .map_err(|e| {

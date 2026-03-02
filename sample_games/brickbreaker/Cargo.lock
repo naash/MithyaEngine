@@ -185,6 +185,7 @@ dependencies = [
  "mithya_engine",
  "serde",
  "serde_json",
+ "winit",
 ]
 
 [[package]]

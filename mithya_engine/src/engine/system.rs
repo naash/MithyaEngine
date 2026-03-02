@@ -101,4 +101,13 @@ impl SystemsManager {
         }
     }
 
+    pub fn get_system_mut<S: System + 'static>(&mut self) -> Option<&mut S> {
+        for system in &mut self.systems {
+            if let Some(s) = system.as_any_mut().downcast_mut::<S>() {
+                return Some(s);
+            }
+        }
+        None
+    }
+
 }
