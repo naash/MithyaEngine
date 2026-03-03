@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    core::{EngineEventListener, EngineActionQueue, EngineAction, EngineEventQueue, Transform, KeyPressedEvent, DestroyEntityAction},
+    core::{EngineEventListener, EngineEvent, EngineActionQueue, EngineAction, EngineEventQueue, Transform, KeyPressedEvent, DestroyEntityAction},
     engine::{
         system::{System, SystemRenderContext, SystemUpdateContext},
         World,
@@ -13,8 +13,16 @@ use mithya_engine::{
 };
 use glam::Vec3;
 use super::components::{Ball, Brick, BrickBreakerState};
-use std::any::TypeId;
+use std::any::{TypeId, Any};
 use winit::keyboard::KeyCode;
+
+#[derive(Debug, Clone)]
+pub struct LoseLifeEvent {
+}
+
+impl EngineEvent for LoseLifeEvent {
+    fn as_any(&self) -> &dyn Any { self }
+}
 
 #[derive(Debug)]
 pub struct LaunchBallAction {
@@ -94,6 +102,7 @@ impl EngineAction for AddScoreAction {
 #[derive(Debug)]
 pub struct LoseLifeAction {
     pub game_manager_id: u32,
+    pub ball_id: u32,
 }
 
 impl EngineAction for LoseLifeAction {
@@ -109,6 +118,14 @@ impl EngineAction for LoseLifeAction {
                 state.game_over = true;
                 println!("Game over!");
             }
+        }
+
+        // Reset ball
+        if let Some(rb) = world.entity_manager
+            .get_component_mut::<RigidBody>(self.ball_id)
+        {
+            rb.velocity = Vec3::ZERO;
+            rb.is_kinematic = true;
         }
     }
 }
@@ -187,29 +204,8 @@ impl System for BrickBreakerSystem {
             .unwrap_or(0.0);
 
         if ball_y < -20.0 {
-            self.has_ball_launched = false;
-
-            // Reset ball
-            if let Some(rb) = update_context.world.entity_manager
-                .get_component_mut::<RigidBody>(self.ball_id)
-            {
-                rb.velocity = Vec3::ZERO;
-                rb.is_kinematic = true;
-            }
-
             // Lose a life
-            if let Some(state) = update_context.world.entity_manager
-                .get_component_mut::<BrickBreakerState>(self.game_manager_id)
-            {
-                if state.lives > 0 {
-                    state.lives -= 1;
-                    println!("Ball lost! Lives remaining: {}", state.lives);
-                }
-                if state.lives == 0 {
-                    state.game_over = true;
-                    println!("Game over! Final score: {}", state.score);
-                }
-            }
+            update_context.events.push(LoseLifeEvent{});
         }
     }
 
@@ -224,7 +220,9 @@ impl System for BrickBreakerSystem {
 
 impl EngineEventListener for BrickBreakerSystem {
     fn interested_events(&self) -> Vec<TypeId> {
-        vec![TypeId::of::<CollisionEvent>(), TypeId::of::<KeyPressedEvent>()]
+        vec![TypeId::of::<CollisionEvent>(), 
+        TypeId::of::<KeyPressedEvent>(), 
+        TypeId::of::<LoseLifeEvent>()]
     }
 
     fn on_events(
@@ -234,7 +232,6 @@ impl EngineEventListener for BrickBreakerSystem {
     ) {
         for ev in events.iter() {
             let ev = ev.as_ref();
-
             if let Some(col) = ev.as_any().downcast_ref::<CollisionEvent>() {
                 if col.entity_a == self.ball_id && col.entity_b != self.paddle_id {
                     actions.push(DestroyEntityAction { entity_id: col.entity_b });
@@ -250,13 +247,17 @@ impl EngineEventListener for BrickBreakerSystem {
                 }
             }
 
+            if let Some(event) = ev.as_any().downcast_ref::<LoseLifeEvent>() {
+                self.has_ball_launched = false;
+                actions.push(LoseLifeAction { game_manager_id: self.game_manager_id, ball_id : self.ball_id });
+            }
+
             if let Some(key) = ev.as_any().downcast_ref::<KeyPressedEvent>() {
                 if key.key == winit::keyboard::KeyCode::Space && !self.has_ball_launched {
                     self.has_ball_launched = true;
                     println!("Launch ball");
                     actions.push(LaunchBallAction { ball_id: self.ball_id });
                 }
-                continue;
             }
         }
     }
