@@ -11,131 +11,25 @@ use mithya_engine::{
     },    
     physics::{RigidBody, systems::CollisionEvent},
 };
+
+use super::events::{BallLostEvent, GameWonEvent, LoseLifeEvent};
+use super::actions::{
+    LaunchBallAction, BallPaddleCollisionAction, ResetBallAction,
+    LoseLifeAction, BrickDestroyedAction, ResetGameAction, AddScoreAction,
+};
+
 use glam::Vec3;
 use super::components::{Ball, Brick, BrickBreakerState};
+use crate::brick_breaker::brick_spawner::*;
 use std::any::{TypeId, Any};
 use winit::keyboard::KeyCode;
-
-#[derive(Debug, Clone)]
-pub struct LoseLifeEvent {
-}
-
-impl EngineEvent for LoseLifeEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug)]
-pub struct LaunchBallAction {
-    pub ball_id: u32,
-}
-
-impl EngineAction for LaunchBallAction {
-    fn execute(&mut self, world: &mut World) {
-        if let Some(mut rb) = world.entity_manager
-                .get_component_mut::<RigidBody>(self.ball_id) {
-            rb.velocity = Vec3::new(0.0, 35.0, 0.0);
-            rb.is_kinematic = false;
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct BallPaddleCollisionAction {
-    pub ball_id: u32,
-    pub paddle_id: u32,
-}
-
-impl EngineAction for BallPaddleCollisionAction {
-    fn execute(&mut self, world: &mut World) {
-        let entity_manager = &mut world.entity_manager;
-
-        // Borrow both transforms in one immutable fetch
-        let (paddle_t, ball_t) =
-            entity_manager.get_two_components::<Transform>(self.paddle_id, self.ball_id);
-
-        let paddle_t = paddle_t.expect("Paddle transform missing");
-        let ball_t   = ball_t.expect("Ball transform missing");
-
-        //Here scope of borrows end so we can use mut borrow again
-        let dx = ball_t.position.x - paddle_t.position.x;
-
-        let ball_rb = entity_manager.get_component_mut::<RigidBody>(self.ball_id)
-            .expect("Ball rigidbody missing");
-
-        // Apply new velocity
-        ball_rb.velocity.x = dx * 2.0;
-        ball_rb.velocity.y = ball_rb.velocity.y.abs(); // ensure ball goes up
-    }
-}
-
-#[derive(Debug)]
-pub struct ResetBallAction {
-    pub ball_id: u32,
-}
-
-impl EngineAction for ResetBallAction {
-    fn execute(&mut self, world: &mut World) {
-        if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(self.ball_id) {
-            rb.velocity = Vec3::ZERO;
-            rb.is_kinematic = true;
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct AddScoreAction {
-    pub game_manager_id: u32,
-    pub points: u32,
-}
-
-impl EngineAction for AddScoreAction {
-    fn execute(&mut self, world: &mut World) {
-        if let Some(state) = world.entity_manager
-            .get_component_mut::<BrickBreakerState>(self.game_manager_id) 
-        {
-            state.score += self.points;
-            println!("Score: {}", state.score);
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct LoseLifeAction {
-    pub game_manager_id: u32,
-    pub ball_id: u32,
-}
-
-impl EngineAction for LoseLifeAction {
-    fn execute(&mut self, world: &mut World) {
-        if let Some(state) = world.entity_manager
-            .get_component_mut::<BrickBreakerState>(self.game_manager_id)
-        {
-            if state.lives > 0 {
-                state.lives -= 1;
-                println!("Lives remaining: {}", state.lives);
-            }
-            if state.lives == 0 {
-                state.game_over = true;
-                println!("Game over!");
-            }
-        }
-
-        // Reset ball
-        if let Some(rb) = world.entity_manager
-            .get_component_mut::<RigidBody>(self.ball_id)
-        {
-            rb.velocity = Vec3::ZERO;
-            rb.is_kinematic = true;
-        }
-    }
-}
 
 pub struct BrickBreakerSystem {
     pub ball_id: u32,
     pub paddle_id: u32,
     pub game_manager_id: u32,
     pub has_ball_launched: bool,
-    pub paddle_start_x: f32,
+    pub paddle_start_x: f32
 }
 
 impl BrickBreakerSystem {
@@ -148,6 +42,46 @@ impl BrickBreakerSystem {
             paddle_start_x,
         }
     }
+
+    fn do_reset(&mut self, update_context: &mut SystemUpdateContext) {
+        // Destroy remaining bricks
+        let bricks = update_context.world.entity_manager.query_component::<Brick>();
+        for brick_id in bricks {
+            update_context.world.entity_manager.destroy_entity(brick_id);
+        }
+
+        // Respawn bricks
+        let config = BrickGridConfig {
+            rows: 5,
+            columns: 10,
+            brick_width: 3.0,
+            brick_height: 1.5,
+            spacing: 0.2,
+            start_position: Vec3::new(0.0, 10.0, 0.0),
+        };
+        spawn_brick_grid(update_context.world, config);
+
+        // Reset ball
+        if let Some(rb) = update_context.world.entity_manager
+            .get_component_mut::<RigidBody>(self.ball_id)
+        {
+            rb.velocity = Vec3::ZERO;
+            rb.is_kinematic = true;
+        }
+
+        // Reset state
+        if let Some(state) = update_context.world.entity_manager
+            .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+        {
+            state.score = 0;
+            state.lives = 3;
+            state.game_over = false;
+            state.needs_reset = false;
+            println!("Game reset! Press Space to launch.");
+        }
+
+        self.has_ball_launched = false;
+    }
 }
 
 impl System for BrickBreakerSystem {
@@ -156,14 +90,17 @@ impl System for BrickBreakerSystem {
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-        // Check game over state first, skip everything if game over
-        let game_over = update_context.world.entity_manager
-            .get_component::<BrickBreakerState>(self.game_manager_id)
-            .map(|s| s.game_over)
-            .unwrap_or(false);
 
-        if game_over {
-            return;
+        let state = update_context.world.entity_manager.get_component::<BrickBreakerState>(self.game_manager_id);
+
+        if let Some(state) = state {
+            if state.game_over {
+                return;
+            }
+            if state.needs_reset {
+                self.do_reset(update_context);
+                return;
+            }
         }
 
         // Check win condition
@@ -172,16 +109,12 @@ impl System for BrickBreakerSystem {
             .len();
 
         if brick_count == 0 {
-            println!("You win! Final score: {}", 
-                update_context.world.entity_manager
-                    .get_component::<BrickBreakerState>(self.game_manager_id)
-                    .map(|s| s.score)
-                    .unwrap_or(0)
-            );
             if let Some(state) = update_context.world.entity_manager
                 .get_component_mut::<BrickBreakerState>(self.game_manager_id)
             {
+                println!("You win! Final score: {}", state.score);
                 state.game_over = true;
+                println!("Game over! Press Enter to restart");
             }
             return;
         }
@@ -249,14 +182,20 @@ impl EngineEventListener for BrickBreakerSystem {
 
             if let Some(event) = ev.as_any().downcast_ref::<LoseLifeEvent>() {
                 self.has_ball_launched = false;
-                actions.push(LoseLifeAction { game_manager_id: self.game_manager_id, ball_id : self.ball_id });
+                actions.push(LoseLifeAction { game_manager_id: self.game_manager_id });
             }
 
             if let Some(key) = ev.as_any().downcast_ref::<KeyPressedEvent>() {
                 if key.key == winit::keyboard::KeyCode::Space && !self.has_ball_launched {
                     self.has_ball_launched = true;
-                    println!("Launch ball");
                     actions.push(LaunchBallAction { ball_id: self.ball_id });
+                }
+                if key.key == KeyCode::Enter {
+                    self.has_ball_launched = false;
+                    actions.push(ResetGameAction {
+                        ball_id: self.ball_id,
+                        game_manager_id: self.game_manager_id,
+                    });
                 }
             }
         }

@@ -124,6 +124,7 @@ pub struct BrickBreakerState {
     pub level: u32,
     pub game_started: bool,
     pub game_over: bool,
+    pub needs_reset: bool
 }
 
 impl Default for BrickBreakerState {
@@ -134,6 +135,7 @@ impl Default for BrickBreakerState {
             level: 1,
             game_started: false,
             game_over: false,
+            needs_reset: false
         }
     }
 }
