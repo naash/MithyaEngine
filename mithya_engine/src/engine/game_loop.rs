@@ -6,9 +6,8 @@
 use std::sync::Arc;
 
 use crate::{
-    asset::AssetManager,
-    core::{
-        engine_events::{
+    World, asset::AssetManager, core::{
+        EntityManager, engine_events::{
             EngineActionQueue, 
             EngineEventQueue, 
             KeyModifiers, 
@@ -20,27 +19,24 @@ use crate::{
             MouseWheelEvent, 
             TextInputEvent, 
             WindowResizedEvent
-        },
-        EntityManager
-    }, 
-    engine::{
-        system::{
+        }
+    }, engine::{
+        FrameTimer, InputState, system::{
             SystemRenderContext, 
             SystemUpdateContext, 
             SystemsManager
-        }, 
-        FrameTimer, 
-        InputState
-    },
-    input::InputSystem, 
+        }
+    }, input::InputSystem, 
+    pawn::{
+        ControllerSystem, 
+        MovementSystem
+    }, 
     physics::{
         CollisionSystem, 
         PhysicsConfig, 
         PhysicsSystem
     }, 
-    player::PlayerControlSystem, 
-    rendering::RenderingSystem, 
-    World
+    rendering::RenderingSystem
 };
 
 use glam::Vec2;
@@ -130,7 +126,8 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system(InputSystem::new());
-        systems_manager.add_system(PlayerControlSystem::default());
+        systems_manager.add_system(ControllerSystem);
+        systems_manager.add_system(MovementSystem);
         systems_manager.add_system(PhysicsSystem);
         systems_manager.add_system(CollisionSystem);
         systems_manager.add_system(rendering_system);

@@ -3,9 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+pub mod movement;
+pub mod controller;
 
-mod systems;
-mod components;
-
-pub use systems::PlayerControlSystem;
-pub use components::Player;
+pub use movement::Movement;
+pub use controller::Controller;

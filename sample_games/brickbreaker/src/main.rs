@@ -6,8 +6,8 @@
 use mithya_engine::{
     engine::{system::SystemsManager, Engine, EngineConfig, EntityBuilder, GameLogic, World},
     physics::{Collider, ColliderShape, RigidBody},
-    rendering::RenderingSystem,
-    player::Player, rendering::{Mesh, Render}, 
+    rendering::{Mesh, Render, RenderingSystem},
+    pawn::{Movement, Controller},
     Transform
 };
 
@@ -166,7 +166,8 @@ fn spawn_ball(world: &mut World) -> u32 {
 }
 
 fn spawn_paddle(world: &mut World) -> u32 {
-    EntityBuilder::new(&mut world.entity_manager)
+    // Spawn the paddle entity
+    let paddle_id = EntityBuilder::new(&mut world.entity_manager)
         .with(Transform {
             position: Vec3::new(0.0, -15.0, 0.0),
             rotation: Quat::IDENTITY,
@@ -187,8 +188,15 @@ fn spawn_paddle(world: &mut World) -> u32 {
             is_kinematic: true,
             ..Default::default()
         })
-        .with(Player)
-        .build()
+        .with(Movement::new(20.0))
+        .build();
+
+    // Spawn a separate controller entity that possesses the paddle
+    EntityBuilder::new(&mut world.entity_manager)
+        .with(Controller::new(paddle_id))
+        .build();
+
+    paddle_id
 }
 
 fn spawn_bricks(world: &mut World) {
