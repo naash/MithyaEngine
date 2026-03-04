@@ -12,10 +12,9 @@ use mithya_engine::{
     physics::{RigidBody, systems::CollisionEvent},
 };
 
-use super::events::{BallLostEvent, GameWonEvent, LoseLifeEvent};
 use super::actions::{
-    LaunchBallAction, BallPaddleCollisionAction, ResetBallAction,
-    LoseLifeAction, BrickDestroyedAction, ResetGameAction, AddScoreAction,
+    LaunchBallAction, BallPaddleCollisionAction,
+    ResetGameAction, AddScoreAction,
 };
 
 use glam::Vec3;
@@ -137,8 +136,19 @@ impl System for BrickBreakerSystem {
             .unwrap_or(0.0);
 
         if ball_y < -20.0 {
-            // Lose a life
-            update_context.events.push(LoseLifeEvent{});
+            if let Some(state) = update_context.world.entity_manager
+                .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+            {
+                // Lose a life
+                if state.lives > 0 {
+                    state.lives -= 1;
+                    println!("Lives remaining: {}", state.lives);
+                }
+                if state.lives == 0 {
+                    state.game_over = true;
+                    println!("Game Over! Final score: {}", state.score);
+                }
+            }
         }
     }
 
@@ -154,8 +164,7 @@ impl System for BrickBreakerSystem {
 impl EngineEventListener for BrickBreakerSystem {
     fn interested_events(&self) -> Vec<TypeId> {
         vec![TypeId::of::<CollisionEvent>(), 
-        TypeId::of::<KeyPressedEvent>(), 
-        TypeId::of::<LoseLifeEvent>()]
+        TypeId::of::<KeyPressedEvent>()]
     }
 
     fn on_events(
@@ -179,12 +188,6 @@ impl EngineEventListener for BrickBreakerSystem {
                     });
                 }
             }
-
-            if let Some(event) = ev.as_any().downcast_ref::<LoseLifeEvent>() {
-                self.has_ball_launched = false;
-                actions.push(LoseLifeAction { game_manager_id: self.game_manager_id });
-            }
-
             if let Some(key) = ev.as_any().downcast_ref::<KeyPressedEvent>() {
                 if key.key == winit::keyboard::KeyCode::Space && !self.has_ball_launched {
                     self.has_ball_launched = true;

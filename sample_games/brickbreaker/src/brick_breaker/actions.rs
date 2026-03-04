@@ -64,29 +64,6 @@ impl EngineAction for ResetBallAction {
     }
 }
 
-//Actions when life is lost
-#[derive(Debug)]
-pub struct LoseLifeAction {
-    pub game_manager_id: u32,
-}
-
-impl EngineAction for LoseLifeAction {
-    fn execute(&mut self, world: &mut World) {
-        if let Some(state) = world.entity_manager
-            .get_component_mut::<BrickBreakerState>(self.game_manager_id)
-        {
-            if state.lives > 0 {
-                state.lives -= 1;
-                println!("Lives remaining: {}", state.lives);
-            }
-            if state.lives == 0 {
-                state.game_over = true;
-                println!("Game Over! Final score: {}", state.score);
-            }
-        }
-    }
-}
-
 //Action when score increases
 #[derive(Debug)]
 pub struct AddScoreAction {

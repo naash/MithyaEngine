@@ -6,10 +6,5 @@
 pub mod components;
 pub mod systems;
 pub mod brick_spawner;
-pub mod events;
 pub mod actions;
-
-pub use components::{Brick, Ball, Paddle, BrickType};
-pub use systems::BrickBreakerSystem;
-pub use brick_spawner::*;
 
