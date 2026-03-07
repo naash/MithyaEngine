@@ -8,6 +8,7 @@ use mithya_engine::{
     physics::{Collider, ColliderShape, RigidBody},
     rendering::{Mesh, Render, RenderingSystem},
     pawn::{Movement, Controller},
+    input::actions::{InputAction, InputBinding},
     Transform
 };
 
@@ -17,6 +18,7 @@ use crate::brick_breaker::{components::{Brick, Ball, Paddle, BrickType, BrickBre
     systems::BrickBreakerSystem,
     brick_spawner::*
 };
+use winit::keyboard::KeyCode;
 
 use glam::{Quat, Vec3};
 
@@ -28,6 +30,17 @@ struct Brickbreaker {
 impl GameLogic for Brickbreaker {
     fn initialize(&mut self, world: &mut World, systems_manager: &mut SystemsManager) {
         println!("Initializing Brick Breaker...");
+
+        //Bindings
+        world.input_mapping
+            .bind(KeyCode::KeyA,      InputBinding::continuous(InputAction::MoveLeft))
+            .bind(KeyCode::ArrowLeft, InputBinding::continuous(InputAction::MoveLeft))
+            .bind(KeyCode::KeyD,      InputBinding::continuous(InputAction::MoveRight))
+            .bind(KeyCode::ArrowRight,InputBinding::continuous(InputAction::MoveRight))
+            .bind(KeyCode::Space,     InputBinding::one_shot(InputAction::Launch))
+            .bind(KeyCode::Enter,    InputBinding::one_shot(InputAction::Confirm));
+
+
         // === TEXTURES ===
         // load_assets
         if let Some(renderer) = systems_manager.get_system_mut::<RenderingSystem>() {
@@ -153,9 +166,12 @@ fn spawn_ball(world: &mut World) -> u32 {
                 .get_material_by_name("unlit_texture_circle")
         })
         .with(RigidBody {
+            velocity: Vec3::ZERO,
+            acceleration: Vec3::ZERO,
+            drag: 0.0,
+            gravity_scale: 0.0,
             bounce: 1.0,
-            is_kinematic: true, //Set kinematic to false when ball should be launched
-            ..Default::default()
+            is_kinematic: true,
         })
         .with(Collider {
             shape: ColliderShape::Circle { radius: 0.5 },  // Smaller radius

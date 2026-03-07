@@ -7,10 +7,7 @@ use std::collections::HashSet;
 use winit::keyboard::KeyCode;
 
 use crate::{
-    EntityManager, 
-    asset::AssetManager, 
-    core::KeyModifiers, 
-    physics::PhysicsConfig
+    EntityManager, asset::AssetManager, core::KeyModifiers, input::InputMapping, physics::PhysicsConfig
 };
 
 #[derive(Default)]
@@ -26,5 +23,6 @@ pub struct World {
     pub entity_manager: EntityManager,
     pub physics_config: PhysicsConfig,
     pub asset_manager: AssetManager,
-    pub fps: f32
+    pub fps: f32,
+    pub input_mapping: InputMapping,
 }

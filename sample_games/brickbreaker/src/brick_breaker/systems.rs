@@ -4,11 +4,18 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    core::{EngineEventListener, EngineEvent, EngineActionQueue, EngineAction, EngineEventQueue, Transform, KeyPressedEvent, DestroyEntityAction},
+    core::{
+        EngineEventListener, EngineEvent, EngineActionQueue, EngineAction, EngineEventQueue, 
+        Transform, KeyPressedEvent, DestroyEntityAction
+    },
     engine::{
         system::{System, SystemRenderContext, SystemUpdateContext},
         World,
-    },    
+    },
+    input::{
+        actions::{InputAction, InputActionMode, InputBinding, InputMapping},
+        InputActionEvent
+    },
     physics::{RigidBody, systems::CollisionEvent},
 };
 
@@ -149,6 +156,8 @@ impl System for BrickBreakerSystem {
                     println!("Game Over! Final score: {}", state.score);
                 }
             }
+
+            self.has_ball_launched = false;
         }
     }
 
@@ -164,7 +173,7 @@ impl System for BrickBreakerSystem {
 impl EngineEventListener for BrickBreakerSystem {
     fn interested_events(&self) -> Vec<TypeId> {
         vec![TypeId::of::<CollisionEvent>(), 
-        TypeId::of::<KeyPressedEvent>()]
+        TypeId::of::<InputActionEvent>()]
     }
 
     fn on_events(
@@ -188,17 +197,22 @@ impl EngineEventListener for BrickBreakerSystem {
                     });
                 }
             }
-            if let Some(key) = ev.as_any().downcast_ref::<KeyPressedEvent>() {
-                if key.key == winit::keyboard::KeyCode::Space && !self.has_ball_launched {
-                    self.has_ball_launched = true;
-                    actions.push(LaunchBallAction { ball_id: self.ball_id });
-                }
-                if key.key == KeyCode::Enter {
-                    self.has_ball_launched = false;
-                    actions.push(ResetGameAction {
-                        ball_id: self.ball_id,
-                        game_manager_id: self.game_manager_id,
-                    });
+            if let Some(input) = ev.as_any().downcast_ref::<InputActionEvent>() {
+                match input.action {
+                    InputAction::Launch => {
+                        if !self.has_ball_launched {
+                            self.has_ball_launched = true;
+                            actions.push(LaunchBallAction { ball_id: self.ball_id });
+                        }
+                    }
+                    InputAction::Confirm => {
+                        self.has_ball_launched = false;
+                        actions.push(ResetGameAction {
+                            ball_id: self.ball_id,
+                            game_manager_id: self.game_manager_id,
+                        });
+                    }
+                    _ => {}
                 }
             }
         }

@@ -1,8 +1,11 @@
     Blocking waiting for file lock on package cache
     Blocking waiting for file lock on package cache
     Blocking waiting for file lock on package cache
-   0.596716500s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint: fingerprint error for mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox)/Check { test: false }/TargetInner { name: "mithya_sandbox", doc: true, ..: with_path("C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\src\\main.rs", Edition2021) }
-   0.596766500s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\mithya_sandbox-3e861afeb24b74b7\bin-mithya_sandbox`
+   0.591942400s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint: stale: changed "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\src\\pawn\\systems\\controller_system.rs"
+   0.591969000s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint:           (vs) "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\target\\debug\\.fingerprint\\mithya_engine-d51026e814d240fd\\dep-lib-mithya_engine"
+   0.591976000s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 13417318890, nanos: 60489800 } < FileTime { seconds: 13417318896, nanos: 678535000 }
+   0.594884700s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint: fingerprint error for mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox)/Check { test: false }/TargetInner { name: "mithya_sandbox", doc: true, ..: with_path("C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\src\\main.rs", Edition2021) }
+   0.594916600s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\mithya_sandbox-3e861afeb24b74b7\bin-mithya_sandbox`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -29,8 +32,10 @@ Stack backtrace:
   18: git_midx_writer_dump
   19: BaseThreadInitThunk
   20: RtlUserThreadStart
-   0.675687100s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="sdl2"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2 v0.37.0/Check { test: false }/TargetInner { ..: lib_target("sdl2", ["lib"], "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-0.37.0\\src\\sdl2\\lib.rs", Edition2015) }
-   0.675723000s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="sdl2"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-952d70a3bc2fba13\lib-sdl2`
+   0.613163400s  INFO prepare_target{force=false package_id=mithya_engine v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_engine) target="mithya_engine"}: cargo::core::compiler::fingerprint: fingerprint dirty for mithya_engine v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_engine)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("mithya_engine", ["lib"], "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\src\\lib.rs", Edition2021) }
+   0.613194800s  INFO prepare_target{force=false package_id=mithya_engine v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_engine) target="mithya_engine"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\target\\debug\\.fingerprint\\mithya_engine-d51026e814d240fd\\dep-lib-mithya_engine", reference_mtime: FileTime { seconds: 13417318890, nanos: 60489800 }, stale: "C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_engine\\src\\pawn\\systems\\controller_system.rs", stale_mtime: FileTime { seconds: 13417318896, nanos: 678535000 } }))
+   0.678182800s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="sdl2"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2 v0.37.0/Check { test: false }/TargetInner { ..: lib_target("sdl2", ["lib"], "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-0.37.0\\src\\sdl2\\lib.rs", Edition2015) }
+   0.678208100s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="sdl2"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-952d70a3bc2fba13\lib-sdl2`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -58,8 +63,8 @@ Stack backtrace:
   19: git_midx_writer_dump
   20: BaseThreadInitThunk
   21: RtlUserThreadStart
-   0.676810200s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2 v0.37.0/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-0.37.0\\build.rs", Edition2015) }
-   0.676831400s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-5566101b5953fab5\run-build-script-build-script-build`
+   0.679396700s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2 v0.37.0/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-0.37.0\\build.rs", Edition2015) }
+   0.679415800s  INFO prepare_target{force=false package_id=sdl2 v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-5566101b5953fab5\run-build-script-build-script-build`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -89,8 +94,8 @@ Stack backtrace:
   21: git_midx_writer_dump
   22: BaseThreadInitThunk
   23: RtlUserThreadStart
-   0.677719200s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2-sys v0.37.0/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-sys-0.37.0\\build.rs", Edition2018) }
-   0.677736500s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-sys-a0e1a65896e40957\run-build-script-build-script-build`
+   0.680300100s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2-sys v0.37.0/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-sys-0.37.0\\build.rs", Edition2018) }
+   0.680318200s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-sys-a0e1a65896e40957\run-build-script-build-script-build`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -121,8 +126,8 @@ Stack backtrace:
   22: git_midx_writer_dump
   23: BaseThreadInitThunk
   24: RtlUserThreadStart
-   0.679207600s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="sdl2_sys"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2-sys v0.37.0/Check { test: false }/TargetInner { ..: lib_target("sdl2_sys", ["lib"], "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-sys-0.37.0\\src\\lib.rs", Edition2018) }
-   0.679225600s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="sdl2_sys"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-sys-803004beb6c27d9e\lib-sdl2_sys`
+   0.681770900s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="sdl2_sys"}: cargo::core::compiler::fingerprint: fingerprint error for sdl2-sys v0.37.0/Check { test: false }/TargetInner { ..: lib_target("sdl2_sys", ["lib"], "C:\\Users\\nisha\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sdl2-sys-0.37.0\\src\\lib.rs", Edition2018) }
+   0.681792300s  INFO prepare_target{force=false package_id=sdl2-sys v0.37.0 target="sdl2_sys"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\sdl2-sys-803004beb6c27d9e\lib-sdl2_sys`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -151,8 +156,8 @@ Stack backtrace:
   20: git_midx_writer_dump
   21: BaseThreadInitThunk
   22: RtlUserThreadStart
-   0.679758000s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint: fingerprint error for mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox)/Check { test: true }/TargetInner { name: "mithya_sandbox", doc: true, ..: with_path("C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\src\\main.rs", Edition2021) }
-   0.679796300s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\mithya_sandbox-50e62a31775f6318\test-bin-mithya_sandbox`
+   0.682249700s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint: fingerprint error for mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox)/Check { test: true }/TargetInner { name: "mithya_sandbox", doc: true, ..: with_path("C:\\Programming Workbench\\Rust\\MithyaEngine\\mithya_sandbox\\src\\main.rs", Edition2021) }
+   0.682274000s  INFO prepare_target{force=false package_id=mithya_sandbox v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox) target="mithya_sandbox"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Programming Workbench\Rust\MithyaEngine\mithya_sandbox\target\debug\.fingerprint\mithya_sandbox-50e62a31775f6318\test-bin-mithya_sandbox`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -180,6 +185,7 @@ Stack backtrace:
   19: BaseThreadInitThunk
   20: RtlUserThreadStart
    Compiling sdl2-sys v0.37.0
+    Checking mithya_engine v0.1.0 (C:\Programming Workbench\Rust\MithyaEngine\mithya_engine)
 error: failed to run custom build command for `sdl2-sys v0.37.0`
 note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
 
@@ -244,3 +250,4 @@ Caused by:
     20: BaseThreadInitThunk
     21: RtlUserThreadStart
   note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+warning: build failed, waiting for other jobs to finish...

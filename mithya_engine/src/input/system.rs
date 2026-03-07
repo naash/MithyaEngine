@@ -8,17 +8,15 @@ use winit::keyboard::KeyCode;
 
 use crate::{
     core::{
-        engine_events::{
-            KeyPressedEvent, 
-            KeyReleasedEvent,
-        }, 
+        engine_events::{KeyPressedEvent, KeyReleasedEvent},
         EngineEventListener,
-    }, 
-    engine::system::{
-        System, SystemRenderContext, SystemUpdateContext
     },
-    World
+    engine::system::{System, SystemRenderContext, SystemUpdateContext},
+    World,
 };
+
+use super::actions::InputActionMode;
+use super::events::InputActionEvent;
 
 pub struct InputSystem {
     pressed_keys: HashSet<KeyCode>,
@@ -46,26 +44,6 @@ impl InputSystem {
     pub fn is_key_just_released(&self, keycode: KeyCode) -> bool {
         self.just_released.contains(&keycode)
     }
-
-    pub fn get_movement_input(&self) -> (f32, f32) {
-        let mut dx = 0.0;
-        let mut dy = 0.0;
-
-        if self.is_key_pressed(KeyCode::KeyA) || self.is_key_pressed(KeyCode::ArrowLeft) {
-            dx -= 1.0;
-        }
-        if self.is_key_pressed(KeyCode::KeyD) || self.is_key_pressed(KeyCode::ArrowRight) {
-            dx += 1.0;
-        }
-        if self.is_key_pressed(KeyCode::KeyW) || self.is_key_pressed(KeyCode::ArrowUp) {
-            dy += 1.0;
-        }
-        if self.is_key_pressed(KeyCode::KeyS) || self.is_key_pressed(KeyCode::ArrowDown) {
-            dy -= 1.0;
-        }
-
-        (dx, dy)
-    }
 }
 
 impl System for InputSystem {
@@ -74,13 +52,26 @@ impl System for InputSystem {
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-        update_context.world.input_state.movement = self.get_movement_input();
+        let mapping = &update_context.world.input_mapping;
+
+        for (key, binding) in &mapping.bindings {
+            let should_fire = match binding.mode {
+                InputActionMode::Continuous => self.pressed_keys.contains(key),
+                InputActionMode::OneShot => self.just_pressed.contains(key),
+            };
+
+            if should_fire {
+                update_context.events.push(InputActionEvent {
+                    action: binding.action.clone(),
+                });
+            }
+        }
+
         self.just_pressed.clear();
         self.just_released.clear();
     }
 
     fn render(&mut self, _render_context: &mut SystemRenderContext) {}
-
     fn cleanup(&mut self, _world: &mut World) {}
 
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {

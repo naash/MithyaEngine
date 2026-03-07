@@ -26,7 +26,7 @@ use crate::{
             SystemUpdateContext, 
             SystemsManager
         }
-    }, input::InputSystem, 
+    }, input::{InputMapping, InputSystem}, 
     pawn::{
         ControllerSystem, 
         MovementSystem
@@ -122,17 +122,16 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             physics_config: PhysicsConfig::default(),
             asset_manager: AssetManager::new(self.config.asset_root.clone()).unwrap(),
             fps: 0.0,
+            input_mapping: InputMapping::new()
         };
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system(InputSystem::new());
-        systems_manager.add_system(ControllerSystem);
+        systems_manager.add_system(ControllerSystem::new());
         systems_manager.add_system(MovementSystem);
         systems_manager.add_system(PhysicsSystem);
         systems_manager.add_system(CollisionSystem);
         systems_manager.add_system(rendering_system);
-        // Note: RenderingSystem is no longer in SystemsManager
-        // It owns wgpu state and is managed directly by Engine
 
         systems_manager.initialize_all(&mut world);
         
