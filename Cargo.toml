@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "mithya_engine",
+    "mithya_sandbox",
+    "sample_games/brickbreaker",
+]

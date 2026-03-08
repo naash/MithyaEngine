@@ -14,9 +14,10 @@ use mithya_engine::{
 
 mod brick_breaker;
 
-use crate::brick_breaker::{components::{Brick, Ball, Paddle, BrickType, BrickBreakerState},
-    systems::BrickBreakerSystem,
-    brick_spawner::*
+use crate::brick_breaker::{
+    brick_spawner::*, components::{
+        Ball, BrickBreakerState, BrickType
+    }, systems::BrickBreakerSystem
 };
 use winit::keyboard::KeyCode;
 
@@ -69,8 +70,8 @@ impl GameLogic for Brickbreaker {
         
         let game_manager_id = spawn_game_manager(world);
 
-        let mut brickerBreakerSystem = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0);
-        systems_manager.add_system(brickerBreakerSystem);
+        let brick_breaker_system = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0);
+        systems_manager.add_system(brick_breaker_system);
 
         println!("Brick Breaker ready!");
     }

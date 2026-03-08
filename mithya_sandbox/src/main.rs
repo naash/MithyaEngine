@@ -4,13 +4,8 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    engine::{system::SystemsManager, Engine, EngineConfig, EntityBuilder, GameLogic, World},
-    physics::{Collider, ColliderShape, RigidBody}, 
-    player::Player, rendering::{Mesh, Render}, 
-    Transform
+    engine::{system::SystemsManager, Engine, EngineConfig, GameLogic, World},
 };
-
-use glam::{Quat, Vec3};
 
 //Sandbox to test engine features
 struct Sandbox {
@@ -18,7 +13,7 @@ struct Sandbox {
 }
 
 impl GameLogic for Sandbox {
-    fn initialize(&mut self, world: &mut World, _systems_manager: &mut SystemsManager) {
+    fn initialize(&mut self, _world: &mut World, _systems_manager: &mut SystemsManager) {
        
     }
 
@@ -28,15 +23,17 @@ impl GameLogic for Sandbox {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = EngineConfig {
-        window_title: "Mithya Sandbox".to_string(),
+ let config = EngineConfig {
+        window_title: "Sandbox".to_string(),
         window_width: 960,
         window_height: 540,
+        asset_root: std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")),
         ..Default::default()
     };
 
-    let engine = Engine::new(config)?;
     let game = Sandbox { /* initialize game state */ };
-    
-    engine.run(game)
+
+    let engine = Engine::new(config, game);
+
+    engine.run()
 }
