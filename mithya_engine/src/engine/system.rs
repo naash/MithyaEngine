@@ -32,9 +32,7 @@ pub trait System {
     fn render(&mut self, render_context: &mut SystemRenderContext);
     fn cleanup(&mut self, _world: &mut World) {}
     
-    fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
-        None  // Default: not a listener
-    }
+    fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener>;
 }
 
 // Separate trait for the Any requirement
@@ -60,8 +58,10 @@ impl SystemsManager {
         }
     }
 
-    pub fn add_system<S: System + 'static>(&mut self, system: S) {
-        self.systems.push(Box::new(system));
+    pub fn add_system<S: System + 'static>(&mut self, system: S, world: &mut World) {
+        let mut boxed = Box::new(system);
+        let _ = boxed.initialize(world);
+        self.systems.push(boxed);
     }
 
     pub fn handle_event_all( &mut self, event_queue: &mut EngineEventQueue, action_queue: &mut EngineActionQueue){
@@ -81,12 +81,6 @@ impl SystemsManager {
         }
         
         event_queue.broadcast_to_listeners(&mut listeners, action_queue);
-    }
-
-    pub fn initialize_all(&mut self, world: &mut World) {
-        for system in &mut self.systems {
-            let _ = system.initialize(world);
-        }
     }
 
     pub fn update_all(&mut self, update_context: &mut SystemUpdateContext) {

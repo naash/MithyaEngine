@@ -126,14 +126,12 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         };
 
         let mut systems_manager = SystemsManager::new();
-        systems_manager.add_system(InputSystem::new());
-        systems_manager.add_system(ControllerSystem::new());
-        systems_manager.add_system(MovementSystem);
-        systems_manager.add_system(PhysicsSystem);
-        systems_manager.add_system(CollisionSystem);
-        systems_manager.add_system(rendering_system);
-
-        systems_manager.initialize_all(&mut world);
+        systems_manager.add_system(InputSystem::new(), &mut world);
+        systems_manager.add_system(ControllerSystem::new(), &mut world);
+        systems_manager.add_system(MovementSystem, &mut world);
+        systems_manager.add_system(PhysicsSystem, &mut world);
+        systems_manager.add_system(CollisionSystem, &mut world);
+        systems_manager.add_system(rendering_system, &mut world);
         
         self.game.initialize(&mut world, &mut systems_manager);
 

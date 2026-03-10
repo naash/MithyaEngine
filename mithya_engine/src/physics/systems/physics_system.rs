@@ -37,7 +37,6 @@ impl System for PhysicsSystem {
 
                      // Reset with gravity at start
                     rigidbody.acceleration.y = gravity.y * rigidbody.gravity_scale;
-
                     //Future feature Apply other forces here
 
                     // Update velocity
@@ -72,5 +71,9 @@ impl System for PhysicsSystem {
 
     fn render(&mut self, _render_context: &mut SystemRenderContext) {
         // Physics system doesn't render anything
+    }
+    
+    fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
+        None
     }
 }

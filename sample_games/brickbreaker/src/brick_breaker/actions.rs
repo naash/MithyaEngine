@@ -21,7 +21,7 @@ pub struct LaunchBallAction {
 impl EngineAction for LaunchBallAction {
     fn execute(&mut self, world: &mut World) {
         if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(self.ball_id) {
-            rb.velocity = Vec3::new(0.0, 35.0, 0.0);
+            rb.velocity = Vec3::new(0.0, 5.0, 0.0);
             rb.is_kinematic = false;
         }
     }

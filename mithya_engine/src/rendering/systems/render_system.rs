@@ -115,6 +115,10 @@ impl System for RenderingSystem {
         self.queue.submit(std::iter::once(encoder.finish()));
         output.present();
     }
+    
+    fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
+        None
+    }
 }
 
 impl RenderingSystem {

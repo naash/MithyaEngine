@@ -4,6 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use std::{any::Any, collections::HashSet};
+use egui::debug_text::print;
 use glam::{Vec2, Vec3Swizzles};
 
 use crate::{
@@ -63,6 +64,10 @@ impl System for CollisionSystem {
 
     fn render(&mut self, _render_context: &mut SystemRenderContext) {
         // No rendering for collision system
+    }
+    
+    fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
+        None
     }
 }
 
@@ -174,9 +179,12 @@ impl CollisionSystem {
 
             // Only reflect if moving into the collision
             if vel_along_normal < 0.0 {
+                let original_speed = velocity.length();
                 let reflected = velocity - 2.0 * vel_along_normal * normal;
-                rb.velocity.x = reflected.x * rb.bounce;
-                rb.velocity.y = reflected.y * rb.bounce;
+                let normalized = reflected.normalize();
+                let new_speed = original_speed * rb.bounce;
+                rb.velocity.x = normalized.x * new_speed;
+                rb.velocity.y = normalized.y * new_speed;
             }
         }
     }

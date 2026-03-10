@@ -52,4 +52,8 @@ impl System for MovementSystem {
     }
 
     fn render(&mut self, _render_context: &mut SystemRenderContext) {}
+    
+    fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
+        None
+    }
 }

@@ -32,16 +32,6 @@ impl GameLogic for Brickbreaker {
     fn initialize(&mut self, world: &mut World, systems_manager: &mut SystemsManager) {
         println!("Initializing Brick Breaker...");
 
-        //Bindings
-        world.input_mapping
-            .bind(KeyCode::KeyA,      InputBinding::continuous(InputAction::MoveLeft))
-            .bind(KeyCode::ArrowLeft, InputBinding::continuous(InputAction::MoveLeft))
-            .bind(KeyCode::KeyD,      InputBinding::continuous(InputAction::MoveRight))
-            .bind(KeyCode::ArrowRight,InputBinding::continuous(InputAction::MoveRight))
-            .bind(KeyCode::Space,     InputBinding::one_shot(InputAction::Launch))
-            .bind(KeyCode::Enter,    InputBinding::one_shot(InputAction::Confirm));
-
-
         // === TEXTURES ===
         // load_assets
         if let Some(renderer) = systems_manager.get_system_mut::<RenderingSystem>() {
@@ -71,7 +61,16 @@ impl GameLogic for Brickbreaker {
         let game_manager_id = spawn_game_manager(world);
 
         let brick_breaker_system = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0);
-        systems_manager.add_system(brick_breaker_system);
+        systems_manager.add_system(brick_breaker_system, world);
+
+        //Bindings
+        world.input_mapping
+            .bind(KeyCode::KeyA,      InputBinding::continuous(InputAction::MoveLeft))
+            .bind(KeyCode::ArrowLeft, InputBinding::continuous(InputAction::MoveLeft))
+            .bind(KeyCode::KeyD,      InputBinding::continuous(InputAction::MoveRight))
+            .bind(KeyCode::ArrowRight,InputBinding::continuous(InputAction::MoveRight))
+            .bind(KeyCode::Space,     InputBinding::one_shot(InputAction::Launch))
+            .bind(KeyCode::Enter,    InputBinding::one_shot(InputAction::Confirm));
 
         println!("Brick Breaker ready!");
     }
