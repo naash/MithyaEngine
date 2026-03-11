@@ -179,12 +179,9 @@ impl CollisionSystem {
 
             // Only reflect if moving into the collision
             if vel_along_normal < 0.0 {
-                let original_speed = velocity.length();
-                let reflected = velocity - 2.0 * vel_along_normal * normal;
-                let normalized = reflected.normalize();
-                let new_speed = original_speed * rb.bounce;
-                rb.velocity.x = normalized.x * new_speed;
-                rb.velocity.y = normalized.y * new_speed;
+                let reflected = velocity - 2.0 * vel_along_normal * normal.normalize();
+                rb.velocity.x = reflected.x * rb.bounce;
+                rb.velocity.y = reflected.y * rb.bounce;
             }
         }
     }

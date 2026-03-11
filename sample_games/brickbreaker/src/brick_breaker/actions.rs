@@ -4,13 +4,12 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    core::{EngineAction, Transform, DestroyEntityAction},
+    core::{EngineAction, Transform},
     engine::World,
     physics::RigidBody,
 };
-use glam::Vec3;
+use glam::{Vec2, Vec3};
 use super::components::{Brick, BrickBreakerState};
-use super::brick_spawner::{spawn_brick_grid};
 
 //Action added when space is pressed
 #[derive(Debug)]
@@ -21,7 +20,7 @@ pub struct LaunchBallAction {
 impl EngineAction for LaunchBallAction {
     fn execute(&mut self, world: &mut World) {
         if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(self.ball_id) {
-            rb.velocity = Vec3::new(0.0, 5.0, 0.0);
+            rb.velocity = Vec3::new(0.0, 10.0, 0.0);
             rb.is_kinematic = false;
         }
     }
@@ -41,11 +40,15 @@ impl EngineAction for BallPaddleCollisionAction {
             entity_manager.get_two_components::<Transform>(self.paddle_id, self.ball_id);
         let paddle_t = paddle_t.expect("Paddle transform missing");
         let ball_t = ball_t.expect("Ball transform missing");
-        let dx = ball_t.position.x - paddle_t.position.x;
+        
+        let hit_offset = ball_t.position.x - paddle_t.position.x;
+
         let ball_rb = entity_manager.get_component_mut::<RigidBody>(self.ball_id)
             .expect("Ball rigidbody missing");
-        ball_rb.velocity.x = dx * 2.0;
-        ball_rb.velocity.y = ball_rb.velocity.y.abs();
+
+        let speed = Vec2::new(ball_rb.velocity.x, ball_rb.velocity.y).length();
+        let direction = Vec2::new(hit_offset, 1.0).normalize();
+        ball_rb.velocity = (direction * speed).extend(ball_rb.velocity.z);
     }
 }
 
