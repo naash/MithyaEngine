@@ -1,68 +1,64 @@
 # Mithya Engine
 
-A game engine built with Rust and ECS architecture. Intent is to learn Rust by building real systems and iterating on them as understanding improves.
+A game engine built from scratch in Rust, driven by a single goal: learn Rust by building something real and iterating on it until it's good.
 
 ---
 
 ## Architecture
 
 ### ECS
-Entities are plain `u32` IDs. Components are data structs attached to entities. Systems operate on entities that have specific components. No inheritance — behaviour comes from component composition.
-
-**Why:** Rust's borrow checker makes traditional OOP inheritance painful. ECS works naturally with Rust — systems take what they need by component type, ownership is clear, and there are no shared mutable base classes.
+Entities are plain `u32` IDs. Components are data structs. Systems operate on entities that have specific components. No inheritance — behaviour comes from composition.
 
 ### Event / Action Pipeline
-Systems communicate through two channels:
-
-- **Events** — facts about what happened. Pushed from `update()`, broadcast to all interested listeners at end of frame.
-- **Actions** — deferred world mutations. Pushed from event listeners, executed after all systems finish updating.
+Systems communicate through two channels — events (facts about what happened) and actions (deferred world mutations). Events are pushed from `update()`, broadcast to listeners, which push actions that execute after all systems finish.
 
 ```
 update() → push events
-on_events() → hear events → push actions  
-execute_all() → actions mutate world
+on_events(events, actions, world) → push actions
+execute_all() → mutate world
 ```
 
-**Why:** Systems can't hold mutable references to each other — Rust won't allow it. Events and actions solve this cleanly. A system signals what happened via an event without needing a reference to whoever cares. The receiver pushes an action without needing to mutate the world mid-frame. Mutation happens at a safe, predictable point after all systems have finished reading. This also makes systems fully decoupled — an audio system can react to `BrickDestroyedEvent` without `BrickBreakerSystem` knowing audio exists.
-
-### Systems
-All systems implement `System` (`initialize`, `update`, `render`). Systems that care about events implement `EngineEventListener` and declare which event types they want — only relevant systems are notified, no polling.
-
-**Why:** The listener pattern avoids systems needing to scan the full event queue every frame. Each system declares its interests upfront via `TypeId` — the engine only calls `on_events` when a matching event exists.
+### Input
+Named input actions bound to physical keys via `InputMapping`. `InputSystem` translates raw key events into `InputActionEvent` — systems respond to actions, not keycodes. Rebinding is a config change, not a code change.
 
 ### Rendering
-Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. Pipeline state — blend mode, depth, vertex layout — is compiled upfront, not toggled at runtime. Uniforms passed via typed bind groups.
+Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
 
-**Why:** OpenGL uses a global state machine with implicit context. wgpu is explicit — no hidden state, no unsafe, resource lifetimes tracked by Rust's ownership system. Pipeline compilation upfront means the GPU has no surprises at render time. The explicit bind group model also maps cleanly to Rust's type system unlike OpenGL's string-based uniform locations.
+### Physics
+Velocity, acceleration, drag, gravity, bounce, max speed. Collision resolution uses relative velocity reflection to preserve ball speed regardless of what it hits.
 
-`RenderingSystem` is the only system that touches the GPU directly. Other systems visualise debug info by spawning entities with `Render` components — `RenderingSystem` picks them up automatically.
+---
 
-### Assets
-Asset root is configured per-game via `EngineConfig`. Games call `load_texture_for_material()` in `initialize()` — the engine has no knowledge of game assets. `RenderingSystem` exposes `load_assets()` as a closure so games receive `device` and `queue` without those leaking into the public API.
+## What I Learned so far
 
-**Why:** Early versions had hardcoded texture paths and material names inside the engine. This broke as soon as a second game was added. The closure pattern keeps wgpu internals contained inside `RenderingSystem` while giving games full control over what they load.
+This project was deliberately chosen as a Rust learning vehicle because game engines stress-test every part of the language. As a C++ programmer, learning Rust was interesting and its constraints forced me to architecture the engine in a more robust and safer way.
+
+**Ownership ended null pointer bugs entirely.** Every `get_component` returns `Option<T>`. The compiler forces handling of the missing case — there is no way to accidentally dereference a missing component. This class of bug simply doesn't exist.
+
+**The borrow checker is a systems architecture tool.** Early versions of the engine had systems trying to hold references to each other but the compiler rejected all of it. The event/action pipeline wasn't a design choice, it was the solution the borrow checker forced. A system can't hold a `&mut World` while another system reads it, so mutations are deferred to a point where no borrows are active. The architecture is better because of the constraint.
+
+**`Option<T>` and `Result<T,E>` replace entire categories of runtime errors.** No exceptions, no null checks, no undefined behaviour. The compiler won't let you use a value that might not exist without explicitly handling both cases. Writing `expect("message")` instead of `unwrap()` forced me to justify every assumption the code makes.
+
+**Traits compose where inheritance breaks.** `System`, `EngineEventListener`, `Component`, `EngineAction` are all traits. A type can implement any combination. No base classes, no diamond problem, no vtable surprises. The ECS architecture maps naturally to this — entities are composed of components, behaviour comes from which traits those components' systems implement.
+
+**Move semantics make resource management explicit.** Passing the wgpu `Device` to a function transfers ownership — you can't accidentally use it from two places. The GPU resource lifetime is enforced by the type system, not by discipline.
 
 ---
 
 ## Stack
 
-`wgpu` · `winit` · `glam` · `serde` · `bytemuck` · `image` · `thiserror`
+`wgpu` · `winit` · `egui` · `glam` · `serde` · `bytemuck` · `image` · `thiserror`
 
 ---
 
 ## Sample Game — Brickbreaker
 
-Built to exercise all engine systems. Ball physics, paddle deflection, brick destruction, scoring, lives, win/lose/reset.
+Built to exercise all engine systems end to end. Ball physics with constant-speed reflection, paddle deflection, multi-hit brick health system, scoring, lives, win/lose/reset, egui HUD.
 
-Controls: `Space` launch · `A/D` or arrows move · `Enter` reset
+**Controls:** `Space` launch · `A/D` or arrows move · `Enter` reset
 
 ---
 
-## Roadmap
+## Next
 
-- [ ] Controller / Pawn pattern — player and AI controllers possessing pawns
-- [ ] AI controller — world-aware paddle driver
-- [ ] Self-learning controller — trains to play autonomously
-- [ ] UI system — egui-wgpu replacing current stub
-- [ ] Camera system — replace hardcoded projection
-- [ ] 3D rendering
+Building Pac-Man on this engine to implement classical game AI — A* pathfinding, behavior trees, perception systems — then replacing one ghost's brain with a reinforcement learning agent and comparing the two approaches directly.
