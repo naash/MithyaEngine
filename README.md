@@ -25,7 +25,7 @@ Named input actions bound to physical keys via `InputMapping`. `InputSystem` tra
 Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
 
 ### Physics
-Velocity, acceleration, drag, gravity, bounce, max speed. Collision resolution uses relative velocity reflection to preserve ball speed regardless of what it hits.
+Velocity, acceleration, drag, gravity, bounce, max speed. Collision resolution uses relative velocity reflection to speed regardless of what it hits.
 
 ---
 
