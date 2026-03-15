@@ -35,7 +35,7 @@ impl System for PhysicsSystem {
                     //Future feature Apply other forces here
 
                     //Cap acceleration
-                    if rigidbody.acceleration.length() > rigidbody.max_acceleration {
+                    if rigidbody.max_acceleration > 0.0 && rigidbody.acceleration.length() > rigidbody.max_acceleration {
                         let capped_acceleration = rigidbody.acceleration.normalize() * rigidbody.max_acceleration;
                         rigidbody.acceleration = capped_acceleration;
                     }
@@ -49,14 +49,13 @@ impl System for PhysicsSystem {
                     rigidbody.velocity.y *= 1.0 - (rigidbody.drag * dt);
 
                     //Cap velocity
-                    if rigidbody.velocity.length() > rigidbody.max_speed {
+                    if rigidbody.max_speed > 0.0 && rigidbody.velocity.length() > rigidbody.max_speed {
                         let capped_velocity = rigidbody.velocity.normalize() * rigidbody.max_speed;
                         rigidbody.velocity = capped_velocity;
                     }
                     
                     // Store velocity for position update
                     let vel = rigidbody.velocity;
-
                     // Reset acceleration for next frame
                     rigidbody.acceleration = Vec3::ZERO;
 

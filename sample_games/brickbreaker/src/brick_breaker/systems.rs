@@ -6,10 +6,10 @@
 use mithya_engine::{
     core::{
         EngineEventListener, EngineActionQueue, EngineEventQueue, 
-        Transform, DestroyEntityAction
+        Transform
     },
     engine::{
-        system::{System, SystemRenderContext, SystemUpdateContext},
+        system::{System, SystemUpdateContext},
         World,
     },
     input::{
@@ -20,21 +20,19 @@ use mithya_engine::{
 };
 
 use super::actions::{
-    LaunchBallAction, ResetGameAction, AddScoreAction,
+    LaunchBallAction, ResetGameAction
 };
 
 use glam::Vec3;
 use super::components::{Brick, BrickBreakerState};
-use crate::brick_breaker::{actions::BallPaddleCollisionAction, brick_spawner::*};
+use crate::brick_breaker::{actions::{BallPaddleCollisionAction, DestroyBrickAction}, brick_spawner::*, components::GameState};
 use std::{any::TypeId, collections::HashSet};
 
 pub struct BrickBreakerSystem {
     pub ball_id: u32,
     pub paddle_id: u32,
     pub game_manager_id: u32,
-    pub has_ball_launched: bool,
-    pub paddle_start_x: f32,
-    pub brick_ids: HashSet<u32>
+    pub paddle_start_x: f32
 }
 
 impl BrickBreakerSystem {
@@ -43,19 +41,16 @@ impl BrickBreakerSystem {
             ball_id,
             paddle_id,
             game_manager_id,
-            has_ball_launched: false,
-            paddle_start_x,
-            brick_ids
+            paddle_start_x
         }
     }
 
     fn do_reset(&mut self, update_context: &mut SystemUpdateContext) {
         // Destroy remaining bricks
-        for brick_id in self.brick_ids.clone() {
-            update_context.world.entity_manager.destroy_entity(brick_id);
-        }
-
-        self.brick_ids.clear();
+        let bricks = update_context.world.entity_manager.query_component::<Brick>();
+            for brick_id in bricks {
+                update_context.world.entity_manager.destroy_entity(brick_id);
+            }
 
         // Respawn bricks
         let config = BrickGridConfig {
@@ -64,9 +59,10 @@ impl BrickBreakerSystem {
             brick_width: 3.0,
             brick_height: 1.5,
             spacing: 0.2,
-            start_position: Vec3::new(0.0, 10.0, 0.0),
+            start_position: Vec3::new(0.0, 12.0, 0.0),
         };
-        self.brick_ids = spawn_brick_grid(update_context.world, config);
+        
+        spawn_brick_grid(update_context.world, config);
 
         // Reset ball
         if let Some(rb) = update_context.world.entity_manager
@@ -96,12 +92,9 @@ impl BrickBreakerSystem {
         {
             state.score = 0;
             state.lives = 3;
-            state.game_over = false;
-            state.needs_reset = false;
+            state.state = GameState::WaitingToLaunch;
             println!("Game reset! Press Space to launch.");
         }
-
-        self.has_ball_launched = false;
     }
 }
 
@@ -112,16 +105,29 @@ impl System for BrickBreakerSystem {
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
 
-        let state = update_context.world.entity_manager.get_component::<BrickBreakerState>(self.game_manager_id);
+        // Read current game state
+        let game_state = update_context.world.entity_manager
+            .get_component::<BrickBreakerState>(self.game_manager_id)
+            .map(|s| s.state.clone());
 
-        if let Some(state) = state {
-            if state.game_over {
-                return;
-            }
-            if state.needs_reset {
+        match game_state {
+            Some(GameState::GameOver) | Some(GameState::Won) => return,
+            Some(GameState::Resetting) => {
                 self.do_reset(update_context);
                 return;
             }
+            Some(GameState::WaitingToLaunch) => {
+                // Stick ball to paddle
+                let (paddle_t, ball_t) = update_context.world.entity_manager
+                    .get_two_components_mut::<Transform>(self.paddle_id, self.ball_id);
+                let paddle_t = paddle_t.expect("Paddle transform missing");
+                let ball_t = ball_t.expect("Ball transform missing");
+                ball_t.position.x = paddle_t.position.x;
+                ball_t.position.y = paddle_t.position.y + 1.0;
+                return;
+            }
+            Some(GameState::Playing) => {}
+            None => return,
         }
 
         // Check win condition
@@ -134,20 +140,8 @@ impl System for BrickBreakerSystem {
                 .get_component_mut::<BrickBreakerState>(self.game_manager_id)
             {
                 println!("You win! Final score: {}", state.score);
-                state.game_over = true;
-                println!("Game over! Press Enter to restart");
+                state.state = GameState::Won;
             }
-            return;
-        }
-
-        // Stick ball to paddle before launch
-        if !self.has_ball_launched {
-            let (paddle_t, ball_t) = update_context.world.entity_manager
-                .get_two_components_mut::<Transform>(self.paddle_id, self.ball_id);
-            let paddle_t = paddle_t.expect("Paddle transform missing");
-            let ball_t = ball_t.expect("Ball transform missing");
-            ball_t.position.x = paddle_t.position.x;
-            ball_t.position.y = paddle_t.position.y + 1.0;
             return;
         }
 
@@ -161,18 +155,17 @@ impl System for BrickBreakerSystem {
             if let Some(state) = update_context.world.entity_manager
                 .get_component_mut::<BrickBreakerState>(self.game_manager_id)
             {
-                // Lose a life
                 if state.lives > 0 {
                     state.lives -= 1;
                     println!("Lives remaining: {}", state.lives);
                 }
                 if state.lives == 0 {
-                    state.game_over = true;
+                    state.state = GameState::GameOver;
                     println!("Game Over! Final score: {}", state.score);
+                } else {
+                    state.state = GameState::WaitingToLaunch;
                 }
             }
-
-            self.has_ball_launched = false;
         }
     }
 
@@ -191,6 +184,7 @@ impl EngineEventListener for BrickBreakerSystem {
         &mut self,
         events: &EngineEventQueue,
         actions: &mut EngineActionQueue,
+        world: &World
     ) {
         for ev in events.iter() {
             let ev = ev.as_ref();
@@ -209,31 +203,29 @@ impl EngineEventListener for BrickBreakerSystem {
                             ball_id: self.ball_id,
                             paddle_id: self.paddle_id,
                         });
-                    } else if self.brick_ids.contains(&other_id) {
-                        actions.push(DestroyEntityAction { entity_id: other_id });
-                        actions.push(AddScoreAction {
+                    } else if world.entity_manager.get_component::<Brick>(other_id).is_some() {
+                        actions.push(DestroyBrickAction {
+                            brick_id: other_id,
                             game_manager_id: self.game_manager_id,
-                            points: 10,
                         });
-                        self.brick_ids.remove(&other_id);
                     }
             }
+            //Button actions to launch ball and reset game
             if let Some(input) = ev.as_any().downcast_ref::<InputActionEvent>() {
                 match input.action {
-                    InputAction::Launch => {
-                        if !self.has_ball_launched {
-                            self.has_ball_launched = true;
-                            actions.push(LaunchBallAction { ball_id: self.ball_id });
-                        }
-                    }
-                    InputAction::Confirm => {
-                        self.has_ball_launched = false;
-                        actions.push(ResetGameAction {
-                            ball_id: self.ball_id,
-                            game_manager_id: self.game_manager_id,
-                        });
-                    }
-                    _ => {}
+                InputAction::Launch => {
+                    actions.push(LaunchBallAction { 
+                        ball_id: self.ball_id,
+                        game_manager_id: self.game_manager_id,
+                    });
+                }
+                InputAction::Confirm => {
+                    actions.push(ResetGameAction {
+                        ball_id: self.ball_id,
+                        game_manager_id: self.game_manager_id,
+                    });
+                }
+                _ => {}
                 }
             }
         }

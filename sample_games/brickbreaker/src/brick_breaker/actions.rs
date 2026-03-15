@@ -9,19 +9,34 @@ use mithya_engine::{
     physics::RigidBody,
 };
 use glam::{Vec2, Vec3};
+use crate::brick_breaker::components::GameState;
+
 use super::components::{Brick, BrickBreakerState};
 
 //Action added when space is pressed
 #[derive(Debug)]
 pub struct LaunchBallAction {
     pub ball_id: u32,
+    pub game_manager_id: u32
 }
 
 impl EngineAction for LaunchBallAction {
     fn execute(&mut self, world: &mut World) {
-        if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(self.ball_id) {
-            rb.velocity = Vec3::new(0.0, 10.0, 0.0);
+        // Set game state to playing
+        if let Some(state) = world.entity_manager
+            .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+        {
+            if state.state != GameState::WaitingToLaunch {
+                return;  // only launch if waiting
+            }
+            state.state = GameState::Playing;
+        }
+
+        if let Some(rb) = world.entity_manager
+            .get_component_mut::<RigidBody>(self.ball_id)
+        {
             rb.is_kinematic = false;
+            rb.velocity = Vec3::new(0.0, 10.0, 0.0);
         }
     }
 }
@@ -48,65 +63,43 @@ impl EngineAction for BallPaddleCollisionAction {
 
         let speed = Vec2::new(ball_rb.velocity.x, ball_rb.velocity.y).length();
         let direction = Vec2::new(hit_offset, 1.0).normalize();
-        ball_rb.velocity = (direction * speed).extend(ball_rb.velocity.z);
-    }
-}
-
-//Action when ball resets
-#[derive(Debug)]
-pub struct ResetBallAction {
-    pub ball_id: u32,
-}
-
-impl EngineAction for ResetBallAction {
-    fn execute(&mut self, world: &mut World) {
-        if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(self.ball_id) {
-            rb.velocity = Vec3::ZERO;
-            rb.is_kinematic = true;
-        }
-    }
-}
-
-//Action when score increases
-#[derive(Debug)]
-pub struct AddScoreAction {
-    pub game_manager_id: u32,
-    pub points: u32,
-}
-
-impl EngineAction for AddScoreAction {
-    fn execute(&mut self, world: &mut World) {
-        if let Some(state) = world.entity_manager
-            .get_component_mut::<BrickBreakerState>(self.game_manager_id)
-        {
-            state.score += self.points;
-            println!("Score: {}", state.score);
-        }
+        ball_rb.set_velocity((direction * speed).extend(ball_rb.velocity.z));
     }
 }
 
 //Action when brick is destroyed
 #[derive(Debug)]
-pub struct BrickDestroyedAction {
-    pub entity_id: u32,
+pub struct DestroyBrickAction {
+    pub brick_id: u32,
     pub game_manager_id: u32,
 }
 
-impl EngineAction for BrickDestroyedAction {
+impl EngineAction for DestroyBrickAction {
     fn execute(&mut self, world: &mut World) {
-        let points = world.entity_manager
-            .get_component::<Brick>(self.entity_id)
-            .map(|b| b.points)
-            .unwrap_or(10);
 
-        if let Some(state) = world.entity_manager
-            .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+         // Apply damage
+        if let Some(brick) = world.entity_manager
+            .get_component_mut::<Brick>(self.brick_id)
         {
-            state.score += points;
-            println!("Brick destroyed! +{} points. Score: {}", points, state.score);
+            println!("Deal damage");
+            brick.take_damage();
         }
 
-        world.entity_manager.destroy_entity(self.entity_id);
+        // Check destruction and get points in one call
+        let (is_destroyed, points) = world.entity_manager
+            .get_component::<Brick>(self.brick_id)
+            .map(|b| (b.is_destroyed(), b.points))
+            .unwrap_or((false, 0));
+
+        if is_destroyed {
+            if let Some(state) = world.entity_manager
+                .get_component_mut::<BrickBreakerState>(self.game_manager_id)
+            {
+                state.score += points;
+            }
+
+            world.entity_manager.destroy_entity(self.brick_id);
+        }
     }
 }
 
@@ -119,21 +112,16 @@ pub struct ResetGameAction {
 
 impl EngineAction for ResetGameAction {
     fn execute(&mut self, world: &mut World) {
-        // Reset ball
-        if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(self.ball_id) {
-            rb.velocity = Vec3::ZERO;
-            rb.is_kinematic = true;
-        }
-
-        // Reset game state
+        
+        //Only do the action if state is valid
         if let Some(state) = world.entity_manager
             .get_component_mut::<BrickBreakerState>(self.game_manager_id)
         {
-            state.score = 0;
-            state.lives = 3;
-            state.game_over = false;
-            state.needs_reset = true;
-            println!("Game reset! Press Space to launch.");
+            if state.state == GameState::Playing {
+                return;  // only reset not playing
+            }
+
+            state.state = GameState::Resetting;
         }
     }
 }

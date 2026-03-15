@@ -7,7 +7,7 @@ use std::any::TypeId;
 
 use crate::{
     Controller, Movement, core::EngineEventListener, engine::{
-        system::{System, SystemRenderContext, SystemUpdateContext}, world::World
+        system::{System, SystemUpdateContext}, world::World
     }, input::{InputAction, InputActionEvent}
 };
 
@@ -71,6 +71,7 @@ impl EngineEventListener for ControllerSystem {
         &mut self,
         events: &crate::core::EngineEventQueue,
         _actions: &mut crate::core::EngineActionQueue,
+        _world: &World
     ) {
         // collect intent from input action events
         // store temporarily, applied in update()

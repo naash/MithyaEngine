@@ -39,7 +39,6 @@ impl Default for BrickGridConfig {
 /// Spawn a grid of bricks
 pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) -> HashSet<u32> {
     let total_width = (config.brick_width + config.spacing) * config.columns as f32;
-    let total_height = (config.brick_height + config.spacing) * config.rows as f32;
     
     // Center the grid
     let start_x = config.start_position.x + (total_width / 2.0) - (config.brick_width / 2.0);
@@ -56,7 +55,6 @@ pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) -> HashSet<u
             // Determine brick type based on row
             let brick_type = match row {
                 0 => BrickType::Strong,    // Top row is strong
-                4 => BrickType::Normal,    // Bottom row
                 _ => BrickType::Normal,    // Middle rows
             };
             
@@ -115,59 +113,4 @@ pub fn spawn_brick(
         })
         .with(Brick::new(brick_type))
         .build()
-}
-
-/// Create some test patterns
-pub mod patterns {
-    use super::*;
-    
-    /// Spawn a pyramid pattern
-    pub fn spawn_pyramid(world: &mut World) {
-        let brick_width = 3.0;
-        let brick_height = 1.5;
-        let spacing = 0.2;
-        
-        let rows = 5;
-        for row in 0..rows {
-            let bricks_in_row = rows - row;
-            let start_x = -(bricks_in_row as f32 * (brick_width + spacing)) / 2.0;
-            let y = 10.0 - (row as f32 * (brick_height + spacing));
-            
-            for col in 0..bricks_in_row {
-                let x = start_x + (col as f32 * (brick_width + spacing));
-                let brick_id = spawn_brick(
-                    world,
-                    Vec3::new(x, y, 0.0),
-                    brick_width,
-                    brick_height,
-                    BrickType::Normal,
-                    "unlit_texture_orange",
-                );
-            }
-        }
-    }
-    
-    /// Spawn a checkerboard pattern
-    pub fn spawn_checkerboard(world: &mut World) {
-        let config = BrickGridConfig::default();
-        
-        for row in 0..config.rows {
-            for col in 0..config.columns {
-                // Skip every other brick in checkerboard pattern
-                if (row + col) % 2 == 0 {
-                    let x = config.start_position.x + (col as f32 * (config.brick_width + config.spacing));
-                    let y = config.start_position.y - (row as f32 * (config.brick_height + config.spacing));
-                    
-                    spawn_brick(
-                        world,
-                        Vec3::new(x, y, 0.0),
-                        config.brick_width,
-                        config.brick_height,
-                        BrickType::Normal,
-                        if row % 2 == 0 { "unlit_texture_red" } else { "unlit_texture_blue" },
-                    );
-                }
-            }
-        }
-    }
 }

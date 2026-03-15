@@ -22,6 +22,16 @@ pub struct RigidBody {
     pub max_acceleration: f32, // caps acceleration
 }
 
+impl RigidBody {
+    pub fn set_velocity(&mut self, new_velocity: Vec3) {        
+        if self.max_speed > 0.0 && new_velocity.length() > self.max_speed {
+            self.velocity = new_velocity.normalize() * self.max_speed;
+        } else {
+            self.velocity = new_velocity;
+        }
+    }
+}
+
 impl Default for RigidBody {
     fn default() -> Self {
         Self {

@@ -18,7 +18,7 @@ mod brick_breaker;
 
 use crate::brick_breaker::{
     brick_spawner::*, components::{
-        Ball, BrickBreakerState, BrickType
+        Ball, BrickBreakerState, BrickType, GameState
     }, systems::BrickBreakerSystem
 };
 use winit::keyboard::KeyCode;
@@ -73,6 +73,77 @@ impl GameLogic for Brickbreaker {
             .bind(KeyCode::ArrowRight,InputBinding::continuous(InputAction::MoveRight))
             .bind(KeyCode::Space,     InputBinding::one_shot(InputAction::Launch))
             .bind(KeyCode::Enter,    InputBinding::one_shot(InputAction::Confirm));
+
+        //For UI
+        if let Some(renderer) = systems_manager.get_rendering_system() {
+            //We set a closure 'similar to lambda' that executes every render frame and pulls the relevant data
+            renderer.ui_draw_fn = Some(Box::new(move |ctx, world| {
+            let state = match world.entity_manager
+                .get_component::<BrickBreakerState>(game_manager_id) 
+            {
+                Some(s) => s,
+                None => return,
+            };
+
+            // Style — dark transparent panels
+            let mut style = (*ctx.style()).clone();
+            style.visuals.panel_fill = egui::Color32::from_rgba_premultiplied(0, 0, 0, 180);
+            style.visuals.override_text_color = Some(egui::Color32::WHITE);
+            ctx.set_style(style);
+
+            // Top panel — always visible
+            egui::TopBottomPanel::top("hud").show(ctx, |ui| {
+                ui.horizontal(|ui| {
+                    ui.heading(format!("Score: {}", state.score));
+                    ui.separator();
+                    ui.heading(format!("Lives: {}", state.lives));
+                });
+            });
+
+            match state.state {
+                GameState::GameOver => {
+                    egui::Window::new("game_over")
+                        .title_bar(false)
+                        .anchor(egui::Align2::CENTER_CENTER, [0.0, 0.0])
+                        .resizable(false)
+                        .collapsible(false)
+                        .show(ctx, |ui| {
+                            ui.vertical_centered(|ui| {
+                                ui.heading("GAME OVER");
+                                ui.add_space(10.0);
+                                ui.label(format!("Final Score: {}", state.score));
+                                ui.add_space(10.0);
+                                ui.label("Press Enter to restart");
+                            });
+                        });
+                }
+                GameState::Won => {
+                    egui::Window::new("game_won")
+                        .title_bar(false)
+                        .anchor(egui::Align2::CENTER_CENTER, [0.0, 0.0])
+                        .resizable(false)
+                        .collapsible(false)
+                        .show(ctx, |ui| {
+                            ui.vertical_centered(|ui| {
+                                ui.heading("YOU WIN!");
+                                ui.add_space(10.0);
+                                ui.label(format!("Final Score: {}", state.score));
+                                ui.add_space(10.0);
+                                ui.label("Press Enter to restart");
+                            });
+                        });
+                }
+                GameState::WaitingToLaunch => {
+                    egui::TopBottomPanel::bottom("launch_hint").show(ctx, |ui| {
+                        ui.vertical_centered(|ui| {
+                            ui.label("Press Space to launch");
+                        });
+                    });
+                }
+                GameState::Playing | GameState::Resetting => {}
+            }
+        }));
+        }
 
         println!("Brick Breaker ready!");
         println!("ball_id: {}, paddle_id: {}", ball_id, paddle_id);

@@ -34,13 +34,14 @@ impl Brick {
     
     pub fn take_damage(&mut self) -> bool {
         if self.health > 0 {
-            self.health = self.health.saturating_sub(1);
+            self.health -= 1;
         }
-        self.health == 0
+        println!("Health {}", self.health);
+        self.health <= 0
     }
     
     pub fn is_destroyed(&self) -> bool {
-        self.health == 0
+        self.health <= 0
     }
 }
 
@@ -93,27 +94,13 @@ impl Component for Ball {
     }
 }
 
-/// Marks an entity as the paddle
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-pub struct Paddle;
-
-impl Component for Paddle {
-    fn as_any(&self) -> &dyn Any {
-        self
-    }
-    
-    fn as_any_mut(&mut self) -> &mut dyn Any {
-        self
-    }
-    
-    fn serialize_to_json(&self) -> Result<serde_json::Value, serde_json::Error> {
-        serde_json::to_value(self)  // Serializes to `null` but can add more data in future
-    }
-    
-    fn deserialize_from_json(value: serde_json::Value) -> Result<Box<dyn Component>, serde_json::Error> {
-        let paddle: Paddle = serde_json::from_value(value)?;
-        Ok(Box::new(paddle))
-    }
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum GameState {
+    WaitingToLaunch,
+    Playing,
+    GameOver,
+    Won,
+    Resetting,
 }
 
 /// Game state component (attached to a game manager entity)
@@ -121,10 +108,7 @@ impl Component for Paddle {
 pub struct BrickBreakerState {
     pub score: u32,
     pub lives: u32,
-    pub level: u32,
-    pub game_started: bool,
-    pub game_over: bool,
-    pub needs_reset: bool
+    pub state: GameState,
 }
 
 impl Default for BrickBreakerState {
@@ -132,10 +116,7 @@ impl Default for BrickBreakerState {
         Self {
             score: 0,
             lives: 3,
-            level: 1,
-            game_started: false,
-            game_over: false,
-            needs_reset: false
+            state : GameState::WaitingToLaunch
         }
     }
 }

@@ -187,6 +187,7 @@ dependencies = [
 name = "brickbreaker"
 version = "0.1.0"
 dependencies = [
+ "egui",
  "glam",
  "mithya_engine",
  "serde",

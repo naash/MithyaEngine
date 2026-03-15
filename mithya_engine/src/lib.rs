@@ -10,7 +10,6 @@ pub mod engine;
 pub mod input;
 pub mod pawn;
 pub mod physics;
-pub mod ui;
 
 // Re-export commonly used types for easier access
 pub use core::{EntityManager, EntityId, Component, Transform};

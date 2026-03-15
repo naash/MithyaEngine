@@ -91,6 +91,7 @@ impl EngineEventListener for InputSystem {
         &mut self,
         events: &crate::core::EngineEventQueue,
         _actions: &mut crate::core::EngineActionQueue,
+        _world: &World
     ) {
         for event in events.iter_type::<KeyPressedEvent>() {
             if !self.pressed_keys.contains(&event.key) {

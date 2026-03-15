@@ -222,7 +222,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 let delta_time = s.frame_timer.get_delta_time();
                 s.world.fps = s.frame_timer.get_fps();
 
-                s.systems_manager.handle_event_all(&mut s.event_queue, &mut s.action_queue);
+                s.systems_manager.handle_event_all(&mut s.event_queue, &mut s.action_queue, &s.world);
                 s.action_queue.execute_all(&mut s.world);
 
                 let mut update_context = SystemUpdateContext {

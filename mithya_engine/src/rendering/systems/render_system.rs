@@ -55,7 +55,6 @@ pub struct RenderingSystem {
     // Default sampler shared across all textures
     default_sampler: wgpu::Sampler,
 
-
     //For UI rendering
     egui_renderer: egui_wgpu::Renderer,
     egui_context: egui::Context,
@@ -207,7 +206,6 @@ impl RenderingSystem {
         );
 
         //Egui stuff
-                // Initialize egui
         let egui_context = egui::Context::default();
         
         let egui_state = egui_winit::State::new(
@@ -444,7 +442,7 @@ impl RenderingSystem {
             }
         }
 
-                // egui pass
+        // egui pass
         let raw_input = self.egui_state.take_egui_input(window);
         let full_output = self.egui_context.run(raw_input, |ctx| {
             if let Some(draw_fn) = &self.ui_draw_fn {

@@ -8,6 +8,8 @@ use std::fmt::Debug;
 use winit::event::MouseButton;
 use winit::keyboard::KeyCode;
 
+use crate::World;
+
 /// Trait for all events in the system
 pub trait EngineEvent : Debug {
     fn as_any(&self) -> &dyn Any;
@@ -25,6 +27,7 @@ pub trait EngineEventListener {
         &mut self,
         events: &EngineEventQueue,
         actions: &mut EngineActionQueue,
+        world: &World, //Read only access
     );
 }
 
@@ -74,6 +77,7 @@ impl EngineEventQueue {
         &mut self,
         listeners: &mut [&mut dyn EngineEventListener],
         actions: &mut EngineActionQueue,
+        world: &World
     ) {
         for listener in listeners.iter_mut() {
             let interested_types = listener.interested_events();
@@ -82,7 +86,7 @@ impl EngineEventQueue {
                 interested_types.contains(&event_type)
             });
             if has_relevant_events {
-                listener.on_events(self, actions);
+                listener.on_events(self, actions, world);
             }
         }
         self.events.clear();

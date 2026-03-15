@@ -68,7 +68,7 @@ impl SystemsManager {
         self.systems.push(boxed);
     }
 
-    pub fn handle_event_all( &mut self, event_queue: &mut EngineEventQueue, action_queue: &mut EngineActionQueue){
+    pub fn handle_event_all( &mut self, event_queue: &mut EngineEventQueue, action_queue: &mut EngineActionQueue, world: &World){
 
         //Early return when there are no events to handle
         if event_queue.len() == 0 {
@@ -84,7 +84,7 @@ impl SystemsManager {
             }
         }
         
-        event_queue.broadcast_to_listeners(&mut listeners, action_queue);
+        event_queue.broadcast_to_listeners(&mut listeners, action_queue, world);
     }
 
     pub fn update_all(&mut self, update_context: &mut SystemUpdateContext) {

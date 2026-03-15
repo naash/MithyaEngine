@@ -7,7 +7,7 @@ use crate::{
     Movement, 
     Transform, 
     engine::{
-        system::{System, SystemRenderContext, SystemUpdateContext}, world::World
+        system::{System, SystemUpdateContext}, world::World
     }, 
     physics::RigidBody
 };
