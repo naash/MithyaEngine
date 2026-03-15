@@ -30,14 +30,15 @@ impl System for PhysicsSystem {
             // Cache velocity and should_update flag
             let (velocity, should_update) = {
                 if let Some(rigidbody) = update_context.world.entity_manager.get_component_mut::<RigidBody>(entity_id) {
-                    // Skip kinematic bodies
-                    if rigidbody.is_kinematic {
-                        continue;
-                    }
-
                      // Reset with gravity at start
-                    rigidbody.acceleration.y = gravity.y * rigidbody.gravity_scale;
+                    rigidbody.acceleration.y += gravity.y * rigidbody.gravity_scale;
                     //Future feature Apply other forces here
+
+                    //Cap acceleration
+                    if rigidbody.acceleration.length() > rigidbody.max_acceleration {
+                        let capped_acceleration = rigidbody.acceleration.normalize() * rigidbody.max_acceleration;
+                        rigidbody.acceleration = capped_acceleration;
+                    }
 
                     // Update velocity
                     rigidbody.velocity.x += rigidbody.acceleration.x * dt;
@@ -47,6 +48,12 @@ impl System for PhysicsSystem {
                     rigidbody.velocity.x *= 1.0 - (rigidbody.drag * dt);
                     rigidbody.velocity.y *= 1.0 - (rigidbody.drag * dt);
 
+                    //Cap velocity
+                    if rigidbody.velocity.length() > rigidbody.max_speed {
+                        let capped_velocity = rigidbody.velocity.normalize() * rigidbody.max_speed;
+                        rigidbody.velocity = capped_velocity;
+                    }
+                    
                     // Store velocity for position update
                     let vel = rigidbody.velocity;
 

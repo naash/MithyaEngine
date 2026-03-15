@@ -3,6 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use std::collections::HashSet;
+
 use mithya_engine::{
     engine::{system::SystemsManager, Engine, EngineConfig, EntityBuilder, GameLogic, World},
     physics::{Collider, ColliderShape, RigidBody},
@@ -21,7 +23,7 @@ use crate::brick_breaker::{
 };
 use winit::keyboard::KeyCode;
 
-use glam::{Quat, Vec3};
+use glam::Vec3;
 
 //Brickbreaker
 struct Brickbreaker {
@@ -45,9 +47,6 @@ impl GameLogic for Brickbreaker {
                 assets.load_texture_for_material("unlit_texture_circle", "pinkCircle.png", device, queue).unwrap();
             });
         }
-
-        // === WALLS ===
-        spawn_walls(world);
         
         // === BALL ===
         let ball_id = spawn_ball(world);
@@ -56,11 +55,14 @@ impl GameLogic for Brickbreaker {
         let paddle_id = spawn_paddle(world);
         
         // === BRICKS ===
-        spawn_bricks(world);
+        let brick_ids = spawn_bricks(world);
+
+        // === WALLS ===
+        spawn_walls(world);
         
         let game_manager_id = spawn_game_manager(world);
 
-        let brick_breaker_system = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0);
+        let brick_breaker_system = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0, brick_ids);
         systems_manager.add_system(brick_breaker_system, world);
 
         //Bindings
@@ -73,6 +75,7 @@ impl GameLogic for Brickbreaker {
             .bind(KeyCode::Enter,    InputBinding::one_shot(InputAction::Confirm));
 
         println!("Brick Breaker ready!");
+        println!("ball_id: {}, paddle_id: {}", ball_id, paddle_id);
     }
 
     fn update(&mut self, _world: &mut World, _delta_time: f32) {
@@ -101,9 +104,9 @@ fn spawn_walls(world: &mut World) {
     // Left Wall
     EntityBuilder::new(&mut world.entity_manager)
         .with(Transform {
-            position: Vec3::new(-20.0, 0.0, 0.0),
-            rotation: Quat::IDENTITY,
-            scale: Vec3::new(1.0, 39.0, 1.0),
+            position: Vec3::new(-20.5, 0.0, 0.0),
+            scale: Vec3::new(0.5, 40.0, 1.0),
+            ..Default::default()
         })
         .with(Render {
             mesh: Mesh::new_quad_textured(),
@@ -119,9 +122,9 @@ fn spawn_walls(world: &mut World) {
     // Right Wall
     EntityBuilder::new(&mut world.entity_manager)
         .with(Transform {
-            position: Vec3::new(20.0, 0.0, 0.0),
-            rotation: Quat::IDENTITY,
-            scale: Vec3::new(1.0, 39.0, 1.0),
+            position: Vec3::new(20.5, 0.0, 0.0),
+            scale: Vec3::new(0.5, 40.0, 1.0),
+            ..Default::default()
         })
         .with(Render {
             mesh: Mesh::new_quad_textured(),
@@ -137,9 +140,9 @@ fn spawn_walls(world: &mut World) {
     //Top Wall
     EntityBuilder::new(&mut world.entity_manager)
         .with(Transform {
-            position: Vec3::new(0.0, 19.0, 0.0),
-            rotation: Quat::IDENTITY,
-            scale: Vec3::new(38.5, 1.0, 1.0),
+            position: Vec3::new(0.0, 19.5, 0.0),
+            scale: Vec3::new(41.0, 0.5, 1.0),
+            ..Default::default()
         })
         .with(Render {
             mesh: Mesh::new_quad_textured(),
@@ -157,8 +160,8 @@ fn spawn_ball(world: &mut World) -> u32 {
     EntityBuilder::new(&mut world.entity_manager)
         .with(Transform {
             position: Vec3::new(0.0, -14.0, 0.0),  // Start at center
-            rotation: Quat::IDENTITY,
-            scale: Vec3::ONE,
+            scale: Vec3::new(1.25, 1.25, 1.0),
+            ..Default::default()
         })
         .with(Render {
             mesh: Mesh::new_quad_textured(),
@@ -172,6 +175,8 @@ fn spawn_ball(world: &mut World) -> u32 {
             gravity_scale: 0.0,
             bounce: 1.0,
             is_kinematic: true,
+            max_acceleration: 10.0,
+            max_speed: 10.0
         })
         .with(Collider {
             shape: ColliderShape::Circle { radius: 0.5 },  // Smaller radius
@@ -185,9 +190,9 @@ fn spawn_paddle(world: &mut World) -> u32 {
     // Spawn the paddle entity
     let paddle_id = EntityBuilder::new(&mut world.entity_manager)
         .with(Transform {
-            position: Vec3::new(0.0, -15.0, 0.0),
-            rotation: Quat::IDENTITY,
-            scale: Vec3::new(5.0, 1.0, 1.0),
+            position: Vec3::new(0.0, -17.0, 0.0),
+            scale: Vec3::new(6.0, 0.6, 1.0),
+            ..Default::default()
         })
         .with(Render {
             mesh: Mesh::new_quad_textured(),
@@ -200,11 +205,15 @@ fn spawn_paddle(world: &mut World) -> u32 {
         })
         .with(RigidBody {
             velocity: Vec3::ZERO,
+            acceleration: Vec3::ZERO,
             bounce: 0.0,
+            gravity_scale: 0.0,
             is_kinematic: true,
-            ..Default::default()
+            max_acceleration: 200.0,
+            max_speed: 20.0,
+            drag: 0.99999
         })
-        .with(Movement::new(20.0))
+        .with(Movement::new(150.0))
         .build();
 
     // Spawn a separate controller entity that possesses the paddle
@@ -215,17 +224,17 @@ fn spawn_paddle(world: &mut World) -> u32 {
     paddle_id
 }
 
-fn spawn_bricks(world: &mut World) {
+fn spawn_bricks(world: &mut World) -> HashSet<u32> {
     // Option 1: Spawn a full grid
     let config = BrickGridConfig {
         rows: 5,
         columns: 10,
         brick_width: 3.0,
-        brick_height: 1.5,
-        spacing: 0.2,
-        start_position: Vec3::new(0.0, 10.0, 0.0),
+        brick_height: 1.2,
+        spacing: 0.3,
+        start_position: Vec3::new(0.0, 12.0, 0.0),
     };
-    spawn_brick_grid(world, config);
+    spawn_brick_grid(world, config)
     
     // Option 2: Spawn a pattern (uncomment to try)
     

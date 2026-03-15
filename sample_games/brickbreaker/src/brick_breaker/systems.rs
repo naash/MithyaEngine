@@ -5,56 +5,57 @@
 
 use mithya_engine::{
     core::{
-        EngineEventListener, EngineEvent, EngineActionQueue, EngineAction, EngineEventQueue, 
-        Transform, KeyPressedEvent, DestroyEntityAction
+        EngineEventListener, EngineActionQueue, EngineEventQueue, 
+        Transform, DestroyEntityAction
     },
     engine::{
         system::{System, SystemRenderContext, SystemUpdateContext},
         World,
     },
     input::{
-        actions::{InputAction, InputActionMode, InputBinding, InputMapping},
+        actions::InputAction,
         InputActionEvent
     },
     physics::{RigidBody, systems::CollisionEvent},
 };
 
 use super::actions::{
-    LaunchBallAction, BallPaddleCollisionAction,
-    ResetGameAction, AddScoreAction,
+    LaunchBallAction, ResetGameAction, AddScoreAction,
 };
 
 use glam::Vec3;
-use super::components::{Ball, Brick, BrickBreakerState};
-use crate::brick_breaker::brick_spawner::*;
-use std::any::{TypeId, Any};
-use winit::keyboard::KeyCode;
+use super::components::{Brick, BrickBreakerState};
+use crate::brick_breaker::{actions::BallPaddleCollisionAction, brick_spawner::*};
+use std::{any::TypeId, collections::HashSet};
 
 pub struct BrickBreakerSystem {
     pub ball_id: u32,
     pub paddle_id: u32,
     pub game_manager_id: u32,
     pub has_ball_launched: bool,
-    pub paddle_start_x: f32
+    pub paddle_start_x: f32,
+    pub brick_ids: HashSet<u32>
 }
 
 impl BrickBreakerSystem {
-    pub fn new(ball_id: u32, paddle_id: u32, game_manager_id: u32, paddle_start_x: f32) -> Self {
+    pub fn new(ball_id: u32, paddle_id: u32, game_manager_id: u32, paddle_start_x: f32, brick_ids: HashSet<u32>) -> Self {
         Self {
             ball_id,
             paddle_id,
             game_manager_id,
             has_ball_launched: false,
             paddle_start_x,
+            brick_ids
         }
     }
 
     fn do_reset(&mut self, update_context: &mut SystemUpdateContext) {
         // Destroy remaining bricks
-        let bricks = update_context.world.entity_manager.query_component::<Brick>();
-        for brick_id in bricks {
+        for brick_id in self.brick_ids.clone() {
             update_context.world.entity_manager.destroy_entity(brick_id);
         }
+
+        self.brick_ids.clear();
 
         // Respawn bricks
         let config = BrickGridConfig {
@@ -65,7 +66,7 @@ impl BrickBreakerSystem {
             spacing: 0.2,
             start_position: Vec3::new(0.0, 10.0, 0.0),
         };
-        spawn_brick_grid(update_context.world, config);
+        self.brick_ids = spawn_brick_grid(update_context.world, config);
 
         // Reset ball
         if let Some(rb) = update_context.world.entity_manager
@@ -73,6 +74,20 @@ impl BrickBreakerSystem {
         {
             rb.velocity = Vec3::ZERO;
             rb.is_kinematic = true;
+        }
+
+        //Reset paddle
+        if let Some(rb) = update_context.world.entity_manager
+            .get_component_mut::<RigidBody>(self.paddle_id)
+        {
+            rb.velocity = Vec3::ZERO;
+            rb.acceleration = Vec3::ZERO;
+        }
+
+        if let Some(transform) = update_context.world.entity_manager
+            .get_component_mut::<Transform>(self.paddle_id)
+        {
+            transform.position.x = self.paddle_start_x;
         }
 
         // Reset state
@@ -184,18 +199,28 @@ impl EngineEventListener for BrickBreakerSystem {
         for ev in events.iter() {
             let ev = ev.as_ref();
             if let Some(col) = ev.as_any().downcast_ref::<CollisionEvent>() {
-                if col.entity_a == self.ball_id && col.entity_b != self.paddle_id {
-                    actions.push(DestroyEntityAction { entity_id: col.entity_b });
-                    actions.push(AddScoreAction { 
-                        game_manager_id: self.game_manager_id, 
-                        points: 10  // fixed for now, improve later
-                    });
-                } else if col.entity_a == self.ball_id && col.entity_b == self.paddle_id {
-                    actions.push(BallPaddleCollisionAction { 
-                        ball_id: self.ball_id, 
-                        paddle_id: self.paddle_id 
-                    });
-                }
+                // Check if ball is involved
+                    let is_ball_a = col.entity_a == self.ball_id;
+                    let is_ball_b = col.entity_b == self.ball_id;
+                    if !is_ball_a && !is_ball_b {
+                        continue;
+                    }
+
+                    let other_id = if is_ball_a { col.entity_b } else { col.entity_a };
+
+                    if other_id == self.paddle_id {
+                        actions.push(BallPaddleCollisionAction {
+                            ball_id: self.ball_id,
+                            paddle_id: self.paddle_id,
+                        });
+                    } else if self.brick_ids.contains(&other_id) {
+                        actions.push(DestroyEntityAction { entity_id: other_id });
+                        actions.push(AddScoreAction {
+                            game_manager_id: self.game_manager_id,
+                            points: 10,
+                        });
+                        self.brick_ids.remove(&other_id);
+                    }
             }
             if let Some(input) = ev.as_any().downcast_ref::<InputActionEvent>() {
                 match input.action {

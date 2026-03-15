@@ -44,8 +44,8 @@ impl System for CollisionSystem {
 
                 // Check and resolve collision
                 if let Some(collision) = self.check_collision(update_context.world, entity_a, entity_b) {
+                    
                     self.resolve_collision(update_context.world, entity_a, entity_b, collision);
-
                     colliding_entities.insert(entity_a);
                     colliding_entities.insert(entity_b);
 
@@ -98,21 +98,32 @@ impl CollisionSystem {
             return;
         }
 
-        // Check rigidbody status
-        let has_rb_a = world.entity_manager.get_component::<RigidBody>(entity_a).is_some();
-        let has_rb_b = world.entity_manager.get_component::<RigidBody>(entity_b).is_some();
+        // Cache velocities
+        let (has_rb_a, velocity_a) = {
+            let rb = world.entity_manager.get_component::<RigidBody>(entity_a);
+            (rb.is_some(), rb.map(|r| Vec2::new(r.velocity.x, r.velocity.y)).unwrap_or(Vec2::ZERO))
+        };
+
+        let (has_rb_b, velocity_b) = {
+            let rb = world.entity_manager.get_component::<RigidBody>(entity_b);
+            (rb.is_some(), rb.map(|r| Vec2::new(r.velocity.x, r.velocity.y)).unwrap_or(Vec2::ZERO))
+        };
 
         // Separate entities
         self.separate_entities(world, entity_a, entity_b, &collision, has_rb_a, has_rb_b);
 
         // Apply velocity damping if needed
-        if collision.separation > DAMPING_THRESHOLD && has_rb_a && has_rb_b {
+        if collision.separation > DAMPING_THRESHOLD && has_rb_a == has_rb_b {
             self.apply_damping(world, entity_a, entity_b);
         }
 
         // Reflect velocities
-        self.reflect_velocity(world, entity_a, collision.normal, has_rb_a);
-        self.reflect_velocity(world, entity_b, -collision.normal, has_rb_b);
+        if has_rb_a {
+            self.reflect_velocity(world, entity_a, collision.normal, velocity_b);
+        }
+        if has_rb_b {
+            self.reflect_velocity(world, entity_b, -collision.normal, velocity_a);
+        }        
     }
 
     /// Separate overlapping entities
@@ -156,10 +167,7 @@ impl CollisionSystem {
     }
 
     /// Reflect velocity for an entity
-    fn reflect_velocity(&self, world: &mut World, entity: u32, normal: Vec2, has_rigidbody: bool) {
-        if !has_rigidbody {
-            return;
-        }
+    fn reflect_velocity(&self, world: &mut World, entity: u32, normal: Vec2, other_velocity : Vec2) {
 
         if let Some(rb) = world.entity_manager.get_component_mut::<RigidBody>(entity) {
             // Skip kinematic bodies
@@ -175,13 +183,13 @@ impl CollisionSystem {
                 return;
             }
 
-            let vel_along_normal = velocity.dot(normal);
-
-            // Only reflect if moving into the collision
+            let relative_velocity = velocity - other_velocity;
+            let vel_along_normal = relative_velocity.dot(normal.normalize());
             if vel_along_normal < 0.0 {
-                let reflected = velocity - 2.0 * vel_along_normal * normal.normalize();
-                rb.velocity.x = reflected.x * rb.bounce;
-                rb.velocity.y = reflected.y * rb.bounce;
+                let speed = velocity.length();
+                let reflected_relative = relative_velocity - 2.0 * vel_along_normal * normal.normalize();
+                let direction = (reflected_relative + other_velocity).normalize();
+                rb.velocity = (direction * speed * rb.bounce).extend(rb.velocity.z);
             }
         }
     }

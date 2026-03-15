@@ -8,7 +8,8 @@ use crate::{
     Transform, 
     engine::{
         system::{System, SystemRenderContext, SystemUpdateContext}, world::World
-    }
+    }, 
+    physics::RigidBody
 };
 
 
@@ -25,22 +26,27 @@ impl System for MovementSystem {
             .query_component::<Movement>();
 
         for entity_id in entities {
-            let (speed, intent) = match update_context.world.entity_manager
+            let (impulse, intent) = match update_context.world.entity_manager
                 .get_component::<Movement>(entity_id)
             {
-                Some(m) => (m.speed, m.intent),
+                Some(m) => (m.impulse, m.intent),
                 None => continue,
             };
 
-            if intent == glam::Vec2::ZERO {
-                continue;
-            }
-
-            if let Some(transform) = update_context.world.entity_manager
-                .get_component_mut::<Transform>(entity_id)
+            //Update acceleration first if controlled entity has rigicbody 'it should'
+            if let Some(rb) = update_context.world.entity_manager
+                        .get_component_mut::<RigidBody>(entity_id)
             {
-                transform.position.x += intent.x * speed * update_context.delta_time;
-                transform.position.y += intent.y * speed * update_context.delta_time;
+                rb.acceleration.x = intent.x * impulse;
+                rb.acceleration.y = intent.y * impulse;
+            } else {
+                // Fallback for entities without RigidBody — move directly
+                if let Some(transform) = update_context.world.entity_manager
+                    .get_component_mut::<Transform>(entity_id)
+                {
+                    transform.position.x += intent.x * impulse * update_context.delta_time;
+                    transform.position.y += intent.y * impulse * update_context.delta_time;
+                }
             }
 
             if let Some(movement) = update_context.world.entity_manager

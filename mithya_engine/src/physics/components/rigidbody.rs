@@ -17,8 +17,9 @@ pub struct RigidBody {
     pub gravity_scale: f32,
     pub drag: f32,
     pub bounce: f32, //0.0 to 1.0 | inverts % of velocity on collision
-    pub is_kinematic: bool //if true, such bodies are not affected by external force
-    //More physical properties can be added here like drag etc
+    pub is_kinematic: bool,//if true, such bodies are not affected by external force
+    pub max_speed: f32,        // caps velocity
+    pub max_acceleration: f32, // caps acceleration
 }
 
 impl Default for RigidBody {
@@ -30,6 +31,8 @@ impl Default for RigidBody {
             gravity_scale: 1.0,
             bounce: 0.0,
             is_kinematic: false,
+            max_speed: 0.0,
+            max_acceleration: 0.0
         }
     }
 }

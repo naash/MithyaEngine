@@ -10,15 +10,15 @@ use crate::Component;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Movement {
-    pub speed: f32,
+    pub impulse: f32,
     #[serde(skip)]
     pub intent: Vec2,
 }
 
 impl Movement {
-    pub fn new(speed: f32) -> Self {
+    pub fn new(impulse: f32) -> Self {
         Self {
-            speed,
+            impulse,
             intent: Vec2::ZERO,
         }
     }

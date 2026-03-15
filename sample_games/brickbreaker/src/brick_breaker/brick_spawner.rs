@@ -3,6 +3,8 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use std::collections::HashSet;
+
 use mithya_engine::{
     engine::{EntityBuilder, World},
     rendering::{Mesh, Render},
@@ -35,7 +37,7 @@ impl Default for BrickGridConfig {
 }
 
 /// Spawn a grid of bricks
-pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) {
+pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) -> HashSet<u32> {
     let total_width = (config.brick_width + config.spacing) * config.columns as f32;
     let total_height = (config.brick_height + config.spacing) * config.rows as f32;
     
@@ -43,6 +45,8 @@ pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) {
     let start_x = config.start_position.x + (total_width / 2.0) - (config.brick_width / 2.0);
     let start_y = config.start_position.y;
     
+    let mut brick_ids = HashSet::new();
+
     for row in 0..config.rows {
         for col in 0..config.columns {
             // Calculate position
@@ -66,7 +70,7 @@ pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) {
                 _ => "unlit_texture_orange",
             };
             
-            spawn_brick(
+            let brick_id = spawn_brick(
                 world,
                 Vec3::new(x, y, 0.0),
                 config.brick_width,
@@ -74,11 +78,15 @@ pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) {
                 brick_type,
                 material_name,
             );
+
+            brick_ids.insert(brick_id);
         }
     }
     
     println!("Spawned {} bricks in a {}x{} grid", 
              config.rows * config.columns, config.rows, config.columns);
+
+    brick_ids
 }
 
 /// Spawn a single brick
@@ -127,7 +135,7 @@ pub mod patterns {
             
             for col in 0..bricks_in_row {
                 let x = start_x + (col as f32 * (brick_width + spacing));
-                spawn_brick(
+                let brick_id = spawn_brick(
                     world,
                     Vec3::new(x, y, 0.0),
                     brick_width,
