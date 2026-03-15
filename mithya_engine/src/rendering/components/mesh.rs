@@ -6,6 +6,18 @@
 use serde::{Serialize, Deserialize};
 use wgpu::util::DeviceExt;
 
+const FLOATS_PER_POSITION: usize = 3;
+const FLOATS_PER_UV: usize = 2;
+const FLOAT_SIZE: usize = std::mem::size_of::<f32>();
+
+const TRIANGLE_VERTS: usize = 3 * FLOATS_PER_POSITION;           // 9
+const QUAD_VERTS: usize = 4 * FLOATS_PER_POSITION;               // 12
+const TRIANGLE_TEXTURED_VERTS: usize = 3 * (FLOATS_PER_POSITION + FLOATS_PER_UV); // 15
+const QUAD_TEXTURED_VERTS: usize = 4 * (FLOATS_PER_POSITION + FLOATS_PER_UV);     // 20
+
+const POSITION_STRIDE: usize = FLOATS_PER_POSITION * FLOAT_SIZE;                         // 12
+const TEXTURED_STRIDE: usize = (FLOATS_PER_POSITION + FLOATS_PER_UV) * FLOAT_SIZE;       // 20
+
 #[derive(Clone, Debug)]
 pub struct VertexAttribute {
     pub location: u32,
@@ -22,10 +34,12 @@ pub struct Mesh {
     pub index_buffer: Option<wgpu::Buffer>,
     pub vertex_stride: usize,
     pub attributes: Vec<VertexAttribute>,
+    pub wgpu_attributes: Vec<wgpu::VertexAttribute>
 }
 
 impl Mesh {
     pub fn upload(&mut self, device: &wgpu::Device) {
+        self.build_wgpu_attributes();
         let vertex_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
             label: Some("Vertex Buffer"),
             contents: bytemuck::cast_slice(&self.vertices),
@@ -46,8 +60,8 @@ impl Mesh {
         self.vertex_buffer.is_some()
     }
 
-    pub fn vertex_buffer_layout(&self) -> wgpu::VertexBufferLayout {
-        let attrs: Vec<wgpu::VertexAttribute> = self.attributes.iter().map(|a| {
+    pub fn build_wgpu_attributes(&mut self) {
+        self.wgpu_attributes = self.attributes.iter().map(|a| {
             wgpu::VertexAttribute {
                 shader_location: a.location,
                 offset: a.offset as u64,
@@ -60,11 +74,13 @@ impl Mesh {
                 },
             }
         }).collect();
+    }
 
+    pub fn vertex_buffer_layout(&self) -> wgpu::VertexBufferLayout {
         wgpu::VertexBufferLayout {
             array_stride: self.vertex_stride as u64,
             step_mode: wgpu::VertexStepMode::Vertex,
-            attributes: attrs.leak(), // We'll fix this with a proper lifetime approach
+            attributes: &self.wgpu_attributes,  // reference to stored vec, no leak
         }
     }
 
@@ -78,6 +94,7 @@ impl Mesh {
             attributes: vec![
                 VertexAttribute { location: 0, size: 3, offset: 0 },
             ],
+            wgpu_attributes : Vec::new()
         }
     }
 
@@ -96,6 +113,7 @@ impl Mesh {
             attributes: vec![
                 VertexAttribute { location: 0, size: 3, offset: 0 },
             ],
+            wgpu_attributes : Vec::new()
         }
     }
 
@@ -114,6 +132,7 @@ impl Mesh {
                 VertexAttribute { location: 0, size: 3, offset: 0 },
                 VertexAttribute { location: 1, size: 2, offset: 3 * std::mem::size_of::<f32>() },
             ],
+            wgpu_attributes : Vec::new()
         }
     }
 
@@ -133,6 +152,7 @@ impl Mesh {
                 VertexAttribute { location: 0, size: 3, offset: 0 },
                 VertexAttribute { location: 1, size: 2, offset: 3 * std::mem::size_of::<f32>() },
             ],
+            wgpu_attributes : Vec::new()
         }
     }
 }
@@ -160,10 +180,10 @@ impl MeshType {
 
     pub fn from_mesh(mesh: &Mesh) -> Self {
         match (mesh.vertices.len(), mesh.vertex_stride) {
-            (9, 12) => MeshType::Triangle,
-            (12, 12) => MeshType::Quad,
-            (15, 20) => MeshType::TriangleTextured,
-            (20, 20) => MeshType::QuadTextured,
+            (TRIANGLE_VERTS, POSITION_STRIDE) => MeshType::Triangle,
+            (QUAD_VERTS, POSITION_STRIDE) => MeshType::Quad,
+            (TRIANGLE_TEXTURED_VERTS, TEXTURED_STRIDE) => MeshType::TriangleTextured,
+            (QUAD_TEXTURED_VERTS, TEXTURED_STRIDE) => MeshType::QuadTextured,
             _ => MeshType::Custom { name: "unknown".to_string() },
         }
     }

@@ -422,6 +422,7 @@ impl RenderingSystem {
         }
     }
 
+    //TODO this needs to be improved, too many issues here, also think about adding camera system
     fn render_entity(
         &self,
         transform: &Transform,
