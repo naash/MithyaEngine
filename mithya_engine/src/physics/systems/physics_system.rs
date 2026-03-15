@@ -75,10 +75,6 @@ impl System for PhysicsSystem {
             }
         }
     }
-
-    fn render(&mut self, _render_context: &mut SystemRenderContext) {
-        // Physics system doesn't render anything
-    }
     
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
         None

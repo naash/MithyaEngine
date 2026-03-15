@@ -176,10 +176,6 @@ impl System for BrickBreakerSystem {
         }
     }
 
-    fn render(&mut self, _render_context: &mut SystemRenderContext) {
-        // No rendering needed
-    }
-
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
         Some(self)
     }

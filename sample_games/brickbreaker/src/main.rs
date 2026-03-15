@@ -36,7 +36,7 @@ impl GameLogic for Brickbreaker {
 
         // === TEXTURES ===
         // load_assets
-        if let Some(renderer) = systems_manager.get_system_mut::<RenderingSystem>() {
+        if let Some(renderer) = systems_manager.get_rendering_system() {
             renderer.load_assets(&mut world.asset_manager, |assets, device, queue| {
                 assets.load_texture_for_material("unlit_texture_green", "green_texture.png", device, queue).expect("Failed to get texture green_texture.png");
                 assets.load_texture_for_material("unlit_texture_red", "red_texture.png", device, queue).expect("Failed to get texture red_texture.png");

@@ -131,7 +131,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         systems_manager.add_system(MovementSystem, &mut world);
         systems_manager.add_system(PhysicsSystem, &mut world);
         systems_manager.add_system(CollisionSystem, &mut world);
-        systems_manager.add_system(rendering_system, &mut world);
+        systems_manager.set_rendering_system(rendering_system); //Special system that is stored seperate from other systems.
         
         self.game.initialize(&mut world, &mut systems_manager);
 
@@ -205,7 +205,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             }
             WindowEvent::Resized(size) => {
                 
-                if let Some(renderer) = state.systems_manager.get_system_mut::<RenderingSystem>() {
+                if let Some(renderer) = state.systems_manager.get_rendering_system() {
                     renderer.resize(size.width, size.height);
                 }
 
@@ -233,11 +233,8 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 s.systems_manager.update_all(&mut update_context);
                 self.game.update(&mut s.world, delta_time);
 
-                let mut render_context = SystemRenderContext {
-                    entity_manager: &mut s.world.entity_manager,
-                    asset_manager: &mut s.world.asset_manager,
-                };
-                s.systems_manager.render_all(&mut render_context);
+                //Renders entities and ui
+                s.systems_manager.render(&s.window, &mut s.world);
 
                 s.action_queue.clear();
                 s.window.request_redraw();

@@ -71,7 +71,6 @@ impl System for InputSystem {
         self.just_released.clear();
     }
 
-    fn render(&mut self, _render_context: &mut SystemRenderContext) {}
     fn cleanup(&mut self, _world: &mut World) {}
 
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {

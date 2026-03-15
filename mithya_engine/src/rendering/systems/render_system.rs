@@ -9,7 +9,8 @@ use wgpu::util::DeviceExt;
 use winit::window::Window;
 
 use crate::{
-    World, asset::managers::AssetManager, core::Transform, engine::system::{System, SystemRenderContext, SystemUpdateContext}, rendering::components::Render
+    World, asset::managers::AssetManager, core::Transform, 
+    rendering::components::Render
 };
 
 // GPU-side uniform buffer layout must match WGSL struct exactly
@@ -30,7 +31,12 @@ struct ColorUniforms {
     _pad: f32,
 }
 
+//This is a special system 
 pub struct RenderingSystem {
+    pub aspect_ratio: f32,
+    pub ui_draw_fn: Option<Box<dyn Fn(&egui::Context, &World)>>,
+    pub debug_draw_fn: Option<Box<dyn Fn(&egui::Context, &World)>>,
+    
     // Core wgpu state
     device: wgpu::Device,
     queue: wgpu::Queue,
@@ -49,85 +55,21 @@ pub struct RenderingSystem {
     // Default sampler shared across all textures
     default_sampler: wgpu::Sampler,
 
-    pub aspect_ratio: f32,
-}
 
-impl System for RenderingSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> { Ok(()) }
-
-    fn update(&mut self, _update_context: &mut SystemUpdateContext) {
-    }
-
-    fn render(&mut self, render_context: &mut SystemRenderContext) {
-        // Acquire the next frame from the surface
-        let output = match self.surface.get_current_texture() {
-            Ok(t) => t,
-            Err(wgpu::SurfaceError::Lost) => {
-                self.surface.configure(&self.device, &self.surface_config);
-                return;
-            }
-            Err(e) => {
-                eprintln!("Surface error: {:?}", e);
-                return;
-            }
-        };
-
-        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
-        let mut encoder = self.device.create_command_encoder(
-            &wgpu::CommandEncoderDescriptor { label: Some("Render Encoder") }
-        );
-
-        {
-            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
-                label: Some("Main Render Pass"),
-                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-                    view: &view,
-                    resolve_target: None,
-                    ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(wgpu::Color {
-                            r: 0.05, g: 0.05, b: 0.15, a: 1.0
-                        }),
-                        store: wgpu::StoreOp::Store,
-                    },
-                })],
-                depth_stencil_attachment: None,
-                timestamp_writes: None,
-                occlusion_query_set: None,
-            });
-
-            let entities = render_context.entity_manager.get_renderable_entities();
-
-            for entity_id in entities {
-                if let (Some(transform), Some(render)) = (
-                    render_context.entity_manager.get_component::<Transform>(entity_id).cloned(),
-                    render_context.entity_manager.get_component_mut::<Render>(entity_id),
-                ) {
-                    self.render_entity(
-                        &transform,
-                        render,
-                        &mut render_context.asset_manager,
-                        &mut render_pass,
-                    );
-                }
-            }
-        }
-
-        self.queue.submit(std::iter::once(encoder.finish()));
-        output.present();
-    }
-    
-    fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
-        None
-    }
+    //For UI rendering
+    egui_renderer: egui_wgpu::Renderer,
+    egui_context: egui::Context,
+    egui_state: egui_winit::State,
 }
 
 impl RenderingSystem {
     pub async fn new(window: Arc<Window>) -> Self {
+        let egui_window = window.clone();  // clone Arc before wgpu moves it
         let size = window.inner_size();
         let aspect_ratio = size.width as f32 / size.height as f32;
 
         // Instance is the entry point to wgpu
-        let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
+        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
             backends: wgpu::Backends::all(),
             ..Default::default()
         });
@@ -264,6 +206,27 @@ impl RenderingSystem {
             &texture_bind_group_layout,
         );
 
+        //Egui stuff
+                // Initialize egui
+        let egui_context = egui::Context::default();
+        
+        let egui_state = egui_winit::State::new(
+            egui_context.clone(),
+            egui::ViewportId::ROOT,
+            &egui_window,
+            Some(egui_window.scale_factor() as f32),
+            None,
+            None,
+        );
+
+        let egui_renderer = egui_wgpu::Renderer::new(
+            &device,
+            surface_config.format,  // use same format as main surface
+            None,  // no depth buffer for UI
+            1,     // sample count
+            false,
+        );
+
         Self {
             device,
             queue,
@@ -276,6 +239,11 @@ impl RenderingSystem {
             texture_bind_group_layout,
             default_sampler,
             aspect_ratio,
+            egui_renderer,
+            egui_context,
+            egui_state,
+            ui_draw_fn: None,
+            debug_draw_fn: None
         }
     }
 
@@ -303,7 +271,7 @@ impl RenderingSystem {
             layout: Some(&layout),
             vertex: wgpu::VertexState {
                 module: &shader,
-                entry_point: "vs_main",
+                entry_point: Some("vs_main"),
                 buffers: &[
                     // Position only: location 0, 3 floats, stride 12 bytes
                     wgpu::VertexBufferLayout {
@@ -322,7 +290,7 @@ impl RenderingSystem {
             },
             fragment: Some(wgpu::FragmentState {
                 module: &shader,
-                entry_point: "fs_main",
+                entry_point: Some("fs_main"),
                 targets: &[Some(wgpu::ColorTargetState {
                     format,
                     blend: Some(wgpu::BlendState::ALPHA_BLENDING),
@@ -368,7 +336,7 @@ impl RenderingSystem {
             layout: Some(&layout),
             vertex: wgpu::VertexState {
                 module: &shader,
-                entry_point: "vs_main",
+                entry_point: Some("vs_main"),
                 buffers: &[
                     // Position + UV: stride 20 bytes
                     wgpu::VertexBufferLayout {
@@ -392,7 +360,7 @@ impl RenderingSystem {
             },
             fragment: Some(wgpu::FragmentState {
                 module: &shader,
-                entry_point: "fs_main",
+                entry_point: Some("fs_main"),
                 targets: &[Some(wgpu::ColorTargetState {
                     format,
                     blend: Some(wgpu::BlendState::ALPHA_BLENDING),
@@ -420,6 +388,129 @@ impl RenderingSystem {
             self.surface.configure(&self.device, &self.surface_config);
             self.aspect_ratio = width as f32 / height as f32;
         }
+    }
+
+    pub fn render(&mut self, window: &Arc<Window>, world: &mut World) {
+        // Acquire the next frame from the surface
+        let output = match self.surface.get_current_texture() {
+            Ok(t) => t,
+            Err(wgpu::SurfaceError::Lost) => {
+                self.surface.configure(&self.device, &self.surface_config);
+                return;
+            }
+            Err(e) => {
+                eprintln!("Surface error: {:?}", e);
+                return;
+            }
+        };
+
+        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
+        let mut encoder = self.device.create_command_encoder(
+            &wgpu::CommandEncoderDescriptor { label: Some("Render Encoder") }
+        );
+
+        {
+            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("Main Render Pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: &view,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(wgpu::Color {
+                            r: 0.05, g: 0.05, b: 0.15, a: 1.0
+                        }),
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                depth_stencil_attachment: None,
+                timestamp_writes: None,
+                occlusion_query_set: None,
+            });
+
+            let entities = world.entity_manager.get_renderable_entities();
+
+            for entity_id in entities {
+                if let (Some(transform), Some(render)) = (
+                    world.entity_manager.get_component::<Transform>(entity_id).cloned(),
+                    world.entity_manager.get_component_mut::<Render>(entity_id),
+                ) {
+                    self.render_entity(
+                        &transform,
+                        render,
+                        &mut world.asset_manager,
+                        &mut render_pass,
+                    );
+                }
+            }
+        }
+
+                // egui pass
+        let raw_input = self.egui_state.take_egui_input(window);
+        let full_output = self.egui_context.run(raw_input, |ctx| {
+            if let Some(draw_fn) = &self.ui_draw_fn {
+                draw_fn(ctx, world);
+            }
+            if let Some(debug_fn) = &self.debug_draw_fn {
+                debug_fn(ctx, world);
+            }
+        });
+
+        self.egui_state.handle_platform_output(window, full_output.platform_output.clone());
+
+        let tris = self.egui_context.tessellate(
+            full_output.shapes.clone(), 
+            full_output.pixels_per_point
+        );
+
+        for (id, delta) in &full_output.textures_delta.set {
+            self.egui_renderer.update_texture(&self.device, &self.queue, *id, delta);
+        }
+
+        let screen_descriptor = egui_wgpu::ScreenDescriptor {
+            size_in_pixels: [self.surface_config.width, self.surface_config.height],
+            pixels_per_point: full_output.pixels_per_point,
+        };
+
+        let mut egui_encoder = self.device.create_command_encoder(
+    &wgpu::CommandEncoderDescriptor { label: Some("egui Encoder") }
+        );
+
+        self.egui_renderer.update_buffers(
+            &self.device, 
+            &self.queue, 
+            &mut egui_encoder, 
+            &tris, 
+            &screen_descriptor
+        );
+        
+        
+        {
+
+        let mut egui_pass = egui_encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("egui Pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: &view,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Load,
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                depth_stencil_attachment: None,
+                timestamp_writes: None,
+                occlusion_query_set: None,
+            }).forget_lifetime();
+
+            self.egui_renderer.render(&mut egui_pass, &tris, &screen_descriptor);
+        }
+        
+
+        for id in &full_output.textures_delta.free {
+            self.egui_renderer.free_texture(id);
+        }
+
+        self.queue.submit([encoder.finish(), egui_encoder.finish()]);
+        output.present();
     }
 
     //TODO this needs to be improved, too many issues here, also think about adding camera system

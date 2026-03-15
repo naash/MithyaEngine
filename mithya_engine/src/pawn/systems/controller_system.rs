@@ -57,8 +57,6 @@ impl System for ControllerSystem {
         self.pending_dy = 0.0;
     }
 
-    fn render(&mut self, _render_context: &mut SystemRenderContext) {}
-
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
         Some(self)
     }

@@ -3,16 +3,15 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::any::Any;
+use std::{any::Any, ptr::null, sync::Arc};
+
+use winit::window::Window;
 
 use crate::{
-    asset::AssetManager,
-    core::{
+    EntityManager, RenderingSystem, asset::AssetManager, core::{
         EngineActionQueue, 
         EngineEventListener, 
-        EngineEventQueue}, 
-    engine::World, 
-    EntityManager
+        EngineEventQueue}, engine::World
 };
 
 pub struct SystemUpdateContext<'a> {
@@ -29,7 +28,6 @@ pub struct SystemRenderContext<'a> {
 pub trait System {
     fn initialize(&mut self, world: &mut World) -> Result<(), Box<dyn std::error::Error>>;
     fn update(&mut self, update_context: &mut SystemUpdateContext);
-    fn render(&mut self, render_context: &mut SystemRenderContext);
     fn cleanup(&mut self, _world: &mut World) {}
     
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener>;
@@ -49,13 +47,19 @@ impl<T: System + 'static> SystemAny for T {
 
 pub struct SystemsManager {
     systems: Vec<Box<dyn SystemAny>>,
+    rendering_system: Option<RenderingSystem>,
 }
 
 impl SystemsManager {
     pub fn new() -> Self {
         Self {
             systems: Vec::new(),
+            rendering_system : None,
         }
+    }
+
+    pub fn set_rendering_system(&mut self, rendering_system: RenderingSystem) {
+        self.rendering_system = Some(rendering_system);
     }
 
     pub fn add_system<S: System + 'static>(&mut self, system: S, world: &mut World) {
@@ -89,9 +93,9 @@ impl SystemsManager {
         }
     }
 
-    pub fn render_all(&mut self, render_context: &mut SystemRenderContext) {
-        for system in self.systems.iter_mut().rev() {
-            system.render(render_context);
+    pub fn render(&mut self, window: &Arc<Window>, world: &mut World) {
+        if let Some(renderer) = &mut self.rendering_system {
+            renderer.render(window, world);
         }
     }
 
@@ -104,4 +108,14 @@ impl SystemsManager {
         None
     }
 
+    pub fn get_rendering_system(&mut self) -> Option<&mut RenderingSystem> {
+        self.rendering_system.as_mut()
+    }
+
+}
+
+impl Default for SystemsManager {
+    fn default() -> Self {
+        Self::new()
+    }
 }

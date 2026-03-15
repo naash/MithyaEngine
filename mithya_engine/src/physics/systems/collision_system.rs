@@ -62,10 +62,6 @@ impl System for CollisionSystem {
         }
     }
 
-    fn render(&mut self, _render_context: &mut SystemRenderContext) {
-        // No rendering for collision system
-    }
-    
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
         None
     }
