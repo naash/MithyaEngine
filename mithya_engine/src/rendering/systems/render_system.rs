@@ -133,14 +133,14 @@ impl RenderingSystem {
         });
 
         // Surface is the thing we draw onto — tied to the window
-        let surface = instance.create_surface(window).unwrap();
+        let surface = instance.create_surface(window).expect("Failed to find surface");
 
         // Adapter is a handle to the physical GPU
         let adapter = instance.request_adapter(&wgpu::RequestAdapterOptions {
             power_preference: wgpu::PowerPreference::HighPerformance,
             compatible_surface: Some(&surface),
             force_fallback_adapter: false,
-        }).await.unwrap();
+        }).await.expect("Failed to get adapter");
 
         // Device is the logical GPU, queue is where we submit commands
         let (device, queue) = adapter.request_device(
@@ -151,7 +151,7 @@ impl RenderingSystem {
                 memory_hints: Default::default(),
             },
             None,
-        ).await.unwrap();
+        ).await.expect("Failed to get device");
 
         // Configure the surface
         let surface_caps = surface.get_capabilities(&adapter);
@@ -528,8 +528,8 @@ impl RenderingSystem {
             render_pass.set_bind_group(1, &texture_bind_group, &[]);
         }
 
-        let vertex_buffer = render.mesh.vertex_buffer.as_ref().unwrap();
-        let index_buffer = render.mesh.index_buffer.as_ref().unwrap();
+        let vertex_buffer = render.mesh.vertex_buffer.as_ref().expect("Failed to get vertex buffer");
+        let index_buffer = render.mesh.index_buffer.as_ref().expect("Failed to get index buffer");
         let index_count = render.mesh.indices.len() as u32;
 
         render_pass.set_vertex_buffer(0, vertex_buffer.slice(..));

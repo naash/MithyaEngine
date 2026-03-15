@@ -38,13 +38,13 @@ impl GameLogic for Brickbreaker {
         // load_assets
         if let Some(renderer) = systems_manager.get_system_mut::<RenderingSystem>() {
             renderer.load_assets(&mut world.asset_manager, |assets, device, queue| {
-                assets.load_texture_for_material("unlit_texture_green", "green_texture.png", device, queue).unwrap();
-                assets.load_texture_for_material("unlit_texture_red", "red_texture.png", device, queue).unwrap();
-                assets.load_texture_for_material("unlit_texture_blue", "blue_texture.png", device, queue).unwrap();
-                assets.load_texture_for_material("unlit_texture_yellow", "yellow_texture.png", device, queue).unwrap();
-                assets.load_texture_for_material("unlit_texture_orange", "orange_texture.png", device, queue).unwrap();
-                assets.load_texture_for_material("unlit_texture_purple", "purple_texture.png", device, queue).unwrap();
-                assets.load_texture_for_material("unlit_texture_circle", "pinkCircle.png", device, queue).unwrap();
+                assets.load_texture_for_material("unlit_texture_green", "green_texture.png", device, queue).expect("Failed to get texture green_texture.png");
+                assets.load_texture_for_material("unlit_texture_red", "red_texture.png", device, queue).expect("Failed to get texture red_texture.png");
+                assets.load_texture_for_material("unlit_texture_blue", "blue_texture.png", device, queue).expect("Failed to get texture blue_texture.png");
+                assets.load_texture_for_material("unlit_texture_yellow", "yellow_texture.png", device, queue).expect("Failed to get texture yellow_texture.png");
+                assets.load_texture_for_material("unlit_texture_orange", "orange_texture.png", device, queue).expect("Failed to get texture orange_texture.png");
+                assets.load_texture_for_material("unlit_texture_purple", "purple_texture.png", device, queue).expect("Failed to get texture purple_texture.png");
+                assets.load_texture_for_material("unlit_texture_circle", "pinkCircle.png", device, queue).expect("Failed to get texture pinkCircle.png");
             });
         }
         

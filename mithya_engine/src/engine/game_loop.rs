@@ -111,7 +111,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             .with_inner_size(LogicalSize::new(self.config.window_width, self.config.window_height))
             .with_resizable(self.config.resizable);
 
-        let window = Arc::new(event_loop.create_window(window_attrs).unwrap());
+        let window = Arc::new(event_loop.create_window(window_attrs).expect("Failed to create window"));
 
         // Initialize wgpu
         let rendering_system = pollster::block_on(RenderingSystem::new(window.clone()));
@@ -120,7 +120,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             input_state: InputState::default(),
             entity_manager: EntityManager::new(),
             physics_config: PhysicsConfig::default(),
-            asset_manager: AssetManager::new(self.config.asset_root.clone()).unwrap(),
+            asset_manager: AssetManager::new(self.config.asset_root.clone()).expect("Unable to create Asset Manager"),
             fps: 0.0,
             input_mapping: InputMapping::new()
         };
