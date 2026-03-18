@@ -3,14 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::any::Any;
-
 use glam::Vec3;
-use serde::{Serialize, Deserialize};
 
-use crate::Component;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct RigidBody {
     pub velocity: Vec3,
     pub acceleration: Vec3,
@@ -44,24 +40,5 @@ impl Default for RigidBody {
             max_speed: 0.0,
             max_acceleration: 0.0
         }
-    }
-}
-
-impl Component for RigidBody {
-    fn as_any(&self) -> &dyn Any {
-        self
-    }
-    
-    fn as_any_mut(&mut self) -> &mut dyn Any {
-        self
-    }
-    
-    fn serialize_to_json(&self) -> Result<serde_json::Value, serde_json::Error> {
-        serde_json::to_value(self)
-    }
-    
-    fn deserialize_from_json(value: serde_json::Value) -> Result<Box<dyn Component>, serde_json::Error> {
-        let rigidbody: RigidBody = serde_json::from_value(value)?;
-        Ok(Box::new(rigidbody))
     }
 }

@@ -24,9 +24,19 @@ use super::actions::{
 };
 
 use glam::Vec3;
-use super::components::{Brick, BrickBreakerState};
-use crate::brick_breaker::{actions::{BallPaddleCollisionAction, DestroyBrickAction}, brick_spawner::*, components::GameState};
-use std::{any::TypeId, collections::HashSet};
+use super::components::{
+    Brick, 
+    BrickBreakerState
+};
+use crate::brick_breaker::{
+    actions::{
+        BallPaddleCollisionAction, 
+        DestroyBrickAction
+    }, 
+    brick_spawner::*, 
+    components::GameState
+};
+use std::any::TypeId;
 
 pub struct BrickBreakerSystem {
     pub ball_id: u32,
@@ -36,7 +46,7 @@ pub struct BrickBreakerSystem {
 }
 
 impl BrickBreakerSystem {
-    pub fn new(ball_id: u32, paddle_id: u32, game_manager_id: u32, paddle_start_x: f32, brick_ids: HashSet<u32>) -> Self {
+    pub fn new(ball_id: u32, paddle_id: u32, game_manager_id: u32, paddle_start_x: f32) -> Self {
         Self {
             ball_id,
             paddle_id,
@@ -221,7 +231,6 @@ impl EngineEventListener for BrickBreakerSystem {
                 }
                 InputAction::Confirm => {
                     actions.push(ResetGameAction {
-                        ball_id: self.ball_id,
                         game_manager_id: self.game_manager_id,
                     });
                 }

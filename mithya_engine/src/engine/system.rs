@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::{any::Any, ptr::null, sync::Arc};
+use std::{any::Any, sync::Arc};
 
 use winit::window::Window;
 

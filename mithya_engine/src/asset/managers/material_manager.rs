@@ -59,13 +59,4 @@ impl MaterialManager {
             Err(MaterialError::MaterialNotFound(material_id.to_string()))
         }
     }
-
-    pub fn set_shader_program(&mut self, material_id: u32, program_id: u32) -> Result<(), MaterialError> {
-        if let Some(material) = self.materials.get_mut(&material_id) {
-            material.shader_program_id = Some(program_id);
-            Ok(())
-        } else {
-            Err(MaterialError::MaterialNotFound(material_id.to_string()))
-        }
-    }
 }

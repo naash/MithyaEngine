@@ -106,8 +106,7 @@ impl EngineAction for DestroyBrickAction {
 //Action when game resets
 #[derive(Debug)]
 pub struct ResetGameAction {
-    pub game_manager_id: u32,
-    pub ball_id: u32
+    pub game_manager_id: u32
 }
 
 impl EngineAction for ResetGameAction {

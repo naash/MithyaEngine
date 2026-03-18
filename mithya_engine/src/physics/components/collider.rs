@@ -3,14 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::any::Any;
-
 use glam::Vec3;
-use serde::{Serialize, Deserialize};
 
-use crate::Component;
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Collider {
     pub shape: ColliderShape,
     pub is_trigger: bool,   // If true, detects collisions but doesn't resolve them
@@ -45,26 +40,7 @@ impl Default for Collider {
     }
 }
 
-impl Component for Collider {
-    fn as_any(&self) -> &dyn Any {
-        self
-    }
-    
-    fn as_any_mut(&mut self) -> &mut dyn Any {
-        self
-    }
-    
-    fn serialize_to_json(&self) -> Result<serde_json::Value, serde_json::Error> {
-        serde_json::to_value(self)
-    }
-    
-    fn deserialize_from_json(value: serde_json::Value) -> Result<Box<dyn Component>, serde_json::Error> {
-        let collider: Collider = serde_json::from_value(value)?;
-        Ok(Box::new(collider))
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub enum ColliderShape {
     Circle { radius: f32 },
     Box { width: f32, height: f32 },

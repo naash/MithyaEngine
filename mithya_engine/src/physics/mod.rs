@@ -6,10 +6,8 @@
 mod components;
 pub mod systems;
 mod physics_config;
-mod collision_utils;
-mod collision_config;
+mod collision_math;
 
 pub use components::{Collider, ColliderShape, RigidBody};
 pub use systems::{PhysicsSystem, CollisionSystem};
 pub use physics_config::PhysicsConfig;
-pub use collision_utils::CollisionInfo;

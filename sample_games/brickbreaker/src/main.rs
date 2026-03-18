@@ -6,11 +6,30 @@
 use std::collections::HashSet;
 
 use mithya_engine::{
-    engine::{system::SystemsManager, Engine, EngineConfig, EntityBuilder, GameLogic, World},
-    physics::{Collider, ColliderShape, RigidBody},
-    rendering::{Mesh, Render, RenderingSystem},
-    pawn::{Movement, Controller},
-    input::actions::{InputAction, InputBinding},
+    engine::{
+        system::SystemsManager, 
+        Engine, 
+        EngineConfig, 
+        EntityBuilder, 
+        GameLogic,
+        World
+    },
+    physics::{
+        Collider,
+        ColliderShape, 
+        RigidBody},
+    rendering::{
+        Mesh, 
+        Render 
+    },
+    pawn::{
+        Movement, 
+        Controller
+    },
+    input::actions::{
+        InputAction, 
+        InputBinding
+    },
     Transform
 };
 
@@ -55,14 +74,14 @@ impl GameLogic for Brickbreaker {
         let paddle_id = spawn_paddle(world);
         
         // === BRICKS ===
-        let brick_ids = spawn_bricks(world);
+        spawn_bricks(world);
 
         // === WALLS ===
         spawn_walls(world);
         
         let game_manager_id = spawn_game_manager(world);
 
-        let brick_breaker_system = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0, brick_ids);
+        let brick_breaker_system = BrickBreakerSystem::new(ball_id, paddle_id, game_manager_id, 0.0);
         systems_manager.add_system(brick_breaker_system, world);
 
         //Bindings
@@ -282,7 +301,7 @@ fn spawn_paddle(world: &mut World) -> u32 {
             is_kinematic: true,
             max_acceleration: 200.0,
             max_speed: 20.0,
-            drag: 0.99999
+            drag: 5.0
         })
         .with(Movement::new(150.0))
         .build();

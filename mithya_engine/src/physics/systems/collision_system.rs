@@ -4,15 +4,14 @@
 // https://opensource.org/licenses/MIT
 
 use std::{any::Any, collections::HashSet};
-use egui::debug_text::print;
 use glam::{Vec2, Vec3Swizzles};
 
 use crate::{
     core::{EngineEvent, Transform},
-    engine::{system::{System, SystemRenderContext, SystemUpdateContext}, World}, 
+    engine::{World, system::{System, SystemUpdateContext}}, 
     physics::{
-        collision_config::{DAMPING_THRESHOLD, MIN_SEPARATION, MIN_VELOCITY, VELOCITY_DAMPING},
-        collision_utils::{self, CollisionInfo},
+        physics_config::{DAMPING_THRESHOLD, MIN_SEPARATION, MIN_VELOCITY, VELOCITY_DAMPING},
+        collision_math::{self, CollisionInfo},
         components::{Collider, RigidBody},
     },
 };
@@ -84,7 +83,7 @@ impl CollisionSystem {
         let scaled_b = collider_b.get_scaled_shape(transform_b.scale);
 
         // Use collision_utils for detection
-        collision_utils::detect_collision(pos_a.xy(), &scaled_a, pos_b.xy(), &scaled_b)
+        collision_math::detect_collision(pos_a.xy(), &scaled_a, pos_b.xy(), &scaled_b)
     }
 
     /// Resolve collision between two entities

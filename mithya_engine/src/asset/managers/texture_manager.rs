@@ -42,8 +42,6 @@ impl TextureManager {
         let entry = self.create_wgpu_texture(path, device, queue)?;
         let id = self.next_id;
         self.next_id += 1;
-
-        println!("Loaded texture: {} -> id {}", path, id);
         self.path_to_id.insert(path.to_string(), id);
         self.textures_by_id.insert(id, entry);
         Ok(id)
@@ -63,7 +61,6 @@ impl TextureManager {
 
         let img = image::open(&path)
             .map_err(|e| {
-                println!("Failed to load image: {:?}", e);
                 TextureLoadError::ImageError(e)
             })?
             .to_rgba8();
@@ -100,10 +97,5 @@ impl TextureManager {
 
         let view = texture.create_view(&wgpu::TextureViewDescriptor::default());
         Ok(TextureEntry { texture, view })
-    }
-
-    pub fn cleanup(&mut self) {
-        self.textures_by_id.clear();
-        self.path_to_id.clear();
     }
 }

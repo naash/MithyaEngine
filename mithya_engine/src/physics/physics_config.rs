@@ -5,6 +5,13 @@
 
 use glam::Vec2;
 
+// Configuration constants
+pub const SEPARATION_BUFFER: f32 = 0.001;
+pub const MIN_SEPARATION: f32 = 0.001;
+pub const VELOCITY_DAMPING: f32 = 0.95;
+pub const MIN_VELOCITY: f32 = 0.01;
+pub const DAMPING_THRESHOLD: f32 = 0.5;
+
 pub struct PhysicsConfig {
     pub gravity: Vec2,
     pub time_step: f32,

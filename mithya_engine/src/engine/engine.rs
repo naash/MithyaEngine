@@ -16,13 +16,11 @@ use crate::{
             MouseButtonReleasedEvent, 
             MouseClickEvent, 
             MouseMoveEvent, 
-            MouseWheelEvent, 
-            TextInputEvent, 
+            MouseWheelEvent,
             WindowResizedEvent
         }
     }, engine::{
         FrameTimer, InputState, system::{
-            SystemRenderContext, 
             SystemUpdateContext, 
             SystemsManager
         }
@@ -42,9 +40,20 @@ use crate::{
 use glam::Vec2;
 use winit::{
     application::ApplicationHandler,
-    event::{WindowEvent, ElementState, MouseButton},
-    event_loop::{ActiveEventLoop, ControlFlow, EventLoop},
-    window::{Window, WindowId, WindowAttributes},
+    event::{
+        WindowEvent, 
+        ElementState
+    },
+    event_loop::{
+        ActiveEventLoop, 
+        ControlFlow, 
+        EventLoop
+    },
+    window::{
+        Window, 
+        WindowId, 
+        WindowAttributes
+    },
     dpi::LogicalSize,
 };
 

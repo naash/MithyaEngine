@@ -7,7 +7,7 @@ use glam::Vec3;
 
 use crate::{
     core::Transform,
-    engine::{system::{System, SystemRenderContext, SystemUpdateContext}, World}, 
+    engine::{system::{System, SystemUpdateContext}, World}, 
     physics::RigidBody,
 };
 

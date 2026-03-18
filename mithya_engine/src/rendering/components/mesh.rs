@@ -76,7 +76,7 @@ impl Mesh {
         }).collect();
     }
 
-    pub fn vertex_buffer_layout(&self) -> wgpu::VertexBufferLayout {
+    pub fn vertex_buffer_layout(&self) -> wgpu::VertexBufferLayout<'_> {
         wgpu::VertexBufferLayout {
             array_stride: self.vertex_stride as u64,
             step_mode: wgpu::VertexStepMode::Vertex,

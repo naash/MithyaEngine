@@ -4,7 +4,10 @@
 // https://opensource.org/licenses/MIT
 
 use glam::Vec2;
-use crate::physics::{collision_config::SEPARATION_BUFFER, components::ColliderShape};
+use crate::physics::{
+    physics_config::SEPARATION_BUFFER,
+    components::ColliderShape
+};
 
 /// Information about a collision between two shapes
 #[derive(Debug, Clone, Copy)]

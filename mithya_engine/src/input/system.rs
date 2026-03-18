@@ -11,7 +11,10 @@ use crate::{
         engine_events::{KeyPressedEvent, KeyReleasedEvent},
         EngineEventListener,
     },
-    engine::system::{System, SystemRenderContext, SystemUpdateContext},
+    engine::system::{
+        System,
+        SystemUpdateContext
+    },
     World,
 };
 

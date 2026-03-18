@@ -24,9 +24,6 @@ pub enum AssetError {
 
     #[error("Texture error: {0}")]
     TextureLoadError(TextureLoadError),
-
-    #[error("Shader error: {0}")]
-    ShaderError(ShaderError),
 }
 
 #[derive(Error, Debug)]
@@ -49,24 +46,6 @@ pub enum TextureLoadError {
     IoError(std::io::Error),
 }
 
-#[derive(Error, Debug)]
-pub enum ShaderError {
-    #[error("Failed to compile shader: {0}")]
-    CompilationError(String),
-
-    #[error("Failed to link program: {0}")]
-    LinkError(String),
-
-    #[error("Shader file not found: {0}")]
-    FileNotFound(String),
-
-    #[error("Invalid shader source: {0}")]
-    InvalidSource(String),
-
-     #[error("Invalid program: {0}")]
-    ProgramError(String)
-}
-
 impl From<MaterialError> for AssetError { 
     fn from(err: MaterialError) -> Self { 
         AssetError::MaterialError(err) 
@@ -76,11 +55,5 @@ impl From<MaterialError> for AssetError {
 impl From<TextureLoadError> for AssetError { 
     fn from(err: TextureLoadError) -> Self { 
         AssetError::TextureLoadError(err) 
-    } 
-}
-
-impl From<ShaderError> for AssetError { 
-    fn from(err: ShaderError) -> Self { 
-        AssetError::ShaderError(err) 
     } 
 }
