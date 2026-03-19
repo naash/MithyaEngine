@@ -21,7 +21,7 @@ execute_all() → mutate world
 `on_events` receives read-only `&World` access so listeners can query component state when deciding which actions to push — without being able to mutate mid-frame.
 
 ### Resources
-Global data that doesn't belong to any entity lives in a typed `Resources` store — inspired by Bevy's resource system. Accessed by type, not by name.
+Global data that doesn't belong to any entity lives in a typed `Resources` store — Global data that doesn't belong to any entity lives in a typed `Resources` store, keyed by type rather than by name.
 
 ```rust
 world.resources.insert(InputMapping::new());
