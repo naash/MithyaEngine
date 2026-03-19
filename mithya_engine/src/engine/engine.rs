@@ -13,8 +13,7 @@ use crate::{
             WindowResizedEvent
         }
     }, engine::{
-        EngineStats, FrameTimer, 
-        system::{
+        EngineStats, FrameTimer, resources::Time, system::{
             SystemUpdateContext, 
             SystemsManager
         }
@@ -127,6 +126,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         world.resources.insert(InputState::default());
         world.resources.insert(InputMapping::new());
         world.resources.insert(EngineStats::default());
+         world.resources.insert(Time::default());
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system(InputSystem::new(), &mut world);
@@ -231,8 +231,12 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
 
                 if let Some(stats) = s.world.resources.get_mut::<EngineStats>() {
                     stats.fps = s.frame_timer.get_fps();
-                    stats.delta_time = delta_time;
                     stats.frame_count += 1;
+                }
+
+                if let Some(stats) = s.world.resources.get_mut::<Time>() {
+                    stats.delta = delta_time;
+                    stats.elapsed += delta_time;
                 }
 
                 s.systems_manager.handle_event_all(&mut s.event_queue, &mut s.action_queue, &s.world);
@@ -241,10 +245,9 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 let mut update_context = SystemUpdateContext {
                     world: &mut s.world,
                     events: &mut s.event_queue,
-                    delta_time,
                 };
                 s.systems_manager.update_all(&mut update_context);
-                self.game.update(&mut s.world, delta_time);
+                self.game.update(&mut s.world);
 
                 //Renders entities and ui
                 s.systems_manager.render(&s.window, &mut s.world);
@@ -259,5 +262,5 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
 
 pub trait GameLogic {
     fn initialize(&mut self, world: &mut World, systems_manager: &mut SystemsManager);
-    fn update(&mut self, world: &mut World, delta_time: f32);
+    fn update(&mut self, world: &mut World);
 }

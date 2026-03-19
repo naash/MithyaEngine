@@ -17,7 +17,6 @@ use crate::{
 pub struct SystemUpdateContext<'a> {
     pub world: &'a mut World,
     pub events: &'a mut EngineEventQueue,
-    pub delta_time: f32,
 }
 
 pub struct SystemRenderContext<'a> {

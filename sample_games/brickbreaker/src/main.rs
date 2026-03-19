@@ -159,7 +159,7 @@ impl GameLogic for Brickbreaker {
         println!("ball_id: {}, paddle_id: {}", ball_id, paddle_id);
     }
 
-    fn update(&mut self, _world: &mut World, _delta_time: f32) {
+    fn update(&mut self, _world: &mut World) {
         // Brickbreaker Updates go here
     }
 }

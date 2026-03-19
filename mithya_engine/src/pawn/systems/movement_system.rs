@@ -7,7 +7,7 @@ use crate::{
     Movement, 
     Transform, 
     engine::{
-        system::{System, SystemUpdateContext}, world::World
+        resources::Time, system::{System, SystemUpdateContext}, world::World
     }, 
     physics::RigidBody
 };
@@ -22,6 +22,10 @@ impl System for MovementSystem {
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
+        let delta_time = update_context.world.resources.get::<Time>()
+            .map(|t| t.delta)
+            .unwrap_or(0.0);
+
         let entities = update_context.world.entity_manager
             .query_component::<Movement>();
 
@@ -44,8 +48,8 @@ impl System for MovementSystem {
                 if let Some(transform) = update_context.world.entity_manager
                     .get_component_mut::<Transform>(entity_id)
                 {
-                    transform.position.x += intent.x * impulse * update_context.delta_time;
-                    transform.position.y += intent.y * impulse * update_context.delta_time;
+                    transform.position.x += intent.x * impulse * delta_time;
+                    transform.position.y += intent.y * impulse * delta_time;
                 }
             }
 
