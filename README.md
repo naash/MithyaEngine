@@ -1,6 +1,6 @@
 # Mithya Engine
 
-A game engine built from scratch in Rust, driven by a single goal: learn Rust by building something real and iterating on it until it's good.
+A game engine built from scratch in Rust, driven by a single goal: learn Rust by building something real, functional.
 
 ---
 
@@ -18,20 +18,36 @@ on_events(events, actions, world) → push actions
 execute_all() → mutate world
 ```
 
+`on_events` receives read-only `&World` access so listeners can query component state when deciding which actions to push — without being able to mutate mid-frame.
+
+### Resources
+Global data that doesn't belong to any entity lives in a typed `Resources` store — inspired by Bevy's resource system. Accessed by type, not by name.
+
+```rust
+world.resources.insert(InputMapping::new());
+world.resources.insert(PhysicsConfig::default());
+world.resources.insert(Time::default());
+
+world.resources.get::<InputMapping>()
+world.resources.get_mut::<Time>()
+```
+
+This keeps `World` lean — only `EntityManager` and `AssetManager` live directly on it. Everything else is a resource. Adding new global data never touches the `World` struct.
+
 ### Input
-Named input actions bound to physical keys via `InputMapping`. `InputSystem` translates raw key events into `InputActionEvent` — systems respond to actions, not keycodes. Rebinding is a config change, not a code change.
+Named input actions bound to physical keys via `InputMapping` resource. `InputSystem` translates raw key events into `InputActionEvent` — systems respond to actions, not keycodes. Rebinding is a config change, not a code change. `InputActionMode::Continuous` fires every frame while held, `InputActionMode::OneShot` fires once on press.
 
 ### Rendering
-Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
+Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. `RenderingSystem` is stored separately from the system list — it owns all wgpu state and is called directly from the engine loop. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
 
 ### Physics
-Velocity, acceleration, drag, gravity, bounce, max speed. Collision resolution uses relative velocity reflection to speed regardless of what it hits.
+Velocity, acceleration, drag, gravity, bounce, max speed. Collision resolution uses relative velocity reflection to preserve ball speed regardless of what it hits.
 
 ---
 
-## What I Learned so far
+## What I Learned
 
-This project was deliberately chosen as a Rust learning vehicle because game engines stress-test every part of the language. As a C++ programmer, learning Rust was interesting and its constraints forced me to architecture the engine in a more robust and safer way.
+This project was deliberately chosen as a Rust learning vehicle because game engines stress-test every part of the language. As a C++ programmer, learning Rust was interesting and its constraints forced me to architect the engine in a more robust and safer way.
 
 **Ownership ended null pointer bugs entirely.** Every `get_component` returns `Option<T>`. The compiler forces handling of the missing case — there is no way to accidentally dereference a missing component. This class of bug simply doesn't exist.
 
