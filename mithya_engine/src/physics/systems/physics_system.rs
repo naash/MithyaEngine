@@ -7,20 +7,27 @@ use glam::Vec3;
 
 use crate::{
     core::Transform,
-    engine::{system::{System, SystemUpdateContext}, World}, 
-    physics::RigidBody,
+    engine::{World, system::{System, SystemUpdateContext}}, 
+    physics::{PhysicsConfig, RigidBody},
 };
 
 pub struct PhysicsSystem;
 
 impl System for PhysicsSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
+    fn initialize(&mut self, world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
+        world.resources.insert(PhysicsConfig::default());
         Ok(())
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-        let dt = update_context.world.physics_config.time_step;
-        let gravity = update_context.world.physics_config.gravity;
+
+        let dt = update_context.world.resources.get::<PhysicsConfig>()
+                                .map(|s| s.time_step)
+                                .unwrap_or_default();
+
+        let gravity = update_context.world.resources.get::<PhysicsConfig>()
+                                .map(|s| s.gravity)
+                                .unwrap_or_default();
 
         // Get all entities with both Transform and RigidBody
         let physics_entities = update_context.world.entity_manager

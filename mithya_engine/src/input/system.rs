@@ -7,18 +7,13 @@ use std::collections::HashSet;
 use winit::keyboard::KeyCode;
 
 use crate::{
-    core::{
-        engine_events::{KeyPressedEvent, KeyReleasedEvent},
-        EngineEventListener,
-    },
-    engine::system::{
+    World, core::EngineEventListener, engine::system::{
         System,
         SystemUpdateContext
-    },
-    World,
+    }, input::{InputMapping, events::{KeyPressedEvent, KeyReleasedEvent}}
 };
 
-use super::actions::InputActionMode;
+use super::mapping::InputActionMode;
 use super::events::InputActionEvent;
 
 pub struct InputSystem {
@@ -55,18 +50,19 @@ impl System for InputSystem {
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-        let mapping = &update_context.world.input_mapping;
+        
+        if let Some(mapping) = update_context.world.resources.get::<InputMapping>() {
+            for (key, binding) in &mapping.bindings {
+                let should_fire = match binding.mode {
+                    InputActionMode::Continuous => self.pressed_keys.contains(key),
+                    InputActionMode::OneShot => self.just_pressed.contains(key),
+                };
 
-        for (key, binding) in &mapping.bindings {
-            let should_fire = match binding.mode {
-                InputActionMode::Continuous => self.pressed_keys.contains(key),
-                InputActionMode::OneShot => self.just_pressed.contains(key),
-            };
-
-            if should_fire {
-                update_context.events.push(InputActionEvent {
-                    action: binding.action.clone(),
-                });
+                if should_fire {
+                    update_context.events.push(InputActionEvent {
+                        action: binding.action.clone(),
+                    });
+                }
             }
         }
 

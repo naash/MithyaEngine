@@ -5,8 +5,6 @@
 
 use std::any::Any;
 use std::fmt::Debug;
-use winit::event::MouseButton;
-use winit::keyboard::KeyCode;
 
 use crate::World;
 
@@ -137,102 +135,12 @@ impl Default for EngineActionQueue {
     }
 }
 
-// --- Key modifiers ---
-
-#[derive(Debug, Clone, Copy, Default)]
-pub struct KeyModifiers {
-    pub alt: bool,
-    pub ctrl: bool,
-    pub shift: bool,
-    pub gui: bool,
-}
-
-impl KeyModifiers {
-    pub fn from_winit(mods: &winit::event::Modifiers) -> Self {
-        let state = mods.state();
-        Self {
-            alt: state.alt_key(),
-            ctrl: state.control_key(),
-            shift: state.shift_key(),
-            gui: state.super_key(),
-        }
-    }
-}
-
 // --- Events ---
 
 #[derive(Debug, Clone)]
 pub struct GameQuitEvent;
 
 impl EngineEvent for GameQuitEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug, Clone)]
-pub struct KeyPressedEvent {
-    pub key: KeyCode,
-    pub modifiers: KeyModifiers,
-}
-
-impl EngineEvent for KeyPressedEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug, Clone)]
-pub struct KeyReleasedEvent {
-    pub key: KeyCode,
-    pub modifiers: KeyModifiers,
-}
-
-impl EngineEvent for KeyReleasedEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug, Clone)]
-pub struct MouseClickEvent {
-    pub position: glam::Vec2,
-    pub button: MouseButton,
-}
-
-impl EngineEvent for MouseClickEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug, Clone)]
-pub struct MouseButtonReleasedEvent {
-    pub position: glam::Vec2,
-    pub button: MouseButton,
-}
-
-impl EngineEvent for MouseButtonReleasedEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug, Clone)]
-pub struct MouseMoveEvent {
-    pub position: glam::Vec2,
-}
-
-impl EngineEvent for MouseMoveEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug, Clone)]
-pub struct MouseWheelEvent {
-    pub delta_x: i32,
-    pub delta_y: i32,
-}
-
-impl EngineEvent for MouseWheelEvent {
-    fn as_any(&self) -> &dyn Any { self }
-}
-
-#[derive(Debug, Clone)]
-pub struct TextInputEvent {
-    pub text: String,
-}
-
-impl EngineEvent for TextInputEvent {
     fn as_any(&self) -> &dyn Any { self }
 }
 

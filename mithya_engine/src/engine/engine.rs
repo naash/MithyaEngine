@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Nishant Sthalekar
+// Copyright (c) Nishant Sthalekar
 // 
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
@@ -7,31 +7,24 @@ use std::sync::Arc;
 
 use crate::{
     World, asset::AssetManager, core::{
-        EntityManager, engine_events::{
+        EntityManager, Resources, engine_events::{
             EngineActionQueue, 
-            EngineEventQueue, 
-            KeyModifiers, 
-            KeyPressedEvent, 
-            KeyReleasedEvent, 
-            MouseButtonReleasedEvent, 
-            MouseClickEvent, 
-            MouseMoveEvent, 
-            MouseWheelEvent,
+            EngineEventQueue,
             WindowResizedEvent
         }
     }, engine::{
-        FrameTimer, InputState, system::{
+        EngineStats, FrameTimer, 
+        system::{
             SystemUpdateContext, 
             SystemsManager
         }
-    }, input::{InputMapping, InputSystem}, 
+    }, input::{InputMapping, InputState, InputSystem, events::{KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent}, resources::KeyModifiers}, 
     pawn::{
         ControllerSystem, 
         MovementSystem
     }, 
     physics::{
-        CollisionSystem, 
-        PhysicsConfig, 
+        CollisionSystem,
         PhysicsSystem
     }, 
     rendering::RenderingSystem
@@ -126,13 +119,14 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         let rendering_system = pollster::block_on(RenderingSystem::new(window.clone()));
 
         let mut world = World {
-            input_state: InputState::default(),
             entity_manager: EntityManager::new(),
-            physics_config: PhysicsConfig::default(),
             asset_manager: AssetManager::new(self.config.asset_root.clone()).expect("Unable to create Asset Manager"),
-            fps: 0.0,
-            input_mapping: InputMapping::new()
+            resources: Resources::new()
         };
+
+        world.resources.insert(InputState::default());
+        world.resources.insert(InputMapping::new());
+        world.resources.insert(EngineStats::default());
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system(InputSystem::new(), &mut world);
@@ -166,7 +160,9 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             }
             WindowEvent::KeyboardInput { event: key_event, .. } => {
                 use winit::keyboard::PhysicalKey;
-                let modifiers = state.world.input_state.current_modifiers;
+                let modifiers = state.world.resources.get::<InputState>()
+                                .map(|s| s.current_modifiers)
+                                .unwrap_or_default();
 
                 if let PhysicalKey::Code(keycode) = key_event.physical_key {
                     match key_event.state {
@@ -180,10 +176,10 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 }
             }
             WindowEvent::MouseInput { state: btn_state, button, .. } => {
-                let position = Vec2::new(
-                    state.world.input_state.mouse_position.0 as f32,
-                    state.world.input_state.mouse_position.1 as f32,
-                );
+                let position = state.world.resources.get::<InputState>()
+                                    .map(|s| Vec2::new(s.mouse_position.0 as f32, s.mouse_position.1 as f32))
+                                    .unwrap_or(Vec2::ZERO);
+                
                 match btn_state {
                     ElementState::Pressed => {
                         state.event_queue.push(MouseClickEvent { position, button });
@@ -194,10 +190,12 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 }
             }
             WindowEvent::CursorMoved { position, .. } => {
-                state.world.input_state.mouse_position = (position.x as i32, position.y as i32);
-                state.event_queue.push(MouseMoveEvent {
-                    position: Vec2::new(position.x as f32, position.y as f32),
-                });
+                    if let Some(input_state) = state.world.resources.get_mut::<InputState>() {
+                        input_state.mouse_position = (position.x as i32, position.y as i32);
+                    }
+                    state.event_queue.push(MouseMoveEvent {
+                        position: Vec2::new(position.x as f32, position.y as f32),
+                    });
             }
             WindowEvent::MouseWheel { delta, .. } => {
                 use winit::event::MouseScrollDelta;
@@ -209,8 +207,9 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 }
             }
             WindowEvent::ModifiersChanged(modifiers) => {
-                // Store current modifiers state so keyboard events can read them
-                state.world.input_state.current_modifiers = KeyModifiers::from_winit(&modifiers);
+                    if let Some(input_state) = state.world.resources.get_mut::<InputState>() {
+                        input_state.current_modifiers = KeyModifiers::from_winit(&modifiers);
+                    }
             }
             WindowEvent::Resized(size) => {
                 
@@ -229,7 +228,12 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 
                 s.frame_timer.update();
                 let delta_time = s.frame_timer.get_delta_time();
-                s.world.fps = s.frame_timer.get_fps();
+
+                if let Some(stats) = s.world.resources.get_mut::<EngineStats>() {
+                    stats.fps = s.frame_timer.get_fps();
+                    stats.delta_time = delta_time;
+                    stats.frame_count += 1;
+                }
 
                 s.systems_manager.handle_event_all(&mut s.event_queue, &mut s.action_queue, &s.world);
                 s.action_queue.execute_all(&mut s.world);

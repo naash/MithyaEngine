@@ -3,9 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::any::Any;
 use glam::Vec2;
-use crate::Component;
 
 #[derive(Debug, Clone)]
 pub struct Movement {

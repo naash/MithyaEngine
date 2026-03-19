@@ -31,9 +31,6 @@ pub enum MaterialError {
     #[error("Material not found: {0}")]
     MaterialNotFound(String),
 
-    #[error("Invalid shader program")]
-    InvalidShaderProgram,
-
     #[error("Invalid texture slot: {0}")]
     InvalidTextureSlot(u32),
 }

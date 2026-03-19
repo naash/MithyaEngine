@@ -13,7 +13,7 @@ use mithya_engine::{
         World,
     },
     input::{
-        actions::InputAction,
+        mapping::InputAction,
         InputActionEvent
     },
     physics::{RigidBody, systems::CollisionEvent},

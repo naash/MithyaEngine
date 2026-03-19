@@ -8,8 +8,10 @@ pub mod system;
 pub mod entity_builder;
 pub mod frame_timer;
 pub mod world;
+pub mod resources;
 
+pub use resources::EngineStats;
 pub use entity_builder::EntityBuilder;
 pub use frame_timer::FrameTimer;
-pub use world::{World, InputState};
+pub use world::World;
 pub use engine::{Engine, EngineConfig, GameLogic};
