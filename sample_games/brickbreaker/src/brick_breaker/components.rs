@@ -30,7 +30,6 @@ impl Brick {
         if self.health > 0 {
             self.health -= 1;
         }
-        println!("Health {}", self.health);
         self.health <= 0
     }
     

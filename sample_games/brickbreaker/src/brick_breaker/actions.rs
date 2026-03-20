@@ -81,7 +81,6 @@ impl EngineAction for DestroyBrickAction {
         if let Some(brick) = world.entity_manager
             .get_component_mut::<Brick>(self.brick_id)
         {
-            println!("Deal damage");
             brick.take_damage();
         }
 

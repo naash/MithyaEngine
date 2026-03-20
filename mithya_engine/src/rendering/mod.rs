@@ -6,5 +6,5 @@
 mod systems;
 mod components;
 
-pub use components::{Mesh, Render, Material};
+pub use components::{Mesh, Render, Material, Camera};
 pub use systems::RenderingSystem;

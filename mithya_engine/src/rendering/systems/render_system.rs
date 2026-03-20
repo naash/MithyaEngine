@@ -10,7 +10,7 @@ use winit::window::Window;
 
 use crate::{
     World, asset::managers::AssetManager, core::Transform, 
-    rendering::components::Render
+    rendering::{Camera, components::Render}
 };
 
 // GPU-side uniform buffer layout must match WGSL struct exactly
@@ -425,6 +425,8 @@ impl RenderingSystem {
                 occlusion_query_set: None,
             });
 
+            let (view, projection) = self.get_camera_matrices(world);
+
             let entities = world.entity_manager.get_renderable_entities();
 
             for entity_id in entities {
@@ -437,6 +439,8 @@ impl RenderingSystem {
                         render,
                         &mut world.asset_manager,
                         &mut render_pass,
+                        &view,
+                        &projection
                     );
                 }
             }
@@ -518,6 +522,8 @@ impl RenderingSystem {
         render: &mut Render,
         asset_manager: &mut AssetManager,
         render_pass: &mut wgpu::RenderPass,
+        view: &Mat4,
+        projection: &Mat4,
     ) {
         // Upload mesh to GPU if not done yet
         if !render.mesh.is_uploaded() {
@@ -536,15 +542,14 @@ impl RenderingSystem {
             * Mat4::from_scale(transform.scale))
             .to_cols_array_2d();
 
-        let view = Mat4::IDENTITY.to_cols_array_2d();
+        let view_array = view.to_cols_array_2d();
+        let projection_array = projection.to_cols_array_2d();
 
-        let projection = Mat4::orthographic_rh(
-            -20.0 * self.aspect_ratio, 20.0 * self.aspect_ratio,
-            -20.0, 20.0,
-            -1.0, 1.0,
-        ).to_cols_array_2d();
-
-        let transform_uniforms = TransformUniforms { model, view, projection };
+        let transform_uniforms = TransformUniforms { 
+            model, 
+            view : view_array, 
+            projection: projection_array 
+        };
 
         // Upload transform uniform buffer
         let transform_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
@@ -632,5 +637,35 @@ impl RenderingSystem {
         F: FnOnce(&mut AssetManager, &wgpu::Device, &wgpu::Queue),
     {
         f(asset_manager, &self.device, &self.queue);
+    }
+
+    fn get_camera_matrices(&self, world: &World) -> (Mat4, Mat4) {
+        // Find active camera entity
+        let camera_entities = world.entity_manager.query_two_components::<Transform, Camera>();
+        
+        for entity_id in camera_entities {
+            let transform = world.entity_manager.get_component::<Transform>(entity_id);
+            let camera = world.entity_manager.get_component::<Camera>(entity_id);
+
+            if let (Some(transform), Some(camera)) = (transform, camera) {
+                if !camera.is_active { continue; }
+
+                let view = Mat4::from_translation(transform.position).inverse();
+                let projection = Mat4::orthographic_rh(
+                    -camera.size * self.aspect_ratio, camera.size * self.aspect_ratio,
+                    -camera.size, camera.size,
+                    camera.near, camera.far,
+                );
+                return (view, projection);
+            }
+        }
+
+        // Fallback if no camera found
+        let projection = Mat4::orthographic_rh(
+            -20.0 * self.aspect_ratio, 20.0 * self.aspect_ratio,
+            -20.0, 20.0,
+            -1.0, 1.0,
+        );
+        (Mat4::IDENTITY, projection)
     }
 }

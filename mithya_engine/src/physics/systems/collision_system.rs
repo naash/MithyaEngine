@@ -69,10 +69,16 @@ impl System for CollisionSystem {
 impl CollisionSystem {
     /// Check collision and return collision info if colliding
     fn check_collision(&self, world: &World, entity_a: u32, entity_b: u32) -> Option<CollisionInfo> {
-        let transform_a = world.entity_manager.get_component::<Transform>(entity_a)?;
-        let transform_b = world.entity_manager.get_component::<Transform>(entity_b)?;
+
         let collider_a = world.entity_manager.get_component::<Collider>(entity_a)?;
         let collider_b = world.entity_manager.get_component::<Collider>(entity_b)?;
+
+        if (collider_a.layer & collider_b.mask) == 0 && (collider_b.layer & collider_a.mask) == 0 {
+            return None; //Colliders cannot interact
+        }
+        
+        let transform_a = world.entity_manager.get_component::<Transform>(entity_a)?;
+        let transform_b = world.entity_manager.get_component::<Transform>(entity_b)?;
 
         // Get world positions with offsets
         let pos_a = transform_a.position + collider_a.offset;

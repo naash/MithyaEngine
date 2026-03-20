@@ -103,7 +103,6 @@ impl BrickBreakerSystem {
             state.score = 0;
             state.lives = 3;
             state.state = GameState::WaitingToLaunch;
-            println!("Game reset! Press Space to launch.");
         }
     }
 }
@@ -149,7 +148,6 @@ impl System for BrickBreakerSystem {
             if let Some(state) = update_context.world.entity_manager
                 .get_component_mut::<BrickBreakerState>(self.game_manager_id)
             {
-                println!("You win! Final score: {}", state.score);
                 state.state = GameState::Won;
             }
             return;
@@ -167,11 +165,9 @@ impl System for BrickBreakerSystem {
             {
                 if state.lives > 0 {
                     state.lives -= 1;
-                    println!("Lives remaining: {}", state.lives);
                 }
                 if state.lives == 0 {
                     state.state = GameState::GameOver;
-                    println!("Game Over! Final score: {}", state.score);
                 } else {
                     state.state = GameState::WaitingToLaunch;
                 }

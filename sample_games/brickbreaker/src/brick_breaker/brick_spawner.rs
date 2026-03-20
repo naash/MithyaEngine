@@ -12,6 +12,8 @@ use mithya_engine::{
     Transform,
 };
 use glam::{Quat, Vec3};
+use crate::brick_breaker::layers::{LAYER_BALL, LAYER_BRICK};
+
 use super::components::{Brick, BrickType};
 
 pub struct BrickGridConfig {
@@ -80,9 +82,6 @@ pub fn spawn_brick_grid(world: &mut World, config: BrickGridConfig) -> HashSet<u
             brick_ids.insert(brick_id);
         }
     }
-    
-    println!("Spawned {} bricks in a {}x{} grid", 
-             config.rows * config.columns, config.rows, config.columns);
 
     brick_ids
 }
@@ -109,6 +108,8 @@ pub fn spawn_brick(
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+            layer: LAYER_BRICK,
+            mask: LAYER_BALL,
             ..Default::default()
         })
         .with(Brick::new(brick_type))

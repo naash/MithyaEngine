@@ -6,20 +6,12 @@
 use std::collections::HashSet;
 
 use mithya_engine::{
-    Transform, engine::{
-        Engine, EngineConfig, EntityBuilder, GameLogic, World, system::SystemsManager
-    }, input::{InputMapping, mapping::{
-        InputAction, 
-        InputBinding
-    }}, pawn::{
-        Controller, Movement
-    }, physics::{
-        Collider,
-        ColliderShape, 
-        RigidBody}, rendering::{
-        Mesh, 
-        Render 
-    }
+    Transform, 
+    engine::{ Engine, EngineConfig, EntityBuilder, GameLogic, World, system::SystemsManager}, 
+    input::{ InputMapping, mapping::{ InputAction, InputBinding}}, 
+    pawn::{ Controller, Movement }, 
+    physics::{ Collider, ColliderShape, RigidBody}, 
+    rendering::{ Mesh, Render, Camera }
 };
 
 mod brick_breaker;
@@ -27,7 +19,7 @@ mod brick_breaker;
 use crate::brick_breaker::{
     brick_spawner::*, components::{
         Ball, BrickBreakerState, BrickType, GameState
-    }, systems::BrickBreakerSystem
+    }, layers::{LAYER_BALL, LAYER_BRICK, LAYER_PADDLE, LAYER_WALL}, systems::BrickBreakerSystem
 };
 use winit::keyboard::KeyCode;
 
@@ -40,8 +32,6 @@ struct Brickbreaker {
 
 impl GameLogic for Brickbreaker {
     fn initialize(&mut self, world: &mut World, systems_manager: &mut SystemsManager) {
-        println!("Initializing Brick Breaker...");
-
         // === TEXTURES ===
         // load_assets
         if let Some(renderer) = systems_manager.get_rendering_system() {
@@ -67,6 +57,9 @@ impl GameLogic for Brickbreaker {
 
         // === WALLS ===
         spawn_walls(world);
+
+        // === Camera ===
+        spawn_camera(world);
         
         let game_manager_id = spawn_game_manager(world);
 
@@ -154,9 +147,6 @@ impl GameLogic for Brickbreaker {
             }
         }));
         }
-
-        println!("Brick Breaker ready!");
-        println!("ball_id: {}, paddle_id: {}", ball_id, paddle_id);
     }
 
     fn update(&mut self, _world: &mut World) {
@@ -167,8 +157,8 @@ impl GameLogic for Brickbreaker {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let config = EngineConfig {
         window_title: "Brick breaker".to_string(),
-        window_width: 960,
-        window_height: 540,
+        window_width: 830,
+        window_height: 790,
         asset_root: std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")),
         ..Default::default()
     };
@@ -196,6 +186,8 @@ fn spawn_walls(world: &mut World) {
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+            layer: LAYER_WALL,
+            mask: LAYER_BALL,
             ..Default::default()
         })
         .build();
@@ -214,6 +206,8 @@ fn spawn_walls(world: &mut World) {
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+            layer: LAYER_WALL,
+            mask: LAYER_BALL,
             ..Default::default()
         })
         .build();
@@ -232,6 +226,8 @@ fn spawn_walls(world: &mut World) {
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+            layer: LAYER_WALL,
+            mask: LAYER_BALL,
             ..Default::default()
         })
         .build();
@@ -261,6 +257,8 @@ fn spawn_ball(world: &mut World) -> u32 {
         })
         .with(Collider {
             shape: ColliderShape::Circle { radius: 0.5 },  // Smaller radius
+            layer: LAYER_BALL,
+            mask: LAYER_WALL | LAYER_PADDLE | LAYER_BRICK,
             ..Default::default()
         })
         .with(Ball)  // Mark as ball for game logic
@@ -282,6 +280,8 @@ fn spawn_paddle(world: &mut World) -> u32 {
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
+            layer: LAYER_PADDLE,
+            mask: LAYER_BALL | LAYER_WALL,
             ..Default::default()
         })
         .with(RigidBody {
@@ -316,10 +316,13 @@ fn spawn_bricks(world: &mut World) -> HashSet<u32> {
         start_position: Vec3::new(0.0, 12.0, 0.0),
     };
     spawn_brick_grid(world, config)
-    
-    // Option 2: Spawn a pattern (uncomment to try)
-    
-    // Option 3: Spawn individual test bricks (for debugging);
+}
+
+fn spawn_camera(world: &mut World) {
+    EntityBuilder::new(&mut world.entity_manager)
+        .with(Transform::default())
+        .with(Camera::new(20.0))
+        .build();
 }
 
 fn spawn_game_manager(world: &mut World) -> u32 {
