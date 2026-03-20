@@ -256,8 +256,8 @@ fn spawn_ball(world: &mut World) -> u32 {
             gravity_scale: 0.0,
             bounce: 1.0,
             is_kinematic: true,
-            max_acceleration: 10.0,
-            max_speed: 10.0
+            max_acceleration: 5.0,
+            max_speed: 5.0
         })
         .with(Collider {
             shape: ColliderShape::Circle { radius: 0.5 },  // Smaller radius
@@ -295,11 +295,11 @@ fn spawn_paddle(world: &mut World) -> u32 {
             bounce: 0.0,
             gravity_scale: 0.0,
             is_kinematic: true,
-            max_acceleration: 200.0,
+            max_acceleration: 100.0,
             max_speed: 20.0,
             drag: 5.0
         })
-        .with(Movement::new(150.0))
+        .with(Movement::new(100.0))
         .build();
 
     // Spawn a separate controller entity that possesses the paddle
