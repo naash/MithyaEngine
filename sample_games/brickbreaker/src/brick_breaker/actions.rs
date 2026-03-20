@@ -36,7 +36,7 @@ impl EngineAction for LaunchBallAction {
             .get_component_mut::<RigidBody>(self.ball_id)
         {
             rb.is_kinematic = false;
-            rb.velocity = Vec3::new(0.0, 10.0, 0.0);
+            rb.velocity = Vec3::new(0.0, 5.0, 0.0);
         }
     }
 }

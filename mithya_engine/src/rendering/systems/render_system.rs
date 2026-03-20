@@ -9,8 +9,8 @@ use wgpu::util::DeviceExt;
 use winit::window::Window;
 
 use crate::{
-    World, asset::managers::AssetManager, core::Transform, 
-    rendering::{Camera, components::Render}
+    World, asset::{MaterialData, managers::AssetManager}, core::Transform, 
+    rendering::{Camera, Material, components::{Render, RenderGpuCache}}
 };
 
 // GPU-side uniform buffer layout must match WGSL struct exactly
@@ -515,7 +515,6 @@ impl RenderingSystem {
         output.present();
     }
 
-    //TODO this needs to be improved, too many issues here, also think about adding camera system
     fn render_entity(
         &self,
         transform: &Transform,
@@ -542,22 +541,76 @@ impl RenderingSystem {
             * Mat4::from_scale(transform.scale))
             .to_cols_array_2d();
 
-        let view_array = view.to_cols_array_2d();
-        let projection_array = projection.to_cols_array_2d();
-
-        let transform_uniforms = TransformUniforms { 
-            model, 
-            view : view_array, 
-            projection: projection_array 
+        let transform_uniforms = TransformUniforms {
+            model,
+            view: view.to_cols_array_2d(),
+            projection: projection.to_cols_array_2d(),
         };
 
-        // Upload transform uniform buffer
-        let transform_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+        // --- RenderCache initialization ---
+        if render.gpu_cache.is_none() {
+            render.gpu_cache = self.build_gpu_cache(&transform_uniforms, material, asset_manager);
+        }
+
+        let cache = match render.gpu_cache.as_ref() {
+            Some(c) => c,
+            None => return,
+        };
+
+         // --- Transform update ---
+        self.queue.write_buffer(
+            &cache.transform_buffer,
+            0,
+            bytemuck::cast_slice(&[transform_uniforms]),
+        );
+
+        // --- Pipeline selection and draw ---
+        // Bind groups already exist — just hand them to the render pass
+        if material.textures.is_empty() {
+            render_pass.set_pipeline(&self.unlit_color_pipeline);
+        } else {
+            render_pass.set_pipeline(&self.unlit_texture_pipeline);
+        }
+
+        render_pass.set_bind_group(0, &cache.transform_bind_group, &[]);
+        render_pass.set_bind_group(1, &cache.material_bind_group, &[]);
+
+        // Draw — unchanged
+        let vertex_buffer = render.mesh.vertex_buffer.as_ref().expect("Failed to get vertex buffer");
+        let index_buffer = render.mesh.index_buffer.as_ref().expect("Failed to get index buffer");
+        let index_count = render.mesh.indices.len() as u32;
+
+        render_pass.set_vertex_buffer(0, vertex_buffer.slice(..));
+        render_pass.set_index_buffer(index_buffer.slice(..), wgpu::IndexFormat::Uint32);
+        render_pass.draw_indexed(0..index_count, 0, 0..1);
+    }
+
+    fn build_gpu_cache(
+        &self,
+        transform_uniforms: &TransformUniforms,
+        material: &MaterialData,
+        asset_manager: &AssetManager,
+    ) -> Option<RenderGpuCache> {
+
+        // --- Transform buffer ---
+        // Created with COPY_DST so we can write_buffer into it every frame
+        // without recreating it
+        let transform_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("Transform Buffer"),
-            contents: bytemuck::cast_slice(&[transform_uniforms]),
+            size: std::mem::size_of::<TransformUniforms>() as u64,
             usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
         });
 
+        // Upload initial data
+        self.queue.write_buffer(
+            &transform_buffer,
+            0,
+            bytemuck::cast_slice(&[*transform_uniforms]),
+        );
+
+        // Bind group points to the buffer — created once, stays valid
+        // because the buffer itself never moves or gets dropped
         let transform_bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
             label: Some("Transform Bind Group"),
             layout: &self.transform_bind_group_layout,
@@ -567,9 +620,10 @@ impl RenderingSystem {
             }],
         });
 
-        // Decide pipeline based on whether material has textures
-        if material.textures.is_empty() {
-            // Unlit color pipeline
+        // --- Material bind group ---
+        // Branch on texture vs color — same logic as before but runs once
+        let material_bind_group = if material.textures.is_empty() {
+            // Color pipeline
             let color = match material.uniforms.get("u_color") {
                 Some(crate::asset::UniformValue::Vec3(v)) => *v,
                 _ => [1.0, 1.0, 1.0],
@@ -578,32 +632,29 @@ impl RenderingSystem {
             let color_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
                 label: Some("Color Buffer"),
                 contents: bytemuck::cast_slice(&[ColorUniforms { color, _pad: 0.0 }]),
+                // COPY_DST in case you later want to update color without full cache rebuild
                 usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
             });
 
-            let color_bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            self.device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("Color Bind Group"),
                 layout: &self.color_bind_group_layout,
                 entries: &[wgpu::BindGroupEntry {
                     binding: 0,
                     resource: color_buffer.as_entire_binding(),
                 }],
-            });
-
-            render_pass.set_pipeline(&self.unlit_color_pipeline);
-            render_pass.set_bind_group(0, &transform_bind_group, &[]);
-            render_pass.set_bind_group(1, &color_bind_group, &[]);
+            })
 
         } else {
-            // Unlit texture pipeline — use first texture binding
-            let texture_entry = match material.textures.values().next()
-                .and_then(|b| asset_manager.get_texture(&b.texture_id))
-            {
-                Some(t) => t,
-                None => return,
-            };
+            // Texture pipeline — texture never changes after load, so this
+            // bind group is valid for the lifetime of the entity
+            let texture_entry = material
+                .textures
+                .values()
+                .next()
+                .and_then(|b| asset_manager.get_texture(&b.texture_id))?;
 
-            let texture_bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            self.device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("Texture Bind Group"),
                 layout: &self.texture_bind_group_layout,
                 entries: &[
@@ -616,21 +667,15 @@ impl RenderingSystem {
                         resource: wgpu::BindingResource::Sampler(&self.default_sampler),
                     },
                 ],
-            });
+            })
+        };
 
-            render_pass.set_pipeline(&self.unlit_texture_pipeline);
-            render_pass.set_bind_group(0, &transform_bind_group, &[]);
-            render_pass.set_bind_group(1, &texture_bind_group, &[]);
-        }
-
-        let vertex_buffer = render.mesh.vertex_buffer.as_ref().expect("Failed to get vertex buffer");
-        let index_buffer = render.mesh.index_buffer.as_ref().expect("Failed to get index buffer");
-        let index_count = render.mesh.indices.len() as u32;
-
-        render_pass.set_vertex_buffer(0, vertex_buffer.slice(..));
-        render_pass.set_index_buffer(index_buffer.slice(..), wgpu::IndexFormat::Uint32);
-        render_pass.draw_indexed(0..index_count, 0, 0..1);
-    }
+        Some(RenderGpuCache {
+            transform_buffer,
+            transform_bind_group,
+            material_bind_group,
+        })
+}
 
     pub fn load_assets<F>(&self, asset_manager: &mut AssetManager, f: F)
     where

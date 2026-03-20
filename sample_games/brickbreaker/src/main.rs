@@ -182,7 +182,8 @@ fn spawn_walls(world: &mut World) {
         .with(Render {
             mesh: Mesh::new_quad_textured(),
             material_id: world.asset_manager
-                .get_material_by_name("unlit_texture_orange")
+                .get_material_by_name("unlit_texture_orange"),
+            gpu_cache: None,
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
@@ -202,7 +203,8 @@ fn spawn_walls(world: &mut World) {
         .with(Render {
             mesh: Mesh::new_quad_textured(),
             material_id: world.asset_manager
-                .get_material_by_name("unlit_texture_orange")
+                .get_material_by_name("unlit_texture_orange"),
+             gpu_cache: None,
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
@@ -222,7 +224,8 @@ fn spawn_walls(world: &mut World) {
         .with(Render {
             mesh: Mesh::new_quad_textured(),
             material_id: world.asset_manager
-                .get_material_by_name("unlit_texture_orange")
+                .get_material_by_name("unlit_texture_orange"),
+            gpu_cache: None,
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
@@ -243,7 +246,8 @@ fn spawn_ball(world: &mut World) -> u32 {
         .with(Render {
             mesh: Mesh::new_quad_textured(),
             material_id: world.asset_manager
-                .get_material_by_name("unlit_texture_circle")
+                .get_material_by_name("unlit_texture_circle"),
+             gpu_cache: None,
         })
         .with(RigidBody {
             velocity: Vec3::ZERO,
@@ -276,7 +280,8 @@ fn spawn_paddle(world: &mut World) -> u32 {
         .with(Render {
             mesh: Mesh::new_quad_textured(),
             material_id: world.asset_manager
-                .get_material_by_name("unlit_texture_green")
+                .get_material_by_name("unlit_texture_green"),
+             gpu_cache: None,
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },

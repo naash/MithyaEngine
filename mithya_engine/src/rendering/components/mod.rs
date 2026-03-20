@@ -10,5 +10,5 @@ mod camera;
 
 pub use material::Material;
 pub use mesh::Mesh;
-pub use render::Render;
+pub use render::{Render,RenderGpuCache};
 pub use camera::Camera;

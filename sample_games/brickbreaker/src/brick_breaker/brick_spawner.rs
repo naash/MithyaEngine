@@ -105,6 +105,7 @@ pub fn spawn_brick(
             mesh: Mesh::new_quad_textured(),
             material_id: world.asset_manager
                 .get_material_by_name(material_name),
+            gpu_cache: None,
         })
         .with(Collider {
             shape: ColliderShape::Box { width: 1.0, height: 1.0 },
