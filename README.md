@@ -37,6 +37,29 @@ This keeps `World` lean — only `EntityManager` and `AssetManager` live directl
 ### Input
 Named input actions bound to physical keys via `InputMapping` resource. `InputSystem` translates raw key events into `InputActionEvent` — systems respond to actions, not keycodes. Rebinding is a config change, not a code change. `InputActionMode::Continuous` fires every frame while held, `InputActionMode::OneShot` fires once on press.
 
+### Camera
+A `Camera` component on any entity drives the view. `RenderingSystem` finds the active camera each frame and computes view and projection matrices from it — no hardcoded values. `size` controls the half-height in world units, aspect ratio is derived from the window dimensions automatically.
+
+```rust
+EntityBuilder::new(&mut world.entity_manager)
+    .with(Transform::default())
+    .with(Camera::new(20.0))  // 20 world units half-height
+    .build();
+```
+
+### Collision Layers
+Colliders have a `layer` (what they are) and a `mask` (what they collide with), both `u32` bitmasks — 32 layers available. Two entities only check collision if their layers and masks intersect, eliminating spurious wall-wall checks.
+
+```rust
+pub const LAYER_WALL: u32   = 0b0001;
+pub const LAYER_BALL: u32   = 0b0010;
+pub const LAYER_PADDLE: u32 = 0b0100;
+pub const LAYER_BRICK: u32  = 0b1000;
+
+//example Wall only collides with ball — never with other walls
+Collider { layer: LAYER_WALL, mask: LAYER_BALL, .. }
+```
+
 ### Rendering
 Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. `RenderingSystem` is stored separately from the system list — it owns all wgpu state and is called directly from the engine loop. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
 
