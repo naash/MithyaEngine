@@ -6,13 +6,24 @@
 use super::Mesh;
 
 #[derive(Debug)]
-pub struct RenderGpuCache {
+pub struct TransformGpuCache {
     // Transform changes every frame — buffer stays alive, we write_buffer into it
-    pub transform_buffer: wgpu::Buffer,
-    pub transform_bind_group: wgpu::BindGroup,
+    pub buffer: wgpu::Buffer,
+    pub bind_group: wgpu::BindGroup
+}
 
-    // Material data — created once, only rebuilt if material changes
-    pub material_bind_group: wgpu::BindGroup,
+#[derive(Debug)]
+pub struct MaterialGpuCache {
+    pub bind_group: wgpu::BindGroup,
+    pub cached_id: Option<u32>,
+    pub has_textures: bool
+}
+
+
+#[derive(Debug)]
+pub struct RenderGpuCache {
+    pub transform: TransformGpuCache,
+    pub material: MaterialGpuCache,
 }
 
 // Renderable component - marks an entity as something that should be rendered

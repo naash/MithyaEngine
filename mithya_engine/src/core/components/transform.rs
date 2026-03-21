@@ -4,10 +4,9 @@
 // https://opensource.org/licenses/MIT
 
 use glam::{Vec3, Quat};
-use serde::{Deserialize, Serialize};
 
 // Transform component for position, rotation, scale
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug)]
 pub struct Transform {
     pub position: Vec3,
     pub rotation: Quat,

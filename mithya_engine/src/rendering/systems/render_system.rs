@@ -10,7 +10,7 @@ use winit::window::Window;
 
 use crate::{
     World, asset::{MaterialData, managers::AssetManager}, core::Transform, 
-    rendering::{Camera, Material, components::{Render, RenderGpuCache}}
+    rendering::{Camera, components::{MaterialGpuCache, Render, RenderGpuCache, TransformGpuCache}}
 };
 
 // GPU-side uniform buffer layout must match WGSL struct exactly
@@ -397,7 +397,7 @@ impl RenderingSystem {
                 return;
             }
             Err(e) => {
-                eprintln!("Surface error: {:?}", e);
+                eprintln!("Surface error: {:?}", e); //// TODO: replace with tracing
                 return;
             }
         };
@@ -474,7 +474,7 @@ impl RenderingSystem {
         };
 
         let mut egui_encoder = self.device.create_command_encoder(
-    &wgpu::CommandEncoderDescriptor { label: Some("egui Encoder") }
+            &wgpu::CommandEncoderDescriptor { label: Some("egui Encoder") }
         );
 
         self.egui_renderer.update_buffers(
@@ -487,7 +487,8 @@ impl RenderingSystem {
         
         
         {
-
+        // forget_lifetime() needed to decouple the render pass lifetime from the encoder
+        // so egui_renderer.render() can accept it without lifetime conflicts
         let mut egui_pass = egui_encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some("egui Pass"),
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
@@ -549,7 +550,25 @@ impl RenderingSystem {
 
         // --- RenderCache initialization ---
         if render.gpu_cache.is_none() {
-            render.gpu_cache = self.build_gpu_cache(&transform_uniforms, material, asset_manager);
+            let transform_gpu_cache = self.build_transform_cache(&transform_uniforms);
+            let material_gpu_cache = match self.build_material_cache(material, asset_manager, render.material_id) {
+                Some(m) => m,
+                None => return,
+            };
+            
+            render.gpu_cache = Some(RenderGpuCache {
+            transform: transform_gpu_cache,
+            material: material_gpu_cache 
+            })
+        }
+        else if let Some(cache) = &mut render.gpu_cache {
+            //If cached material doesn't match, we rebuild the cache
+            if cache.material.cached_id != render.material_id {
+                cache.material = match self.build_material_cache(material, asset_manager, render.material_id) {
+                    Some(bg) => bg,
+                    None => return,
+                };
+            }
         }
 
         let cache = match render.gpu_cache.as_ref() {
@@ -559,21 +578,21 @@ impl RenderingSystem {
 
          // --- Transform update ---
         self.queue.write_buffer(
-            &cache.transform_buffer,
+            &cache.transform.buffer,
             0,
             bytemuck::cast_slice(&[transform_uniforms]),
         );
 
         // --- Pipeline selection and draw ---
         // Bind groups already exist — just hand them to the render pass
-        if material.textures.is_empty() {
-            render_pass.set_pipeline(&self.unlit_color_pipeline);
-        } else {
+        if cache.material.has_textures {
             render_pass.set_pipeline(&self.unlit_texture_pipeline);
+        } else {
+            render_pass.set_pipeline(&self.unlit_color_pipeline);
         }
 
-        render_pass.set_bind_group(0, &cache.transform_bind_group, &[]);
-        render_pass.set_bind_group(1, &cache.material_bind_group, &[]);
+        render_pass.set_bind_group(0, &cache.transform.bind_group, &[]);
+        render_pass.set_bind_group(1, &cache.material.bind_group, &[]);
 
         // Draw — unchanged
         let vertex_buffer = render.mesh.vertex_buffer.as_ref().expect("Failed to get vertex buffer");
@@ -585,16 +604,7 @@ impl RenderingSystem {
         render_pass.draw_indexed(0..index_count, 0, 0..1);
     }
 
-    fn build_gpu_cache(
-        &self,
-        transform_uniforms: &TransformUniforms,
-        material: &MaterialData,
-        asset_manager: &AssetManager,
-    ) -> Option<RenderGpuCache> {
-
-        // --- Transform buffer ---
-        // Created with COPY_DST so we can write_buffer into it every frame
-        // without recreating it
+    fn build_transform_cache(&self, transform_uniforms: &TransformUniforms) -> TransformGpuCache {
         let transform_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("Transform Buffer"),
             size: std::mem::size_of::<TransformUniforms>() as u64,
@@ -620,10 +630,16 @@ impl RenderingSystem {
             }],
         });
 
-        // --- Material bind group ---
-        // Branch on texture vs color — same logic as before but runs once
+        TransformGpuCache{ buffer: transform_buffer, bind_group: transform_bind_group }
+    }
+
+    fn build_material_cache(
+        &self,
+        material: &MaterialData,
+        asset_manager: &AssetManager,
+        material_id: Option<u32>,
+    ) -> Option<MaterialGpuCache> {
         let material_bind_group = if material.textures.is_empty() {
-            // Color pipeline
             let color = match material.uniforms.get("u_color") {
                 Some(crate::asset::UniformValue::Vec3(v)) => *v,
                 _ => [1.0, 1.0, 1.0],
@@ -632,7 +648,6 @@ impl RenderingSystem {
             let color_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
                 label: Some("Color Buffer"),
                 contents: bytemuck::cast_slice(&[ColorUniforms { color, _pad: 0.0 }]),
-                // COPY_DST in case you later want to update color without full cache rebuild
                 usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
             });
 
@@ -646,8 +661,6 @@ impl RenderingSystem {
             })
 
         } else {
-            // Texture pipeline — texture never changes after load, so this
-            // bind group is valid for the lifetime of the entity
             let texture_entry = material
                 .textures
                 .values()
@@ -670,12 +683,12 @@ impl RenderingSystem {
             })
         };
 
-        Some(RenderGpuCache {
-            transform_buffer,
-            transform_bind_group,
-            material_bind_group,
+        Some(MaterialGpuCache {
+            bind_group: material_bind_group,
+            cached_id: material_id,
+            has_textures: !material.textures.is_empty()
         })
-}
+    }
 
     pub fn load_assets<F>(&self, asset_manager: &mut AssetManager, f: F)
     where

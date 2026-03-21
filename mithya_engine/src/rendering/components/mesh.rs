@@ -3,7 +3,6 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use serde::{Serialize, Deserialize};
 use wgpu::util::DeviceExt;
 
 const FLOATS_PER_POSITION: usize = 3;
@@ -157,8 +156,7 @@ impl Mesh {
     }
 }
 
-// MeshType stays identical - no changes needed
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug)]
 pub enum MeshType {
     Triangle,
     Quad,
