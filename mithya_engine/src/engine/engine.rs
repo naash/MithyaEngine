@@ -6,7 +6,7 @@
 use std::sync::Arc;
 
 use crate::{
-    World, asset::AssetManager, core::{
+    DebugSystem, World, asset::AssetManager, core::{
         EntityManager, Resources, engine_events::{
             EngineActionQueue, 
             EngineEventQueue,
@@ -17,16 +17,13 @@ use crate::{
             SystemUpdateContext, 
             SystemsManager
         }
-    }, input::{InputMapping, InputState, InputSystem, events::{KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent}, resources::KeyModifiers}, 
-    pawn::{
+    }, input::{InputMapping, InputState, InputSystem, events::{KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent}, resources::KeyModifiers}, pawn::{
         ControllerSystem, 
         MovementSystem
-    }, 
-    physics::{
+    }, physics::{
         CollisionSystem,
         PhysicsSystem
-    }, 
-    rendering::RenderingSystem
+    }, rendering::RenderingSystem
 };
 
 use glam::Vec2;
@@ -143,6 +140,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         systems_manager.add_system(MovementSystem, &mut world);
         systems_manager.add_system(PhysicsSystem, &mut world);
         systems_manager.add_system(CollisionSystem, &mut world);
+        systems_manager.add_system(DebugSystem, &mut world);
         systems_manager.set_rendering_system(rendering_system); //Special system that is stored seperate from other systems.
         
         self.game.initialize(&mut world, &mut systems_manager);

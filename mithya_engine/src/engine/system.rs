@@ -84,8 +84,14 @@ impl SystemsManager {
                 listeners.push(listener);
             }
         }
+
+        if let Some(rendering) = self.rendering_system.as_mut() {
+            if let Some(listener) = rendering.as_event_listener_mut() {
+                listeners.push(listener);
+            }
+        }
         
-        event_queue.broadcast_to_listeners(&mut listeners, action_queue, world);
+        event_queue.broadcast_to_listeners(&mut listeners, action_queue, world);        
     }
 
     pub fn update_all(&mut self, update_context: &mut SystemUpdateContext) {

@@ -3,15 +3,14 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::sync::Arc;
-use glam::Mat4;
+use std::{any::TypeId, sync::Arc};
+use glam::{Mat4, Vec3, Vec4Swizzles};
 use tracing::error;
 use wgpu::util::DeviceExt;
 use winit::window::Window;
 
 use crate::{
-    World, asset::{MaterialData, managers::AssetManager}, core::Transform, 
-    rendering::{Camera, components::{MaterialGpuCache, Render, RenderGpuCache, TransformGpuCache}}
+    World, asset::{MaterialData, managers::AssetManager}, core::{EngineActionQueue, EngineEventListener, EngineEventQueue, Transform}, debug::{commands::DebugPrimitive, events::DrawDebugEvent}, rendering::{Camera, components::{MaterialGpuCache, Render, RenderGpuCache, TransformGpuCache}}
 };
 
 // GPU-side uniform buffer layout must match WGSL struct exactly
@@ -36,7 +35,6 @@ struct ColorUniforms {
 pub struct RenderingSystem {
     pub aspect_ratio: f32,
     pub ui_draw_fn: Option<Box<dyn Fn(&egui::Context, &World)>>,
-    pub debug_draw_fn: Option<Box<dyn Fn(&egui::Context, &World)>>,
     
     // Core wgpu state
     device: wgpu::Device,
@@ -60,6 +58,10 @@ pub struct RenderingSystem {
     egui_renderer: egui_wgpu::Renderer,
     egui_context: egui::Context,
     egui_state: egui_winit::State,
+
+    // Cached camera matrices for debug rendering
+    last_view: Mat4,
+    last_projection: Mat4,
 }
 
 impl RenderingSystem {
@@ -242,7 +244,8 @@ impl RenderingSystem {
             egui_context,
             egui_state,
             ui_draw_fn: None,
-            debug_draw_fn: None
+            last_view: Mat4::IDENTITY,
+            last_projection: Mat4::IDENTITY,
         }
     }
 
@@ -427,6 +430,9 @@ impl RenderingSystem {
             });
 
             let (view, projection) = self.get_camera_matrices(world);
+            //Caching for debug draw
+            self.last_view = view;
+            self.last_projection = projection;
 
             let entities = world.entity_manager.get_renderable_entities();
 
@@ -452,9 +458,6 @@ impl RenderingSystem {
         let full_output = self.egui_context.run(raw_input, |ctx| {
             if let Some(draw_fn) = &self.ui_draw_fn {
                 draw_fn(ctx, world);
-            }
-            if let Some(debug_fn) = &self.debug_draw_fn {
-                debug_fn(ctx, world);
             }
         });
 
@@ -726,5 +729,144 @@ impl RenderingSystem {
             -1.0, 1.0,
         );
         (Mat4::IDENTITY, projection)
+    }
+
+    pub fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
+        Some(self)
+    }
+
+    fn world_to_screen(
+        world_pos: Vec3,
+        view: &Mat4,
+        projection: &Mat4,
+        screen_size: egui::Vec2,
+    ) -> egui::Pos2 {
+        // World → clip space
+        let clip = *projection * *view * world_pos.extend(1.0);
+
+        // Clip → NDC (-1 to 1)
+        let ndc = clip.xy() / clip.w;
+
+        // NDC → screen pixels — y is flipped (NDC y+ is up, screen y+ is down)
+        egui::Pos2::new(
+            (ndc.x + 1.0) * 0.5 * screen_size.x,
+            (1.0 - ndc.y) * 0.5 * screen_size.y,
+        )
+    }
+
+    fn draw_debug(&mut self, debug_event: &DrawDebugEvent)
+    {
+        let screen_size = egui::Vec2::new(
+            self.surface_config.width as f32,
+            self.surface_config.height as f32,
+        );
+
+        // Use egui painter on the debug layer
+        let painter = self.egui_context.layer_painter(
+            egui::LayerId::new(egui::Order::Foreground, egui::Id::new("debug"))
+        );
+
+        for cmd in &debug_event.commands {
+            let color = cmd.color;
+
+            match &cmd.primitive {
+                DebugPrimitive::Circle { center, radius } => {
+                    let pos = Self::world_to_screen(
+                        *center,
+                        &self.last_view,
+                        &self.last_projection,
+                        screen_size,
+                    );
+                    // Convert world radius to screen pixels
+                    let edge = Self::world_to_screen(
+                        *center + Vec3::new(*radius, 0.0, 0.0),
+                        &self.last_view,
+                        &self.last_projection,
+                        screen_size,
+                    );
+                    let screen_radius = (edge.x - pos.x).abs();
+                    painter.circle_stroke(
+                        pos,
+                        screen_radius,
+                        egui::Stroke::new(1.5, color),
+                    );
+                }
+
+                DebugPrimitive::Box { center, half_extents } => {
+                    let min = Self::world_to_screen(
+                        *center - Vec3::new(half_extents.x, half_extents.y, 0.0),
+                        &self.last_view,
+                        &self.last_projection,
+                        screen_size,
+                    );
+                    let max = Self::world_to_screen(
+                        *center + Vec3::new(half_extents.x, half_extents.y, 0.0),
+                        &self.last_view,
+                        &self.last_projection,
+                        screen_size,
+                    );
+                    painter.rect_stroke(
+                        egui::Rect::from_two_pos(min, max),
+                        0.0,
+                        egui::Stroke::new(1.5, color),
+                        egui::StrokeKind::Outside
+                    );
+                }
+
+                DebugPrimitive::Line { start, end } => {
+                    let s = Self::world_to_screen(
+                        *start,
+                        &self.last_view,
+                        &self.last_projection,
+                        screen_size,
+                    );
+                    let e = Self::world_to_screen(
+                        *end,
+                        &self.last_view,
+                        &self.last_projection,
+                        screen_size,
+                    );
+                    painter.line_segment(
+                        [s, e],
+                        egui::Stroke::new(1.5, color),
+                    );
+                }
+
+                DebugPrimitive::Text { position, label } => {
+                    let pos = Self::world_to_screen(
+                        *position,
+                        &self.last_view,
+                        &self.last_projection,
+                        screen_size,
+                    );
+                    painter.text(
+                        pos,
+                        egui::Align2::CENTER_CENTER,
+                        label,
+                        egui::FontId::monospace(12.0),
+                        color,
+                    );
+                }
+            }
+        }
+    }
+}
+
+impl EngineEventListener for RenderingSystem {
+    fn interested_events(&self) -> Vec<TypeId> {
+        vec![TypeId::of::<DrawDebugEvent>()]
+    }
+
+    fn on_events(
+        &mut self,
+        events: &EngineEventQueue,
+        _actions: &mut EngineActionQueue,
+        _world: &World,
+    ) {
+        for ev in events.iter() {
+            if let Some(debug_event) = ev.as_ref().as_any().downcast_ref::<DrawDebugEvent>() {
+                self.draw_debug(debug_event);
+            }
+        }
     }
 }

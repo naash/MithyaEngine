@@ -10,6 +10,7 @@ pub mod engine;
 pub mod input;
 pub mod pawn;
 pub mod physics;
+pub mod debug;
 
 // Re-export commonly used types for easier access
 pub use core::{EntityManager, EntityId, Component, Transform};
@@ -18,13 +19,18 @@ pub use input::InputSystem;
 pub use pawn::*;
 pub use engine::{Engine, World};
 pub use physics::PhysicsSystem;
+pub use debug::resources::debug_draw_buffer::DebugDrawBuffer;
+pub use debug::systems::debug_system::DebugSystem;
 
 // Prelude module - common imports users will want
 pub mod prelude {
     pub use crate::{
         EntityManager, EntityId, Transform,
-        Component, RenderingSystem, Mesh, Render,
+        Component,
+        RenderingSystem, Mesh, Render,
         InputSystem,
-        PhysicsSystem
+        PhysicsSystem,
+        DebugDrawBuffer,
+        DebugSystem,
     };
 }
