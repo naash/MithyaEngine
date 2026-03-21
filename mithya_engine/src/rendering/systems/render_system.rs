@@ -5,6 +5,7 @@
 
 use std::sync::Arc;
 use glam::Mat4;
+use tracing::error;
 use wgpu::util::DeviceExt;
 use winit::window::Window;
 
@@ -397,7 +398,7 @@ impl RenderingSystem {
                 return;
             }
             Err(e) => {
-                eprintln!("Surface error: {:?}", e); //// TODO: replace with tracing
+                error!("Surface error: {:?}", e);
                 return;
             }
         };

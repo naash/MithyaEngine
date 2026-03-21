@@ -6,6 +6,8 @@
 use std::any::Any;
 use std::fmt::Debug;
 
+use tracing::debug;
+
 use crate::World;
 
 /// Trait for all events in the system
@@ -65,9 +67,9 @@ impl EngineEventQueue {
     }
 
     pub fn debug_print(&self) {
-        println!("EventQueue contents ({} events):", self.events.len());
+        debug!("EventQueue contents ({} events):", self.events.len());
         for (i, event) in self.events.iter().enumerate() {
-            println!("  [{}] {:?}", i, event);
+            debug!("  [{}] {:?}", i, event);
         }
     }
 

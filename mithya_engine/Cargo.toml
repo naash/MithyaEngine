@@ -5,8 +5,10 @@ edition = "2024"
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 glam = { version = "0.24"}
-image = "0.24"
+image = "0.25.10"
 thiserror = "2.0.16"
 winit = "0.30"
 wgpu = "24"
@@ -14,4 +16,4 @@ egui = "0.31"
 egui-wgpu = "0.31"
 egui-winit = "0.31"
 bytemuck = "1"
-pollster = "0.3"
+pollster = "0.4"

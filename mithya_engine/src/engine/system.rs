@@ -5,6 +5,7 @@
 
 use std::{any::Any, sync::Arc};
 
+use tracing::info;
 use winit::window::Window;
 
 use crate::{
@@ -59,6 +60,7 @@ impl SystemsManager {
 
     pub fn set_rendering_system(&mut self, rendering_system: RenderingSystem) {
         self.rendering_system = Some(rendering_system);
+        info!("Rendering System has initialized");
     }
 
     pub fn add_system<S: System + 'static>(&mut self, system: S, world: &mut World) {

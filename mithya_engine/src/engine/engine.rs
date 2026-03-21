@@ -30,6 +30,7 @@ use crate::{
 };
 
 use glam::Vec2;
+use tracing::info;
 use winit::{
     application::ApplicationHandler,
     event::{
@@ -88,6 +89,14 @@ pub struct Engine<G: GameLogic> {
 
 impl<G: GameLogic> Engine<G> {
     pub fn new(config: EngineConfig, game: G) -> Self {
+        tracing_subscriber::fmt()
+            .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+            .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("mithya_engine=debug,warn"))
+            )
+            .init();
+
+        info!("Mithya Engine initializing...");
         Self {
             config,
             game,
@@ -104,7 +113,7 @@ impl<G: GameLogic> Engine<G> {
 }
 
 impl<G: GameLogic> ApplicationHandler for Engine<G> {
-    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
+    fn resumed(&mut self, event_loop: &ActiveEventLoop) {    
         // This is where we create the window and initialize wgpu
         // winit requires window creation to happen here, not in new()
         let window_attrs = WindowAttributes::default()
@@ -146,6 +155,8 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             action_queue: EngineActionQueue::new(),
             event_queue: EngineEventQueue::new(),
         });
+
+        info!("Mithya Engine has initialized");
     }
 
     fn window_event(&mut self, event_loop: &ActiveEventLoop, _id: WindowId, event: WindowEvent) {
