@@ -22,6 +22,7 @@ pub use entity_manager::{
 pub use component_base::Component;
 pub use engine_events::{
     EngineEvent,
+    NamedEngineAction,
     EngineAction,
     EngineEventQueue,
     EngineActionQueue,

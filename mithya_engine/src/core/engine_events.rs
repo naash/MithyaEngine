@@ -15,11 +15,6 @@ pub trait EngineEvent : Debug {
     fn as_any(&self) -> &dyn Any;
 }
 
-/// Trait for all actions in the system
-pub trait EngineAction : Debug {
-    fn execute(&mut self, world: &mut crate::engine::World);
-}
-
 /// Trait for systems that want to listen to events
 pub trait EngineEventListener {
     fn interested_events(&self) -> Vec<std::any::TypeId>;
@@ -99,8 +94,29 @@ impl Default for EngineEventQueue {
     }
 }
 
+pub trait NamedEngineAction: Debug {
+    fn execute(self: Box<Self>, world: &mut World);
+}
+
+/// Trait for all actions in the system
+pub enum EngineAction {
+    /// Named struct action — identifiable in logs and debuggers
+    Named(Box<dyn NamedEngineAction>),
+    /// Anonymous closure action — for simple one-liners
+    Closure(Box<dyn FnOnce(&mut World)>),
+}
+
+impl Debug for EngineAction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            EngineAction::Named(a) => write!(f, "EngineAction::Named({:?})", a),
+            EngineAction::Closure(_) => write!(f, "EngineAction::Closure(...)"),
+        }
+    }
+}
+
 pub struct EngineActionQueue {
-    actions: Vec<Box<dyn EngineAction>>,
+    actions: Vec<EngineAction>,
 }
 
 impl EngineActionQueue {
@@ -108,13 +124,22 @@ impl EngineActionQueue {
         Self { actions: Vec::new() }
     }
 
-    pub fn push<A: EngineAction + 'static>(&mut self, action: A) {
-        self.actions.push(Box::new(action));
+    /// Push a named struct action — must implement NamedEngineAction
+    pub fn push_named<A: NamedEngineAction + 'static>(&mut self, action: A) {
+        self.actions.push(EngineAction::Named(Box::new(action)));
     }
 
-    pub fn execute_all(&mut self, world: &mut crate::engine::World) {
-        for mut action in self.actions.drain(..) {
-            action.execute(world);
+    /// Push an anonymous closure action
+    pub fn push_anonymous(&mut self, f: impl FnOnce(&mut World) + 'static) {
+        self.actions.push(EngineAction::Closure(Box::new(f)));
+    }
+
+    pub fn execute_all(&mut self, world: &mut World) {
+        for action in self.actions.drain(..) {
+            match action {
+                EngineAction::Named(a) => a.execute(world),
+                EngineAction::Closure(f) => f(world),
+            }
         }
     }
 
@@ -137,7 +162,7 @@ impl Default for EngineActionQueue {
     }
 }
 
-// --- Events ---
+// --- Basic Events ---
 
 #[derive(Debug, Clone)]
 pub struct GameQuitEvent;

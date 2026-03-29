@@ -205,12 +205,12 @@ impl EngineEventListener for BrickBreakerSystem {
                     let other_id = if is_ball_a { col.entity_b } else { col.entity_a };
 
                     if other_id == self.paddle_id {
-                        actions.push(BallPaddleCollisionAction {
+                        actions.push_named(BallPaddleCollisionAction {
                             ball_id: self.ball_id,
                             paddle_id: self.paddle_id,
                         });
                     } else if world.entity_manager.get_component::<Brick>(other_id).is_some() {
-                        actions.push(DestroyBrickAction {
+                        actions.push_named(DestroyBrickAction {
                             brick_id: other_id,
                             game_manager_id: self.game_manager_id,
                         });
@@ -220,13 +220,13 @@ impl EngineEventListener for BrickBreakerSystem {
             if let Some(input) = ev.as_any().downcast_ref::<InputActionEvent>() {
                 match input.action {
                 InputAction::Launch => {
-                    actions.push(LaunchBallAction { 
+                    actions.push_named(LaunchBallAction { 
                         ball_id: self.ball_id,
                         game_manager_id: self.game_manager_id,
                     });
                 }
                 InputAction::Confirm => {
-                    actions.push(ResetGameAction {
+                    actions.push_named(ResetGameAction {
                         game_manager_id: self.game_manager_id,
                     });
                 }

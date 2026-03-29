@@ -8,7 +8,7 @@ use std::any::TypeId;
 use super::Transform;
 use super::Component;
 
-use crate::core::EngineAction;
+use crate::core::NamedEngineAction;
 use crate::rendering::Render;
 use crate::World;
 
@@ -20,8 +20,8 @@ pub struct DestroyEntityAction {
     pub entity_id: u32,
 }
 
-impl EngineAction for DestroyEntityAction {
-    fn execute(&mut self, world: &mut World) {
+impl NamedEngineAction for DestroyEntityAction {
+    fn execute(self: Box<Self>, world: &mut World) {
         world.entity_manager.destroy_entity(self.entity_id);
     }
 }

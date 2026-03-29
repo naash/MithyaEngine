@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use mithya_engine::{
-    core::{EngineAction, Transform},
+    core::{NamedEngineAction, Transform},
     engine::World,
     physics::RigidBody,
 };
@@ -20,8 +20,8 @@ pub struct LaunchBallAction {
     pub game_manager_id: u32
 }
 
-impl EngineAction for LaunchBallAction {
-    fn execute(&mut self, world: &mut World) {
+impl NamedEngineAction for LaunchBallAction {
+    fn execute(self: Box<Self>, world: &mut World) {
         // Set game state to playing
         if let Some(state) = world.entity_manager
             .get_component_mut::<BrickBreakerState>(self.game_manager_id)
@@ -48,8 +48,8 @@ pub struct BallPaddleCollisionAction {
     pub paddle_id: u32,
 }
 
-impl EngineAction for BallPaddleCollisionAction {
-    fn execute(&mut self, world: &mut World) {
+impl NamedEngineAction for BallPaddleCollisionAction {
+    fn execute(self: Box<Self>, world: &mut World) {
         let entity_manager = &mut world.entity_manager;
         let (paddle_t, ball_t) =
             entity_manager.get_two_components::<Transform>(self.paddle_id, self.ball_id);
@@ -74,8 +74,8 @@ pub struct DestroyBrickAction {
     pub game_manager_id: u32,
 }
 
-impl EngineAction for DestroyBrickAction {
-    fn execute(&mut self, world: &mut World) {
+impl NamedEngineAction for DestroyBrickAction {
+    fn execute(self: Box<Self>, world: &mut World) {
 
          // Apply damage
         if let Some(brick) = world.entity_manager
@@ -108,8 +108,8 @@ pub struct ResetGameAction {
     pub game_manager_id: u32
 }
 
-impl EngineAction for ResetGameAction {
-    fn execute(&mut self, world: &mut World) {
+impl NamedEngineAction for ResetGameAction {
+    fn execute(self: Box<Self>, world: &mut World) {
         
         //Only do the action if state is valid
         if let Some(state) = world.entity_manager
