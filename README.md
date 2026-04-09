@@ -88,16 +88,3 @@ This project was deliberately chosen as a Rust learning vehicle because game eng
 
 `wgpu` · `winit` · `egui` · `glam` · `serde` · `bytemuck` · `image` · `thiserror`
 
----
-
-## Sample Game — Brickbreaker
-
-Built to exercise all engine systems end to end. Ball physics with constant-speed reflection, paddle deflection, multi-hit brick health system, scoring, lives, win/lose/reset, egui HUD.
-
-**Controls:** `Space` launch · `A/D` or arrows move · `Enter` reset
-
----
-
-## Next
-
-Building Pac-Man on this engine to implement classical game AI — A* pathfinding, behavior trees, perception systems — then replacing one ghost's brain with a reinforcement learning agent and comparing the two approaches directly.
