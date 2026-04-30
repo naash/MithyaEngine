@@ -1,2 +1,14 @@
 /target
 **/target
+
+# Claude Code
+.claude/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

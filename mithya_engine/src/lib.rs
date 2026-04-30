@@ -11,16 +11,28 @@ pub mod input;
 pub mod pawn;
 pub mod physics;
 pub mod debug;
+pub mod navigation;
 
 // Re-export commonly used types for easier access
 pub use core::{EntityManager, EntityId, Component, Transform};
 pub use rendering::{RenderingSystem, Mesh, Render};
 pub use input::InputSystem;
-pub use pawn::*;
+pub use pawn::{
+    Controller, ControllerBehavior, PlayerBehavior, NavBehavior,
+    Movement,
+    ControllerSystem, MovementSystem,
+};
 pub use engine::{Engine, World};
 pub use physics::PhysicsSystem;
 pub use debug::resources::debug_draw_buffer::DebugDrawBuffer;
 pub use debug::systems::debug_system::DebugSystem;
+pub use navigation::{
+    GridCell, Direction,
+    MoveToEvent,
+    NavAgent,
+    NavGrid, CellType,
+    NavigationSystem,
+};
 
 // Prelude module - common imports users will want
 pub mod prelude {

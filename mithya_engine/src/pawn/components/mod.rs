@@ -7,4 +7,4 @@ pub mod movement;
 pub mod controller;
 
 pub use movement::Movement;
-pub use controller::Controller;
+pub use controller::{Controller, ControllerBehavior, PlayerBehavior, NavBehavior};

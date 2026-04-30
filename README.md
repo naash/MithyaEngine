@@ -60,6 +60,21 @@ pub const LAYER_BRICK: u32  = 0b1000;
 Collider { layer: LAYER_WALL, mask: LAYER_BALL, .. }
 ```
 
+### Navigation
+Grid-based pathfinding built around `NavGrid`, a resource that stores a uniform cell grid with `Floor`/`Wall` cell types. `NavGrid` exposes A\* pathfinding and bidirectional cell↔world coordinate conversion.
+
+```rust
+world.resources.insert(NavGrid::new(cols, rows, cell_size, origin));
+
+// A* from one cell to another
+let path = nav_grid.find_path(start_cell, goal_cell);
+
+// Convert screen click → world → grid cell
+let cell = nav_grid.world_to_cell(world_pos);
+```
+
+Agents carry a `NavAgent` component (current cell, path queue, `move_input`). `NavigationSystem` listens for `MoveToEvent`, runs A\* when one arrives, then steps the agent along its path each frame — writing a `move_input` direction that feeds directly into the existing `ControllerSystem → MovementSystem` pipeline. Navigation slots into the ECS without any special-casing in the engine loop.
+
 ### Rendering
 Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. `RenderingSystem` is stored separately from the system list — it owns all wgpu state and is called directly from the engine loop. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
 

@@ -1,4 +1,4 @@
-// Copyright (c) Nishant Sthalekar
+// Copyright (c) 2025 Nishant Sthalekar
 // 
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
@@ -132,7 +132,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         world.resources.insert(InputState::default());
         world.resources.insert(InputMapping::new());
         world.resources.insert(EngineStats::default());
-         world.resources.insert(Time::default());
+        world.resources.insert(Time::default());
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system(InputSystem::new(), &mut world);

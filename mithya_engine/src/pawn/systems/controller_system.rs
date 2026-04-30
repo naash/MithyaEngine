@@ -1,42 +1,36 @@
 // Copyright (c) 2025 Nishant Sthalekar
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
 use std::any::TypeId;
 
+use glam::Vec2;
+
 use crate::{
-    Controller, Movement, core::EngineEventListener, engine::{
-        system::{System, SystemUpdateContext}, world::World
-    }, input::{InputAction, InputActionEvent}
+    Controller, Movement, NavAgent, core::EngineEventListener, engine::{system::{System, SystemUpdateContext}, world::World}, input::{InputAction, InputActionEvent}
 };
 
-// Reads input state, finds possessed entity, writes intent on its Movement component
-pub struct ControllerSystem
-{
-    pub pending_dx: f32,
-    pub pending_dy: f32
+pub struct ControllerSystem {
+    pending_actions: Vec<InputAction>,
 }
 
 impl ControllerSystem {
     pub fn new() -> Self {
-        Self {
-        pending_dx : 0.0,
-        pending_dy : 0.0
-        }
+        Self { pending_actions: Vec::new() }
     }
 }
 
-impl System for ControllerSystem {  
+impl System for ControllerSystem {
     fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
         Ok(())
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
-        let controllers = update_context.world.entity_manager
+        let controller_ids = update_context.world.entity_manager
             .query_component::<Controller>();
 
-        for controller_id in controllers {
+        for controller_id in controller_ids {
             let possessed_id = match update_context.world.entity_manager
                 .get_component::<Controller>(controller_id)
             {
@@ -44,17 +38,31 @@ impl System for ControllerSystem {
                 None => continue,
             };
 
+            // Read world-derived intent — written by NavigationSystem each frame.
+            let world_intent = update_context.world.entity_manager
+                .get_component::<NavAgent>(possessed_id)
+                .map(|a| a.move_input)
+                .unwrap_or(Vec2::ZERO);
+
+            let intent = match update_context.world.entity_manager
+                .get_component_mut::<Controller>(controller_id)
+            {
+                Some(ctrl) => {
+                    ctrl.behavior.on_input_actions(&self.pending_actions);
+                    ctrl.behavior.on_world_intent(world_intent);
+                    ctrl.behavior.compute_intent()
+                }
+                None => continue,
+            };
+
             if let Some(movement) = update_context.world.entity_manager
                 .get_component_mut::<Movement>(possessed_id)
             {
-                movement.intent.x = self.pending_dx;
-                movement.intent.y = self.pending_dy;
+                movement.intent = intent;
             }
         }
 
-        //clear inputs
-        self.pending_dx = 0.0;
-        self.pending_dy = 0.0;
+        self.pending_actions.clear();
     }
 
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
@@ -71,18 +79,10 @@ impl EngineEventListener for ControllerSystem {
         &mut self,
         events: &crate::core::EngineEventQueue,
         _actions: &mut crate::core::EngineActionQueue,
-        _world: &World
+        _world: &World,
     ) {
-        // collect intent from input action events
-        // store temporarily, applied in update()
         for event in events.iter_type::<InputActionEvent>() {
-            match event.action {
-                InputAction::MoveLeft  => self.pending_dx -= 1.0,
-                InputAction::MoveRight => self.pending_dx += 1.0,
-                InputAction::MoveUp    => self.pending_dy += 1.0,
-                InputAction::MoveDown  => self.pending_dy -= 1.0,
-                _ => {}
-            }
+            self.pending_actions.push(event.action.clone());
         }
     }
 }

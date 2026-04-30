@@ -68,6 +68,13 @@ impl EngineEventQueue {
         }
     }
 
+    /// Dispatches queued events to all interested listeners, then clears the queue.
+    ///
+    /// This is a two-phase design: all listeners receive a read-only `&World` snapshot
+    /// during dispatch (read phase), and any world mutations are deferred via `EngineActionQueue`
+    /// to be applied after all listeners have run (write phase). This guarantees that every
+    /// listener in a broadcast cycle observes the same world state — no listener can poison
+    /// another's read by mutating world mid-dispatch.
     pub fn broadcast_to_listeners(
         &mut self,
         listeners: &mut [&mut dyn EngineEventListener],
