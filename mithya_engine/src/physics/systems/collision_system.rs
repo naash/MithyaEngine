@@ -25,7 +25,7 @@ impl EngineEvent for CollisionEvent {
 pub struct CollisionSystem;
 
 impl System for CollisionSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> { Ok(()) }
+    fn initialize(&mut self, _world: &mut World) {}
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
         let collider_entities = update_context.world.entity_manager.query_two_components::<Transform, Collider>();
@@ -60,6 +60,8 @@ impl System for CollisionSystem {
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
         None
     }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any { self }
 }
 
 impl CollisionSystem {

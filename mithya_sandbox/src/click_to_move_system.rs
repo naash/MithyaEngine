@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::any::TypeId;
+use std::any::{Any, TypeId};
 
 use glam::{Vec2, Vec3};
 use winit::event::MouseButton;
@@ -47,9 +47,7 @@ impl ClickToMoveSystem {
 }
 
 impl System for ClickToMoveSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
-        Ok(())
-    }
+    fn initialize(&mut self, _world: &mut World) {}
 
     fn update(&mut self, ctx: &mut SystemUpdateContext) {
         if self.pending_clicks.is_empty() {
@@ -70,6 +68,8 @@ impl System for ClickToMoveSystem {
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
         Some(self)
     }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any { self }
 }
 
 impl EngineEventListener for ClickToMoveSystem {

@@ -218,7 +218,7 @@ impl EntityManager {
         }
         
         // Clean up empty archetypes
-        //self.archetypes.retain(|arch| !arch.entities.is_empty());
+        self.archetypes.retain(|arch| !arch.entities.is_empty());
     }
 
      // Get entities that have ALL specified component types

@@ -3,6 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use std::any::Any;
 use crate::{
     Movement, 
     Transform, 
@@ -17,9 +18,7 @@ use crate::{
 pub struct MovementSystem;
 
 impl System for MovementSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
-        Ok(())
-    }
+    fn initialize(&mut self, _world: &mut World) {}
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
         let delta_time = update_context.world.resources.get::<Time>()
@@ -64,4 +63,6 @@ impl System for MovementSystem {
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
         None
     }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any { self }
 }

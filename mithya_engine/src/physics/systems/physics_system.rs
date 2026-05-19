@@ -3,6 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use std::any::Any;
 use glam::Vec3;
 
 use crate::{
@@ -14,9 +15,8 @@ use crate::{
 pub struct PhysicsSystem;
 
 impl System for PhysicsSystem {
-    fn initialize(&mut self, world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
+    fn initialize(&mut self, world: &mut World) {
         world.resources.insert(PhysicsConfig::default());
-        Ok(())
     }
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
@@ -85,4 +85,6 @@ impl System for PhysicsSystem {
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn crate::core::EngineEventListener> {
         None
     }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any { self }
 }

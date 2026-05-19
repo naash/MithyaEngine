@@ -26,6 +26,7 @@ pub trait EngineEventListener {
     );
 }
 
+#[derive(Default)]
 pub struct EngineEventQueue {
     events: Vec<Box<dyn EngineEvent>>,
 }
@@ -95,12 +96,6 @@ impl EngineEventQueue {
     }
 }
 
-impl Default for EngineEventQueue {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 pub trait NamedEngineAction: Debug {
     fn execute(self: Box<Self>, world: &mut World);
 }
@@ -122,6 +117,7 @@ impl Debug for EngineAction {
     }
 }
 
+#[derive(Default)]
 pub struct EngineActionQueue {
     actions: Vec<EngineAction>,
 }
@@ -160,12 +156,6 @@ impl EngineActionQueue {
 
     pub fn is_empty(&self) -> bool {
         self.actions.is_empty()
-    }
-}
-
-impl Default for EngineActionQueue {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

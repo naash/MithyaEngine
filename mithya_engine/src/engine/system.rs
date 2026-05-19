@@ -26,27 +26,16 @@ pub struct SystemRenderContext<'a> {
 }
 
 pub trait System {
-    fn initialize(&mut self, world: &mut World) -> Result<(), Box<dyn std::error::Error>>;
+    fn initialize(&mut self, world: &mut World);
     fn update(&mut self, update_context: &mut SystemUpdateContext);
     fn cleanup(&mut self, _world: &mut World) {}
-    
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener>;
-}
-
-// Separate trait for the Any requirement
-pub trait SystemAny: System {
     fn as_any_mut(&mut self) -> &mut dyn Any;
 }
 
-// Blanket implementation for all types that implement System
-impl<T: System + 'static> SystemAny for T {
-    fn as_any_mut(&mut self) -> &mut dyn Any {
-        self
-    }
-}
-
+#[derive(Default)]
 pub struct SystemsManager {
-    systems: Vec<Box<dyn SystemAny>>,
+    systems: Vec<Box<dyn System>>,
     rendering_system: Option<RenderingSystem>,
 }
 
@@ -65,7 +54,7 @@ impl SystemsManager {
 
     pub fn add_system<S: System + 'static>(&mut self, system: S, world: &mut World) {
         let mut boxed = Box::new(system);
-        let _ = boxed.initialize(world);
+        boxed.initialize(world);
         self.systems.push(boxed);
     }
 
@@ -121,8 +110,3 @@ impl SystemsManager {
 
 }
 
-impl Default for SystemsManager {
-    fn default() -> Self {
-        Self::new()
-    }
-}

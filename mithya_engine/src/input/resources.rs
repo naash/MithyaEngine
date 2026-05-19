@@ -8,13 +8,10 @@ use winit::keyboard::KeyCode;
 
 #[derive(Default)]
 pub struct InputState {
-    pub movement: (f32, f32),
     pub keys_pressed: HashSet<KeyCode>,
     pub mouse_position: (i32, i32),
     pub current_modifiers: KeyModifiers,
 }
-
-// --- Key modifiers ---
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct KeyModifiers {

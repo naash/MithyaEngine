@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::collections::HashSet;
+use std::{any::Any, collections::HashSet};
 use winit::keyboard::KeyCode;
 
 use crate::{
@@ -45,9 +45,7 @@ impl InputSystem {
 }
 
 impl System for InputSystem {
-    fn initialize(&mut self, _world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
-        Ok(())
-    }
+    fn initialize(&mut self, _world: &mut World) {}
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
         
@@ -75,6 +73,8 @@ impl System for InputSystem {
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
         Some(self)
     }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any { self }
 }
 
 impl EngineEventListener for InputSystem {

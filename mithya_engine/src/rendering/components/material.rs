@@ -25,7 +25,6 @@ pub enum CullFace {
     None,
     Front,
     Back,
-    FrontAndBack,
 }
 
 #[derive(Clone, Debug)]
@@ -81,8 +80,7 @@ impl RenderState {
         match self.cull_face {
             CullFace::None => None,
             CullFace::Front => Some(wgpu::Face::Front),
-            CullFace::Back => Some(wgpu::Face::Back),
-            CullFace::FrontAndBack => Some(wgpu::Face::Back), // wgpu doesn't support both, Back is safest default
+            CullFace::Back => Some(wgpu::Face::Back)
         }
     }
 

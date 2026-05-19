@@ -5,17 +5,6 @@
 
 use wgpu::util::DeviceExt;
 
-const FLOATS_PER_POSITION: usize = 3;
-const FLOATS_PER_UV: usize = 2;
-const FLOAT_SIZE: usize = std::mem::size_of::<f32>();
-
-const TRIANGLE_VERTS: usize = 3 * FLOATS_PER_POSITION;           // 9
-const QUAD_VERTS: usize = 4 * FLOATS_PER_POSITION;               // 12
-const TRIANGLE_TEXTURED_VERTS: usize = 3 * (FLOATS_PER_POSITION + FLOATS_PER_UV); // 15
-const QUAD_TEXTURED_VERTS: usize = 4 * (FLOATS_PER_POSITION + FLOATS_PER_UV);     // 20
-
-const POSITION_STRIDE: usize = FLOATS_PER_POSITION * FLOAT_SIZE;                         // 12
-const TEXTURED_STRIDE: usize = (FLOATS_PER_POSITION + FLOATS_PER_UV) * FLOAT_SIZE;       // 20
 
 #[derive(Clone, Debug)]
 pub struct VertexAttribute {
@@ -152,37 +141,6 @@ impl Mesh {
                 VertexAttribute { location: 1, size: 2, offset: 3 * std::mem::size_of::<f32>() },
             ],
             wgpu_attributes : Vec::new()
-        }
-    }
-}
-
-#[derive(Clone, Debug)]
-pub enum MeshType {
-    Triangle,
-    Quad,
-    TriangleTextured,
-    QuadTextured,
-    Custom { name: String },
-}
-
-impl MeshType {
-    pub fn create_mesh(&self) -> Mesh {
-        match self {
-            MeshType::Triangle => Mesh::new_triangle(),
-            MeshType::Quad => Mesh::new_quad(),
-            MeshType::TriangleTextured => Mesh::new_triangle_textured(),
-            MeshType::QuadTextured => Mesh::new_quad_textured(),
-            MeshType::Custom { name: _ } => Mesh::new_quad_textured(),
-        }
-    }
-
-    pub fn from_mesh(mesh: &Mesh) -> Self {
-        match (mesh.vertices.len(), mesh.vertex_stride) {
-            (TRIANGLE_VERTS, POSITION_STRIDE) => MeshType::Triangle,
-            (QUAD_VERTS, POSITION_STRIDE) => MeshType::Quad,
-            (TRIANGLE_TEXTURED_VERTS, TEXTURED_STRIDE) => MeshType::TriangleTextured,
-            (QUAD_TEXTURED_VERTS, TEXTURED_STRIDE) => MeshType::QuadTextured,
-            _ => MeshType::Custom { name: "unknown".to_string() },
         }
     }
 }

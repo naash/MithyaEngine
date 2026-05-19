@@ -3,6 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use std::any::Any;
 use tracing::warn;
 use crate::{
     core::engine_events::EngineEventListener,
@@ -13,13 +14,10 @@ use crate::{
 pub struct DebugSystem;
 
 impl System for DebugSystem {
-    fn initialize(&mut self, world: &mut World) -> Result<(), Box<dyn std::error::Error>> {
-        // Register the buffer as a resource if not already present
+    fn initialize(&mut self, world: &mut World) {
         if world.resources.get::<DebugDrawBuffer>().is_none() {
             world.resources.insert(DebugDrawBuffer::new());
         }
-       
-        Ok(())
     }
 
     fn update(&mut self, context: &mut SystemUpdateContext) {
@@ -51,4 +49,6 @@ impl System for DebugSystem {
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener> {
         None
     }
+
+    fn as_any_mut(&mut self) -> &mut dyn Any { self }
 }
