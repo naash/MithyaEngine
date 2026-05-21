@@ -44,10 +44,15 @@ impl GameLogic for Sandbox {
         let start_cell = GridCell::new(16, 8);
         let start_pos = world.resources.get::<NavGrid>().unwrap().cell_to_world(start_cell);
 
-        let pawn_material_id = world.asset_manager.load_material("unlit_color").unwrap();
-        if let Some(mat) = world.asset_manager.get_material_mut(pawn_material_id) {
-            mat.uniforms.insert("u_color".to_string(), UniformValue::Vec3([0.3, 0.6, 1.0]));
+        if let Some(renderer) = systems_manager.get_rendering_system() {
+                    renderer.load_assets(&mut world.asset_manager, |assets, device, queue| {
+                        assets
+                            .load_texture_for_material("pacman", "pacman.png", device, queue)
+                            .expect("Failed to load pacman.png");
+            });
         }
+
+        let pawn_material_id = world.asset_manager.load_material("pacman").unwrap();
 
         let pawn_id = EntityBuilder::new(&mut world.entity_manager)
             .with(Transform {
@@ -55,7 +60,7 @@ impl GameLogic for Sandbox {
                 scale: Vec3::new(cell_size, cell_size, 1.0),
                 ..Default::default()
             })
-            .with(Render { mesh: Mesh::new_quad(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
             .with(NavAgent::new(start_cell))
             .with(Movement::new(3.0))
             .build();
