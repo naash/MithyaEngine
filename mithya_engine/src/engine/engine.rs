@@ -136,8 +136,6 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system(InputSystem::new(), &mut world);
-        systems_manager.add_system(ControllerSystem::new(), &mut world);
-        systems_manager.add_system(MovementSystem, &mut world);
         systems_manager.add_system(PhysicsSystem, &mut world);
         systems_manager.add_system(CollisionSystem, &mut world);
         systems_manager.add_system(DebugSystem, &mut world);
