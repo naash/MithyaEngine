@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-use std::{any::Any, sync::Arc};
+use std::{any::Any, collections::HashMap, sync::Arc};
 
 use tracing::info;
 use winit::window::Window;
@@ -33,18 +33,34 @@ pub trait System {
     fn as_any_mut(&mut self) -> &mut dyn Any;
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum SystemPhase {
+    Input,
+    GameLogic,
+    PrePhysics,
+    Physics,
+    PostPhysics,
+    Debug,
+}
+
+const PHASE_ORDER: &[SystemPhase] = &[
+    SystemPhase::Input,
+    SystemPhase::GameLogic,
+    SystemPhase::PrePhysics,
+    SystemPhase::Physics,
+    SystemPhase::PostPhysics,
+    SystemPhase::Debug,
+];
+
 #[derive(Default)]
 pub struct SystemsManager {
-    systems: Vec<Box<dyn System>>,
+    systems: HashMap<SystemPhase, Vec<Box<dyn System>>>,
     rendering_system: Option<RenderingSystem>,
 }
 
 impl SystemsManager {
     pub fn new() -> Self {
-        Self {
-            systems: Vec::new(),
-            rendering_system : None,
-        }
+        Self::default()
     }
 
     pub fn set_rendering_system(&mut self, rendering_system: RenderingSystem) {
@@ -53,24 +69,27 @@ impl SystemsManager {
     }
 
     pub fn add_system<S: System + 'static>(&mut self, system: S, world: &mut World) {
-        let mut boxed = Box::new(system);
-        boxed.initialize(world);
-        self.systems.push(boxed);
+        self.add_system_with_phase(system, world, SystemPhase::GameLogic);
     }
 
-    pub fn handle_event_all( &mut self, event_queue: &mut EngineEventQueue, action_queue: &mut EngineActionQueue, world: &World){
+    pub fn add_system_with_phase<S: System + 'static>(&mut self, system: S, world: &mut World, phase: SystemPhase) {
+        let mut boxed = Box::new(system);
+        boxed.initialize(world);
+        self.systems.entry(phase).or_default().push(boxed);
+    }
 
-        //Early return when there are no events to handle
+    pub fn handle_event_all(&mut self, event_queue: &mut EngineEventQueue, action_queue: &mut EngineActionQueue, world: &World) {
         if event_queue.len() == 0 {
             return;
         }
 
-        // Gather all listeners (systems implementing EventListener)
         let mut listeners: Vec<&mut dyn EngineEventListener> = Vec::new();
 
-        for system in &mut self.systems {
-            if let Some(listener) = system.as_event_listener_mut() {
-                listeners.push(listener);
+        for systems in self.systems.values_mut() {
+            for system in systems {
+                if let Some(listener) = system.as_event_listener_mut() {
+                    listeners.push(listener);
+                }
             }
         }
 
@@ -79,13 +98,17 @@ impl SystemsManager {
                 listeners.push(listener);
             }
         }
-        
-        event_queue.broadcast_to_listeners(&mut listeners, action_queue, world);        
+
+        event_queue.broadcast_to_listeners(&mut listeners, action_queue, world);
     }
 
     pub fn update_all(&mut self, update_context: &mut SystemUpdateContext) {
-        for system in &mut self.systems {
-            system.update(update_context);
+        for &phase in PHASE_ORDER {
+            if let Some(systems) = self.systems.get_mut(&phase) {
+                for system in systems {
+                    system.update(update_context);
+                }
+            }
         }
     }
 
@@ -96,9 +119,11 @@ impl SystemsManager {
     }
 
     pub fn get_system_mut<S: System + 'static>(&mut self) -> Option<&mut S> {
-        for system in &mut self.systems {
-            if let Some(s) = system.as_any_mut().downcast_mut::<S>() {
-                return Some(s);
+        for systems in self.systems.values_mut() {
+            for system in systems {
+                if let Some(s) = system.as_any_mut().downcast_mut::<S>() {
+                    return Some(s);
+                }
             }
         }
         None
@@ -107,6 +132,5 @@ impl SystemsManager {
     pub fn get_rendering_system(&mut self) -> Option<&mut RenderingSystem> {
         self.rendering_system.as_mut()
     }
-
 }
 

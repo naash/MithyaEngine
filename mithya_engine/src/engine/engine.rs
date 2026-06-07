@@ -6,7 +6,7 @@
 use std::sync::Arc;
 
 use crate::{
-    DebugSystem, World, asset::AssetManager, core::{
+    DebugSystem, MovementSystem, World, asset::AssetManager, core::{
         EntityManager, Resources, engine_events::{
             EngineActionQueue, 
             EngineEventQueue,
@@ -14,13 +14,11 @@ use crate::{
         }
     }, engine::{
         EngineStats, FrameTimer, resources::Time, system::{
-            SystemUpdateContext, 
+            SystemPhase,
+            SystemUpdateContext,
             SystemsManager
         }
-    }, input::{InputMapping, InputState, InputSystem, events::{KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent}, resources::KeyModifiers}, pawn::{
-        ControllerSystem, 
-        MovementSystem
-    }, physics::{
+    }, input::{InputMapping, InputState, InputSystem, events::{KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent}, resources::KeyModifiers}, pawn::ControllerSystem, physics::{
         CollisionSystem,
         PhysicsSystem
     }, rendering::RenderingSystem
@@ -135,11 +133,12 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         world.resources.insert(Time::default());
 
         let mut systems_manager = SystemsManager::new();
-        systems_manager.add_system(InputSystem::new(), &mut world);
-        systems_manager.add_system(ControllerSystem::new(), &mut world);
-        systems_manager.add_system(PhysicsSystem, &mut world);
-        systems_manager.add_system(CollisionSystem, &mut world);
-        systems_manager.add_system(DebugSystem, &mut world);
+        systems_manager.add_system_with_phase(InputSystem::new(), &mut world, SystemPhase::Input);
+        systems_manager.add_system_with_phase(ControllerSystem::new(), &mut world, SystemPhase::GameLogic);
+        systems_manager.add_system_with_phase(MovementSystem, &mut world, SystemPhase::Physics);
+        systems_manager.add_system_with_phase(PhysicsSystem, &mut world, SystemPhase::Physics);
+        systems_manager.add_system_with_phase(CollisionSystem, &mut world, SystemPhase::Physics);
+        systems_manager.add_system_with_phase(DebugSystem, &mut world, SystemPhase::Debug);
         systems_manager.set_rendering_system(rendering_system); //Special system that is stored seperate from other systems.
         
         self.game.initialize(&mut world, &mut systems_manager);
@@ -255,7 +254,6 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                     events: &mut s.event_queue,
                 };
                 s.systems_manager.update_all(&mut update_context);
-                self.game.update(&mut s.world);
 
                 //Renders entities and ui
                 s.systems_manager.render(&s.window, &mut s.world);
@@ -270,5 +268,4 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
 
 pub trait GameLogic {
     fn initialize(&mut self, world: &mut World, systems_manager: &mut SystemsManager);
-    fn update(&mut self, world: &mut World);
 }

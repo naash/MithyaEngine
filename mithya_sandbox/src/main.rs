@@ -75,8 +75,6 @@ impl GameLogic for Sandbox {
             world,
         );
     }
-
-    fn update(&mut self, _world: &mut World) {}
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
