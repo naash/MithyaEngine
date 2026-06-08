@@ -18,7 +18,7 @@ use crate::{
             SystemUpdateContext,
             SystemsManager
         }
-    }, input::{InputMapping, InputState, InputSystem, events::{KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent}, resources::KeyModifiers}, pawn::ControllerSystem, physics::{
+    }, input::{InputMapping, InputState, InputSystem, events::{KeyPressedEvent, KeyReleasedEvent, MouseButtonReleasedEvent, MouseClickEvent, MouseMoveEvent, MouseWheelEvent}, resources::KeyModifiers}, physics::{
         CollisionSystem,
         PhysicsSystem
     }, rendering::RenderingSystem
@@ -134,7 +134,6 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system_with_phase(InputSystem::new(), &mut world, SystemPhase::Input);
-        systems_manager.add_system_with_phase(ControllerSystem::new(), &mut world, SystemPhase::GameLogic);
         systems_manager.add_system_with_phase(MovementSystem, &mut world, SystemPhase::Physics);
         systems_manager.add_system_with_phase(PhysicsSystem, &mut world, SystemPhase::Physics);
         systems_manager.add_system_with_phase(CollisionSystem, &mut world, SystemPhase::Physics);

@@ -266,4 +266,12 @@ impl EntityManager {
     pub fn get_renderable_entities(&self) -> Vec<EntityId> {
         self.query_two_components::<Transform, Render>()
     }
+
+    pub fn get_storage<T: Component>(&self) -> Option<&HashMap<EntityId, Box<dyn Component>>> {
+        self.entity_components.get(&TypeId::of::<T>())
+    }
+
+    pub fn get_storage_mut<T: Component>(&mut self) -> Option<&mut HashMap<EntityId, Box<dyn Component>>> {
+        self.entity_components.get_mut(&TypeId::of::<T>())
+    }
 }

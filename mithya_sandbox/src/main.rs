@@ -7,15 +7,17 @@ mod click_to_move_system;
 mod maze;
 
 use glam::{Vec2, Vec3};
+use winit::keyboard::KeyCode;
 
 use mithya_engine::{
-    asset::UniformValue,
     engine::{
         system::SystemsManager,
         Engine, EngineConfig, EntityBuilder, GameLogic, World,
     },
+    input::{InputAction, InputBinding, InputMapping},
     rendering::{Camera, Mesh, Render},
-    Controller, GridCell, Movement, NavAgent, NavBehavior, NavGrid, NavigationSystem, Transform,
+    NavMovementSystem, PlayerControlled, PlayerInputSystem, RandomMovement, RandomMovementSystem,
+    GridCell, Movement, NavAgent, NavGrid, NavigationSystem, Transform,
 };
 
 use click_to_move_system::ClickToMoveSystem;
@@ -40,20 +42,27 @@ impl GameLogic for Sandbox {
 
         maze::spawn_maze(world, cell_size, cols, rows);
 
-        // Pawn start: room cell at maze position (8, 4) → grid cell (16, 8)
+        if let Some(mapping) = world.resources.get_mut::<InputMapping>() {
+            mapping.bind(KeyCode::ArrowLeft,  InputBinding::continuous(InputAction::MoveLeft));
+            mapping.bind(KeyCode::ArrowRight, InputBinding::continuous(InputAction::MoveRight));
+            mapping.bind(KeyCode::ArrowUp,    InputBinding::continuous(InputAction::MoveUp));
+            mapping.bind(KeyCode::ArrowDown,  InputBinding::continuous(InputAction::MoveDown));
+        }
+
         let start_cell = GridCell::new(16, 8);
         let start_pos = world.resources.get::<NavGrid>().unwrap().cell_to_world(start_cell);
 
         if let Some(renderer) = systems_manager.get_rendering_system() {
-                    renderer.load_assets(&mut world.asset_manager, |assets, device, queue| {
-                        assets
-                            .load_texture_for_material("pacman", "pacman.png", device, queue)
-                            .expect("Failed to load pacman.png");
+            renderer.load_assets(&mut world.asset_manager, |assets, device, queue| {
+                assets
+                    .load_texture_for_material("pacman", "pacman.png", device, queue)
+                    .expect("Failed to load pacman.png");
             });
         }
 
         let pawn_material_id = world.asset_manager.load_material("pacman").unwrap();
 
+        // Nav-driven pawn (click to move)
         let pawn_id = EntityBuilder::new(&mut world.entity_manager)
             .with(Transform {
                 position: start_pos,
@@ -65,11 +74,51 @@ impl GameLogic for Sandbox {
             .with(Movement::new(3.0))
             .build();
 
+        // Player-controlled entity (arrow keys)
         EntityBuilder::new(&mut world.entity_manager)
-            .with(Controller::new(pawn_id, NavBehavior::new()))
+            .with(Transform {
+                position: Vec3::new(1.0, 1.0, 0.0),
+                scale: Vec3::new(cell_size, cell_size, 1.0),
+                ..Default::default()
+            })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(PlayerControlled)
+            .with(Movement::new(3.0))
+            .build();
+
+        // Random-movement entities — use grid cells near the pawn start so positions are guaranteed walkable
+        let random_cell_1 = GridCell::new(12, 8);
+        let random_pos_1 = world.resources.get::<NavGrid>().unwrap().cell_to_world(random_cell_1);
+        EntityBuilder::new(&mut world.entity_manager)
+            .with(Transform {
+                position: random_pos_1,
+                scale: Vec3::new(cell_size, cell_size, 1.0),
+                ..Default::default()
+            })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(NavAgent::new(random_cell_1))
+            .with(RandomMovement::new())
+            .with(Movement::new(2.0))
+            .build();
+
+        let random_cell_2 = GridCell::new(20, 8);
+        let random_pos_2 = world.resources.get::<NavGrid>().unwrap().cell_to_world(random_cell_2);
+        EntityBuilder::new(&mut world.entity_manager)
+            .with(Transform {
+                position: random_pos_2,
+                scale: Vec3::new(cell_size, cell_size, 1.0),
+                ..Default::default()
+            })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(NavAgent::new(random_cell_2))
+            .with(RandomMovement::new())
+            .with(Movement::new(2.0))
             .build();
 
         systems_manager.add_system(NavigationSystem::new(), world);
+        systems_manager.add_system(NavMovementSystem, world);
+        systems_manager.add_system(PlayerInputSystem::new(), world);
+        systems_manager.add_system(RandomMovementSystem, world);
         systems_manager.add_system(
             ClickToMoveSystem::new(pawn_id, Vec2::new(960.0, 540.0), 5.0),
             world,

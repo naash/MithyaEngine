@@ -18,9 +18,9 @@ pub use core::{EntityManager, EntityId, Component, Transform};
 pub use rendering::{RenderingSystem, Mesh, Render};
 pub use input::InputSystem;
 pub use pawn::{
-    Controller, ControllerBehavior, PlayerBehavior, NavBehavior,
+    PlayerControlled, RandomMovement,
     Movement,
-    ControllerSystem, MovementSystem,
+    PlayerInputSystem, NavMovementSystem, RandomMovementSystem, MovementSystem,
 };
 pub use engine::{Engine, World};
 pub use physics::PhysicsSystem;
