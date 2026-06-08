@@ -29,8 +29,9 @@ impl FrameTimer {
     pub fn update(&mut self) {
         let current_time = Instant::now();
         
-        // Calculate delta time from last frame
-        self.delta_time = current_time.duration_since(self.last_frame_time).as_secs_f32();
+        // Cap at 100ms so window events (maximize, resize) don't produce
+        // a spike large enough to overshoot a navigation cell in one frame.
+        self.delta_time = current_time.duration_since(self.last_frame_time).as_secs_f32().min(0.1);
         self.last_frame_time = current_time;
         
         // Update FPS counter

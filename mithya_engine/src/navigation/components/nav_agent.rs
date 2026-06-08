@@ -52,14 +52,25 @@ impl NavAgent {
 
         let target_world = nav_grid.cell_to_world(target);
 
-        // Compare only XY — Z is ignored for 2D grid movement.
-        let dist_sq = (transform_pos.x - target_world.x).powi(2)
-            + (transform_pos.y - target_world.y).powi(2);
+        // Arrive when within half a cell (normal case) OR when the agent has
+        // already passed the centre (overshoot from a delta-time spike).
+        let arrived = {
+            let dist_sq = (transform_pos.x - target_world.x).powi(2)
+                + (transform_pos.y - target_world.y).powi(2);
+            let threshold = (nav_grid.cell_size * 0.5) * (nav_grid.cell_size * 0.5);
 
-        // Threshold: arrive when within half a cell to avoid floating-point drift.
-        let threshold = (nav_grid.cell_size * 0.5) * (nav_grid.cell_size * 0.5);
+            let overshot = match self.move_input {
+                v if v.x > 0.0 => transform_pos.x >= target_world.x,
+                v if v.x < 0.0 => transform_pos.x <= target_world.x,
+                v if v.y > 0.0 => transform_pos.y >= target_world.y,
+                v if v.y < 0.0 => transform_pos.y <= target_world.y,
+                _ => false,
+            };
 
-        if dist_sq <= threshold {
+            dist_sq <= threshold || overshot
+        };
+
+        if arrived {
             self.current_cell    = target;
             self.target_cell     = None;
             self.move_input      = Vec2::ZERO;
