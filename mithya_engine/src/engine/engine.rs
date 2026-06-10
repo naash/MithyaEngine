@@ -160,6 +160,12 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
             None => return,
         };
 
+        // egui sees every event first; events it consumes (clicks on UI
+        // windows, typing into UI fields) are not forwarded to game input.
+        let egui_consumed = state.systems_manager.get_rendering_system()
+            .map(|renderer| renderer.on_window_event(&state.window, &event).consumed)
+            .unwrap_or(false);
+
         match event {
             WindowEvent::CloseRequested => {
                 event_loop.exit();
@@ -172,9 +178,13 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
 
                 if let PhysicalKey::Code(keycode) = key_event.physical_key {
                     match key_event.state {
-                        ElementState::Pressed => {
+                        ElementState::Pressed if !egui_consumed => {
                             state.event_queue.push(KeyPressedEvent { key: keycode, modifiers });
                         }
+                        ElementState::Pressed => {}
+                        // Releases always reach the game, even when egui has
+                        // focus — otherwise a key pressed in-game and released
+                        // over UI stays stuck pressed in InputSystem.
                         ElementState::Released => {
                             state.event_queue.push(KeyReleasedEvent { key: keycode, modifiers });
                         }
@@ -185,11 +195,12 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                 let position = state.world.resources.get::<InputState>()
                                     .map(|s| Vec2::new(s.mouse_position.0 as f32, s.mouse_position.1 as f32))
                                     .unwrap_or(Vec2::ZERO);
-                
+
                 match btn_state {
-                    ElementState::Pressed => {
+                    ElementState::Pressed if !egui_consumed => {
                         state.event_queue.push(MouseClickEvent { position, button });
                     }
+                    ElementState::Pressed => {}
                     ElementState::Released => {
                         state.event_queue.push(MouseButtonReleasedEvent { position, button });
                     }
@@ -199,11 +210,13 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
                     if let Some(input_state) = state.world.resources.get_mut::<InputState>() {
                         input_state.mouse_position = (position.x as i32, position.y as i32);
                     }
-                    state.event_queue.push(MouseMoveEvent {
-                        position: Vec2::new(position.x as f32, position.y as f32),
-                    });
+                    if !egui_consumed {
+                        state.event_queue.push(MouseMoveEvent {
+                            position: Vec2::new(position.x as f32, position.y as f32),
+                        });
+                    }
             }
-            WindowEvent::MouseWheel { delta, .. } => {
+            WindowEvent::MouseWheel { delta, .. } if !egui_consumed => {
                 use winit::event::MouseScrollDelta;
                 if let MouseScrollDelta::LineDelta(x, y) = delta {
                     state.event_queue.push(MouseWheelEvent {

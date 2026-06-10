@@ -13,6 +13,7 @@ pub struct AssetManager {
     texture_manager: TextureManager,
     material_manager: MaterialManager,
     loaded_materials: HashMap<String, u32>,
+    default_material_id: u32,
 }
 
 impl AssetManager {
@@ -21,9 +22,14 @@ impl AssetManager {
             texture_manager: TextureManager::new(asset_root),
             material_manager: MaterialManager::new(),
             loaded_materials: HashMap::new(),
+            default_material_id: 0,
         };
-        manager.load_material("unlit_color")?; //Support unlit color material as default
+        manager.default_material_id = manager.load_material("unlit_color")?; //Support unlit color material as default
         Ok(manager)
+    }
+
+    pub fn default_material_id(&self) -> u32 {
+        self.default_material_id
     }
 
     pub fn load_material(&mut self, name: &str) -> Result<u32, AssetError> {
@@ -61,5 +67,21 @@ impl AssetManager {
 
     pub fn get_texture(&self, texture_id: &u32) -> Option<&TextureEntry> {
         self.texture_manager.get_texture(texture_id)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn default_material_id_resolves_to_a_material() {
+        let manager = AssetManager::new(std::path::PathBuf::new()).unwrap();
+        let id = manager.default_material_id();
+
+        assert!(manager.get_material(id).is_some());
+        assert_eq!(manager.get_material_by_name("unlit_color"), Some(id));
+        // Material ids start at 1 — the old hardcoded fallback of 0 never resolved.
+        assert!(manager.get_material(0).is_none());
     }
 }

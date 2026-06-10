@@ -383,6 +383,14 @@ impl RenderingSystem {
         })
     }
 
+    pub fn on_window_event(
+        &mut self,
+        window: &Window,
+        event: &winit::event::WindowEvent,
+    ) -> egui_winit::EventResponse {
+        self.egui_state.on_window_event(window, event)
+    }
+
     pub fn resize(&mut self, width: u32, height: u32) {
         if width > 0 && height > 0 {
             self.surface_config.width = width;
@@ -433,6 +441,13 @@ impl RenderingSystem {
             //Caching for debug draw
             self.last_view = view;
             self.last_projection = projection;
+
+            world.resources.insert(crate::rendering::Viewport {
+                width: self.surface_config.width,
+                height: self.surface_config.height,
+                view,
+                projection,
+            });
 
             let entities = world.entity_manager.get_renderable_entities();
 
@@ -534,7 +549,7 @@ impl RenderingSystem {
             render.mesh.upload(&self.device);
         }
 
-        let material_id = render.material_id.unwrap_or(0);
+        let material_id = render.material_id.unwrap_or_else(|| asset_manager.default_material_id());
         let material = match asset_manager.get_material(material_id) {
             Some(m) => m,
             None => return,

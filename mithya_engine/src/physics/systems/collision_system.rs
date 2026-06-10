@@ -39,8 +39,19 @@ impl System for CollisionSystem {
 
                 // Check and resolve collision
                 if let Some(collision) = self.check_collision(update_context.world, entity_a, entity_b) {
-                    
-                    self.resolve_collision(update_context.world, entity_a, entity_b, collision);
+                    // Trigger pairs are detected (event + is_colliding) but never
+                    // physically resolved — no separation, no velocity response.
+                    let is_trigger_pair = [entity_a, entity_b].iter().any(|&entity| {
+                        update_context.world.entity_manager
+                            .get_component::<Collider>(entity)
+                            .map(|c| c.is_trigger)
+                            .unwrap_or(false)
+                    });
+
+                    if !is_trigger_pair {
+                        self.resolve_collision(update_context.world, entity_a, entity_b, collision);
+                    }
+
                     colliding_entities.insert(entity_a);
                     colliding_entities.insert(entity_b);
 
@@ -191,5 +202,79 @@ impl CollisionSystem {
                 rb.velocity = (direction * speed * rb.bounce).extend(rb.velocity.z);
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use glam::Vec3;
+    use crate::{
+        asset::AssetManager,
+        core::{EngineEventQueue, EntityManager, Resources},
+        engine::EntityBuilder,
+        physics::components::ColliderShape,
+    };
+
+    fn test_world() -> World {
+        World {
+            entity_manager: EntityManager::new(),
+            asset_manager: AssetManager::new(std::path::PathBuf::new()).unwrap(),
+            resources: Resources::new(),
+        }
+    }
+
+    fn spawn_circle(world: &mut World, x: f32, is_trigger: bool) -> u32 {
+        EntityBuilder::new(&mut world.entity_manager)
+            .with(Transform { position: Vec3::new(x, 0.0, 0.0), ..Default::default() })
+            .with(Collider {
+                shape: ColliderShape::Circle { radius: 1.0 },
+                is_trigger,
+                ..Default::default()
+            })
+            .with(RigidBody::default())
+            .build()
+    }
+
+    fn positions(world: &World, a: u32, b: u32) -> (Vec3, Vec3) {
+        (
+            world.entity_manager.get_component::<Transform>(a).unwrap().position,
+            world.entity_manager.get_component::<Transform>(b).unwrap().position,
+        )
+    }
+
+    #[test]
+    fn solid_overlap_is_separated_and_reported() {
+        let mut world = test_world();
+        let a = spawn_circle(&mut world, 0.0, false);
+        let b = spawn_circle(&mut world, 1.0, false);
+
+        let mut events = EngineEventQueue::new();
+        let mut ctx = SystemUpdateContext { world: &mut world, events: &mut events };
+        CollisionSystem.update(&mut ctx);
+
+        let (pos_a, pos_b) = positions(&world, a, b);
+        assert!((pos_b - pos_a).length() >= 2.0, "overlapping solids must be pushed apart");
+        assert_eq!(events.iter_type::<CollisionEvent>().count(), 1);
+        assert!(world.entity_manager.get_component::<Collider>(a).unwrap().is_colliding);
+        assert!(world.entity_manager.get_component::<Collider>(b).unwrap().is_colliding);
+    }
+
+    #[test]
+    fn trigger_overlap_is_reported_but_not_resolved() {
+        let mut world = test_world();
+        let a = spawn_circle(&mut world, 0.0, true);
+        let b = spawn_circle(&mut world, 1.0, false);
+
+        let mut events = EngineEventQueue::new();
+        let mut ctx = SystemUpdateContext { world: &mut world, events: &mut events };
+        CollisionSystem.update(&mut ctx);
+
+        let (pos_a, pos_b) = positions(&world, a, b);
+        assert_eq!(pos_a, Vec3::new(0.0, 0.0, 0.0), "trigger overlap must not move entities");
+        assert_eq!(pos_b, Vec3::new(1.0, 0.0, 0.0), "trigger overlap must not move entities");
+        assert_eq!(events.iter_type::<CollisionEvent>().count(), 1);
+        assert!(world.entity_manager.get_component::<Collider>(a).unwrap().is_colliding);
+        assert!(world.entity_manager.get_component::<Collider>(b).unwrap().is_colliding);
     }
 }

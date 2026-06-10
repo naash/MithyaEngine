@@ -12,7 +12,7 @@ pub struct Collider {
     pub offset: Vec3,       // Offset from entity position
     pub is_colliding: bool,
     pub layer: u32,
-    pub mask: u32, // Shows if collider is colliding in a frame. This is a very simplistic version and should work for now. Incase we need more info, we can add collision events on the colliding entity.
+    pub mask: u32,
 }
 
 impl Collider {
@@ -37,7 +37,7 @@ impl Default for Collider {
             shape: ColliderShape::Circle { radius: 10.0 },
             is_trigger: false,
             is_colliding: false,
-            offset: Vec3::ONE,
+            offset: Vec3::ZERO,
             layer: 0b0001,  // layer 1 by default
             mask: 0b1111,   // collides with everything by default
         }

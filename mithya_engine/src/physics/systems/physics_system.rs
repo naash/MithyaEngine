@@ -8,7 +8,7 @@ use glam::Vec3;
 
 use crate::{
     core::Transform,
-    engine::{World, system::{System, SystemUpdateContext}}, 
+    engine::{World, resources::Time, system::{System, SystemUpdateContext}},
     physics::{PhysicsConfig, RigidBody},
 };
 
@@ -21,8 +21,8 @@ impl System for PhysicsSystem {
 
     fn update(&mut self, update_context: &mut SystemUpdateContext) {
 
-        let dt = update_context.world.resources.get::<PhysicsConfig>()
-                                .map(|s| s.time_step)
+        let dt = update_context.world.resources.get::<Time>()
+                                .map(|t| t.delta)
                                 .unwrap_or_default();
 
         let gravity = update_context.world.resources.get::<PhysicsConfig>()
@@ -87,4 +87,58 @@ impl System for PhysicsSystem {
     }
 
     fn as_any_mut(&mut self) -> &mut dyn Any { self }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use glam::Vec2;
+    use crate::{
+        asset::AssetManager,
+        core::{EngineEventQueue, EntityManager, Resources},
+        engine::EntityBuilder,
+        physics::RigidBody,
+    };
+
+    fn test_world() -> World {
+        let mut world = World {
+            entity_manager: EntityManager::new(),
+            asset_manager: AssetManager::new(std::path::PathBuf::new()).unwrap(),
+            resources: Resources::new(),
+        };
+        world.resources.insert(Time::default());
+        world.resources.insert(PhysicsConfig { gravity: Vec2::ZERO });
+        world
+    }
+
+    fn step(world: &mut World, delta: f32) {
+        world.resources.get_mut::<Time>().unwrap().delta = delta;
+        let mut events = EngineEventQueue::new();
+        let mut ctx = SystemUpdateContext { world, events: &mut events };
+        PhysicsSystem.update(&mut ctx);
+    }
+
+    #[test]
+    fn integration_scales_with_frame_delta() {
+        let mut world = test_world();
+        let entity = EntityBuilder::new(&mut world.entity_manager)
+            .with(Transform::default())
+            .with(RigidBody {
+                velocity: Vec3::new(2.0, 0.0, 0.0),
+                drag: 0.0,
+                gravity_scale: 0.0,
+                ..Default::default()
+            })
+            .build();
+
+        step(&mut world, 0.1);
+        let x_after_short = world.entity_manager
+            .get_component::<Transform>(entity).unwrap().position.x;
+        assert!((x_after_short - 0.2).abs() < 1e-5);
+
+        step(&mut world, 0.3);
+        let x_after_long = world.entity_manager
+            .get_component::<Transform>(entity).unwrap().position.x;
+        assert!((x_after_long - 0.8).abs() < 1e-5);
+    }
 }

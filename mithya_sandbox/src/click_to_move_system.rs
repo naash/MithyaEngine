@@ -5,44 +5,29 @@
 
 use std::any::{Any, TypeId};
 
-use glam::{Vec2, Vec3};
+use glam::Vec2;
 use winit::event::MouseButton;
 
 use mithya_engine::{
-    core::{
-        EngineActionQueue, EngineEventListener, EngineEventQueue,
-        engine_events::WindowResizedEvent,
-    },
+    core::{EngineActionQueue, EngineEventListener, EngineEventQueue},
     engine::{
         system::{System, SystemUpdateContext},
         World,
     },
     input::events::MouseClickEvent,
+    rendering::Viewport,
     EntityId, MoveToEvent, NavGrid,
 };
 
 // Listens for right-clicks, converts screen → world → grid cell, dispatches MoveToEvent.
 pub struct ClickToMoveSystem {
     pawn_id: EntityId,
-    viewport: Vec2,
-    camera_half_height: f32,
     pending_clicks: Vec<Vec2>,
 }
 
 impl ClickToMoveSystem {
-    pub fn new(pawn_id: EntityId, viewport: Vec2, camera_half_height: f32) -> Self {
-        Self { pawn_id, viewport, camera_half_height, pending_clicks: Vec::new() }
-    }
-
-    fn screen_to_world(&self, screen: Vec2) -> Vec3 {
-        let aspect = self.viewport.x / self.viewport.y;
-        let ndc_x = (screen.x / self.viewport.x) * 2.0 - 1.0;
-        let ndc_y = 1.0 - (screen.y / self.viewport.y) * 2.0;
-        Vec3::new(
-            ndc_x * self.camera_half_height * aspect,
-            ndc_y * self.camera_half_height,
-            0.0,
-        )
+    pub fn new(pawn_id: EntityId) -> Self {
+        Self { pawn_id, pending_clicks: Vec::new() }
     }
 }
 
@@ -53,13 +38,16 @@ impl System for ClickToMoveSystem {
         if self.pending_clicks.is_empty() {
             return;
         }
-        let nav_grid = match ctx.world.resources.get::<NavGrid>() {
-            Some(g) => g,
-            None => { self.pending_clicks.clear(); return; }
+        let (nav_grid, viewport) = match (
+            ctx.world.resources.get::<NavGrid>(),
+            ctx.world.resources.get::<Viewport>(),
+        ) {
+            (Some(grid), Some(viewport)) => (grid, viewport),
+            _ => { self.pending_clicks.clear(); return; }
         };
         let clicks = std::mem::take(&mut self.pending_clicks);
         for screen_pos in clicks {
-            let world_pos = self.screen_to_world(screen_pos);
+            let world_pos = viewport.screen_to_world(screen_pos);
             let target_cell = nav_grid.world_to_cell(world_pos);
             ctx.events.push(MoveToEvent { entity_id: self.pawn_id, target: target_cell });
         }
@@ -74,7 +62,7 @@ impl System for ClickToMoveSystem {
 
 impl EngineEventListener for ClickToMoveSystem {
     fn interested_events(&self) -> Vec<TypeId> {
-        vec![TypeId::of::<MouseClickEvent>(), TypeId::of::<WindowResizedEvent>()]
+        vec![TypeId::of::<MouseClickEvent>()]
     }
 
     fn on_events(&mut self, events: &EngineEventQueue, _: &mut EngineActionQueue, _: &World) {
@@ -82,9 +70,6 @@ impl EngineEventListener for ClickToMoveSystem {
             if e.button == MouseButton::Right {
                 self.pending_clicks.push(e.position);
             }
-        }
-        for e in events.iter_type::<WindowResizedEvent>() {
-            self.viewport = Vec2::new(e.width as f32, e.height as f32);
         }
     }
 }

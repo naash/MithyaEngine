@@ -190,7 +190,12 @@ impl NavGrid {
                 // Each step costs 1.0 (uniform grid).
                 // TODO - Add support for cell costs, based on agent type, some cells might cost more?
                 let tentative_g = current_g + 1.0;
-                //TODO reconsider for parallel pathfinding
+
+                let best_known = g_score.get(&neighbor).copied().unwrap_or(f32::INFINITY);
+                if tentative_g >= best_known {
+                    continue;
+                }
+
                 g_score.insert(neighbor, tentative_g);
                 came_from.insert(neighbor, current);
                 open_set.push(AStarNode {
@@ -229,5 +234,153 @@ impl NavGrid {
 
         path.reverse();
         path
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::VecDeque;
+
+    fn grid_from_rows(rows: &[&str]) -> NavGrid {
+        let mut grid = NavGrid::new(rows[0].len() as u32, rows.len() as u32, 1.0, Vec3::ZERO);
+        for (row, line) in rows.iter().enumerate() {
+            for (col, ch) in line.chars().enumerate() {
+                if ch == '#' {
+                    grid.set_cell(GridCell::new(col as i32, row as i32), CellType::Wall);
+                }
+            }
+        }
+        grid
+    }
+
+    fn bfs_path_len(grid: &NavGrid, from: GridCell, to: GridCell) -> Option<usize> {
+        let mut dist: HashMap<GridCell, usize> = HashMap::new();
+        let mut queue = VecDeque::new();
+        dist.insert(from, 1);
+        queue.push_back(from);
+        while let Some(current) = queue.pop_front() {
+            if current == to {
+                return Some(dist[&current]);
+            }
+            let d = dist[&current];
+            for (neighbor, _) in grid.neighbors(current) {
+                dist.entry(neighbor).or_insert_with(|| {
+                    queue.push_back(neighbor);
+                    d + 1
+                });
+            }
+        }
+        None
+    }
+
+    fn walkable_cells(grid: &NavGrid) -> Vec<GridCell> {
+        (0..grid.rows as i32)
+            .flat_map(|row| (0..grid.cols as i32).map(move |col| GridCell::new(col, row)))
+            .filter(|&cell| grid.is_walkable(cell))
+            .collect()
+    }
+
+    // Regression for the unconditional-relaxation bug: a worse route could
+    // overwrite the g_score/came_from of a node still in the open set.
+    // On this grid the old code returned 18 cells for an optimal 16.
+    #[test]
+    fn relaxation_never_overwrites_a_better_path() {
+        let grid = grid_from_rows(&[
+            ".#..#..",
+            "###.#..",
+            ".#....#",
+            ".#...#.",
+            "..#..##",
+            "...#.#.",
+            "##.....",
+        ]);
+        let from = GridCell::new(6, 0);
+        let to = GridCell::new(0, 3);
+        let path = grid.find_path_default(from, to).unwrap();
+        assert_eq!(path.len(), bfs_path_len(&grid, from, to).unwrap());
+        assert_eq!(path.len(), 16);
+    }
+
+    #[test]
+    fn path_to_self_is_single_cell() {
+        let grid = grid_from_rows(&["...", "...", "..."]);
+        let cell = GridCell::new(1, 1);
+        assert_eq!(grid.find_path_default(cell, cell), Some(vec![cell]));
+    }
+
+    #[test]
+    fn unwalkable_endpoints_yield_no_path() {
+        let grid = grid_from_rows(&[".#.", "...", "..."]);
+        let wall = GridCell::new(1, 0);
+        let floor = GridCell::new(0, 0);
+        assert_eq!(grid.find_path_default(floor, wall), None);
+        assert_eq!(grid.find_path_default(wall, floor), None);
+    }
+
+    #[test]
+    fn sealed_region_yields_no_path() {
+        let grid = grid_from_rows(&[
+            "..#.",
+            "..#.",
+            "..#.",
+        ]);
+        assert_eq!(
+            grid.find_path_default(GridCell::new(0, 0), GridCell::new(3, 2)),
+            None
+        );
+    }
+
+    #[test]
+    fn path_around_obstacle_is_optimal() {
+        let grid = grid_from_rows(&[
+            ".....",
+            ".###.",
+            ".....",
+        ]);
+        let path = grid
+            .find_path_default(GridCell::new(0, 1), GridCell::new(4, 1))
+            .unwrap();
+        assert_eq!(path.len(), 7);
+    }
+
+    #[test]
+    fn all_pairs_match_bfs_distance_and_paths_are_valid() {
+        let grid = grid_from_rows(&[
+            "..........",
+            ".####.###.",
+            ".....#...#",
+            ".###.#.#..",
+            ".#...#.#.#",
+            ".#.###.#..",
+            ".#.....#.#",
+            ".#####.#..",
+            "......##.#",
+            ".#........",
+        ]);
+
+        let cells = walkable_cells(&grid);
+        for &from in &cells {
+            for &to in &cells {
+                let path = grid.find_path_default(from, to);
+                let expected_len = bfs_path_len(&grid, from, to);
+                assert_eq!(
+                    path.as_ref().map(|p| p.len()),
+                    expected_len,
+                    "suboptimal or missing path {:?} -> {:?}",
+                    from,
+                    to
+                );
+
+                if let Some(path) = path {
+                    assert_eq!(*path.first().unwrap(), from);
+                    assert_eq!(*path.last().unwrap(), to);
+                    for pair in path.windows(2) {
+                        assert!(grid.is_walkable(pair[1]));
+                        assert_eq!(pair[0].manhattan_distance(pair[1]), 1);
+                    }
+                }
+            }
+        }
     }
 }

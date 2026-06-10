@@ -6,7 +6,7 @@
 mod click_to_move_system;
 mod maze;
 
-use glam::{Vec2, Vec3};
+use glam::Vec3;
 use winit::keyboard::KeyCode;
 
 use mithya_engine::{
@@ -119,10 +119,7 @@ impl GameLogic for Sandbox {
         systems_manager.add_system(NavMovementSystem, world);
         systems_manager.add_system(PlayerInputSystem::new(), world);
         systems_manager.add_system(RandomMovementSystem, world);
-        systems_manager.add_system(
-            ClickToMoveSystem::new(pawn_id, Vec2::new(960.0, 540.0), 5.0),
-            world,
-        );
+        systems_manager.add_system(ClickToMoveSystem::new(pawn_id), world);
     }
 }
 

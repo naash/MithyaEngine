@@ -154,13 +154,14 @@ impl EntityManager {
         b: EntityId
     ) -> (Option<&mut T>, Option<&mut T>) {
         assert!(a != b);
-        let ptr = self as *mut Self;
-        unsafe {
-            (
-                (*ptr).get_component_mut::<T>(a),
-                (*ptr).get_component_mut::<T>(b),
-            )
-        }
+        let Some(storage) = self.entity_components.get_mut(&TypeId::of::<T>()) else {
+            return (None, None);
+        };
+        let [component_a, component_b] = storage.get_disjoint_mut([&a, &b]);
+        (
+            component_a.and_then(|c| c.as_mut().as_any_mut().downcast_mut::<T>()),
+            component_b.and_then(|c| c.as_mut().as_any_mut().downcast_mut::<T>()),
+        )
     }
 
     pub fn remove_component<T: Component + Clone>(&mut self, entity_id: EntityId) -> Option<T> {
@@ -216,9 +217,10 @@ impl EntityManager {
         for (_, components) in self.entity_components.iter_mut() {
             components.remove(&entity_id);
         }
-        
-        // Clean up empty archetypes
-        self.archetypes.retain(|arch| !arch.entities.is_empty());
+
+        // Empty archetypes are intentionally kept: entity_to_archetype stores
+        // indices into self.archetypes, so removing one would invalidate every
+        // mapping that points past it. find_or_create_archetype reuses them.
     }
 
      // Get entities that have ALL specified component types
@@ -273,5 +275,99 @@ impl EntityManager {
 
     pub fn get_storage_mut<T: Component>(&mut self) -> Option<&mut HashMap<EntityId, Box<dyn Component>>> {
         self.entity_components.get_mut(&TypeId::of::<T>())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    struct CompA(u32);
+    struct CompB(u32);
+    struct CompC(u32);
+
+    #[test]
+    fn destroy_entity_keeps_other_archetype_mappings_valid() {
+        let mut em = EntityManager::new();
+
+        let e1 = em.create_entity();
+        em.add_component(e1, CompA(1));
+
+        let e2 = em.create_entity();
+        em.add_component(e2, CompA(2));
+        em.add_component(e2, CompB(2));
+
+        em.destroy_entity(e1);
+
+        em.add_component(e2, CompC(2));
+
+        assert_eq!(em.query_component::<CompA>(), vec![e2]);
+        assert_eq!(em.query_two_components::<CompB, CompC>(), vec![e2]);
+        assert_eq!(em.get_component::<CompC>(e2).map(|c| c.0), Some(2));
+    }
+
+    #[test]
+    fn destroyed_entity_disappears_from_queries_and_storage() {
+        let mut em = EntityManager::new();
+
+        let e1 = em.create_entity();
+        em.add_component(e1, CompA(1));
+        em.add_component(e1, CompB(1));
+
+        em.destroy_entity(e1);
+
+        assert!(em.query_component::<CompA>().is_empty());
+        assert!(em.get_component::<CompA>(e1).is_none());
+        assert!(!em.has_component::<CompB>(e1));
+    }
+
+    #[test]
+    fn get_two_components_mut_gives_disjoint_borrows() {
+        let mut em = EntityManager::new();
+
+        let e1 = em.create_entity();
+        em.add_component(e1, CompA(1));
+        let e2 = em.create_entity();
+        em.add_component(e2, CompA(2));
+
+        let (a, b) = em.get_two_components_mut::<CompA>(e1, e2);
+        let (a, b) = (a.unwrap(), b.unwrap());
+        a.0 += 10;
+        b.0 += 20;
+
+        assert_eq!(em.get_component::<CompA>(e1).map(|c| c.0), Some(11));
+        assert_eq!(em.get_component::<CompA>(e2).map(|c| c.0), Some(22));
+    }
+
+    #[test]
+    fn get_two_components_mut_handles_missing_entries() {
+        let mut em = EntityManager::new();
+
+        let e1 = em.create_entity();
+        em.add_component(e1, CompA(1));
+        let e2 = em.create_entity();
+
+        let (a, b) = em.get_two_components_mut::<CompA>(e1, e2);
+        assert!(a.is_some());
+        assert!(b.is_none());
+
+        let (a, b) = em.get_two_components_mut::<CompB>(e1, e2);
+        assert!(a.is_none());
+        assert!(b.is_none());
+    }
+
+    #[test]
+    fn emptied_archetype_is_reused_for_same_signature() {
+        let mut em = EntityManager::new();
+
+        let e1 = em.create_entity();
+        em.add_component(e1, CompA(1));
+        em.destroy_entity(e1);
+
+        let e2 = em.create_entity();
+        em.add_component(e2, CompA(2));
+
+        assert_eq!(em.query_component::<CompA>(), vec![e2]);
+        assert_eq!(em.archetypes.len(), 1);
     }
 }
