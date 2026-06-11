@@ -32,6 +32,7 @@ pub use navigation::{
     NavAgent,
     NavGrid, CellType,
     NavigationSystem,
+    NavGridDebugSystem,
 };
 
 // Prelude module - common imports users will want

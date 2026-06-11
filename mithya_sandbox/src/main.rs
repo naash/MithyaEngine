@@ -17,7 +17,7 @@ use mithya_engine::{
     input::{InputAction, InputBinding, InputMapping},
     rendering::{Camera, Mesh, Render},
     NavMovementSystem, PlayerControlled, PlayerInputSystem, RandomMovement, RandomMovementSystem,
-    GridCell, Movement, NavAgent, NavGrid, NavigationSystem, Transform,
+    GridCell, Movement, NavAgent, NavGrid, NavigationSystem, NavGridDebugSystem, Transform,
 };
 
 use click_to_move_system::ClickToMoveSystem;
@@ -70,7 +70,7 @@ impl GameLogic for Sandbox {
                 ..Default::default()
             })
             .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
-            .with(NavAgent::new(start_cell))
+            .with(NavAgent::new(start_cell, Some(0.05)))
             .with(Movement::new(3.0))
             .build();
 
@@ -96,7 +96,7 @@ impl GameLogic for Sandbox {
                 ..Default::default()
             })
             .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
-            .with(NavAgent::new(random_cell_1))
+            .with(NavAgent::new(random_cell_1, Some(0.05)))
             .with(RandomMovement::new())
             .with(Movement::new(2.0))
             .build();
@@ -110,7 +110,7 @@ impl GameLogic for Sandbox {
                 ..Default::default()
             })
             .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
-            .with(NavAgent::new(random_cell_2))
+            .with(NavAgent::new(random_cell_2, Some(0.05)))
             .with(RandomMovement::new())
             .with(Movement::new(2.0))
             .build();
@@ -120,6 +120,7 @@ impl GameLogic for Sandbox {
         systems_manager.add_system(PlayerInputSystem::new(), world);
         systems_manager.add_system(RandomMovementSystem, world);
         systems_manager.add_system(ClickToMoveSystem::new(pawn_id), world);
+        systems_manager.add_system(NavGridDebugSystem::new(), world);
     }
 }
 
