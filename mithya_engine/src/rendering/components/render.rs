@@ -16,7 +16,8 @@ pub struct TransformGpuCache {
 pub struct MaterialGpuCache {
     pub bind_group: wgpu::BindGroup,
     pub cached_id: Option<u32>,
-    pub has_textures: bool
+    pub has_textures: bool,
+    pub tint_buffer: Option<wgpu::Buffer>,
 }
 
 
@@ -31,5 +32,5 @@ pub struct RenderGpuCache {
 pub struct Render {
     pub mesh: Mesh,
     pub material_id: Option<u32>,
-    pub gpu_cache: Option<RenderGpuCache>,
+    pub tint: Option<[f32; 4]>,
 }

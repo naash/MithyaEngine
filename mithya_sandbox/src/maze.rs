@@ -111,6 +111,7 @@ pub fn spawn_maze(world: &mut World, cell_size: f32, cols: u32, rows: u32) {
                         mesh: Mesh::new_quad(),
                         material_id: Some(wall_material_id),
                         gpu_cache: None,
+                        tint: None,
                     })
                     .build();
             }

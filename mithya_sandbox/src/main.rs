@@ -69,7 +69,7 @@ impl GameLogic for Sandbox {
                 scale: Vec3::new(cell_size, cell_size, 1.0),
                 ..Default::default()
             })
-            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None, tint: None })
             .with(NavAgent::new(start_cell, Some(0.05)))
             .with(Movement::new(3.0))
             .build();
@@ -81,7 +81,7 @@ impl GameLogic for Sandbox {
                 scale: Vec3::new(cell_size, cell_size, 1.0),
                 ..Default::default()
             })
-            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None, tint: None })
             .with(PlayerControlled)
             .with(Movement::new(3.0))
             .build();
@@ -95,7 +95,7 @@ impl GameLogic for Sandbox {
                 scale: Vec3::new(cell_size, cell_size, 1.0),
                 ..Default::default()
             })
-            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None, tint: None })
             .with(NavAgent::new(random_cell_1, Some(0.05)))
             .with(RandomMovement::new())
             .with(Movement::new(2.0))
@@ -109,7 +109,7 @@ impl GameLogic for Sandbox {
                 scale: Vec3::new(cell_size, cell_size, 1.0),
                 ..Default::default()
             })
-            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None })
+            .with(Render { mesh: Mesh::new_quad_textured(), material_id: Some(pawn_material_id), gpu_cache: None, tint: None })
             .with(NavAgent::new(random_cell_2, Some(0.05)))
             .with(RandomMovement::new())
             .with(Movement::new(2.0))

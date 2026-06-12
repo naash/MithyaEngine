@@ -156,7 +156,7 @@ impl RenderingSystem {
             }
         );
 
-        // Texture: binding 0 = texture, binding 1 = sampler (unlit_texture only)
+        // Texture: binding 0 = texture, binding 1 = sampler, binding 2 = tint (unlit_texture only)
         let texture_bind_group_layout = device.create_bind_group_layout(
             &wgpu::BindGroupLayoutDescriptor {
                 label: Some("Texture Bind Group Layout"),
@@ -175,6 +175,16 @@ impl RenderingSystem {
                         binding: 1,
                         visibility: wgpu::ShaderStages::FRAGMENT,
                         ty: wgpu::BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
+                        count: None,
+                    },
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 2,
+                        visibility: wgpu::ShaderStages::FRAGMENT,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Uniform,
+                            has_dynamic_offset: false,
+                            min_binding_size: None,
+                        },
                         count: None,
                     },
                 ],
@@ -568,22 +578,23 @@ impl RenderingSystem {
         };
 
         // --- RenderCache initialization ---
+        let initial_tint = render.tint.unwrap_or([1.0, 1.0, 1.0, 1.0]);
         if render.gpu_cache.is_none() {
             let transform_gpu_cache = self.build_transform_cache(&transform_uniforms);
-            let material_gpu_cache = match self.build_material_cache(material, asset_manager, render.material_id) {
+            let material_gpu_cache = match self.build_material_cache(material, asset_manager, render.material_id, initial_tint) {
                 Some(m) => m,
                 None => return,
             };
-            
+
             render.gpu_cache = Some(RenderGpuCache {
             transform: transform_gpu_cache,
-            material: material_gpu_cache 
+            material: material_gpu_cache
             })
         }
         else if let Some(cache) = &mut render.gpu_cache {
             //If cached material doesn't match, we rebuild the cache
             if cache.material.cached_id != render.material_id {
-                cache.material = match self.build_material_cache(material, asset_manager, render.material_id) {
+                cache.material = match self.build_material_cache(material, asset_manager, render.material_id, initial_tint) {
                     Some(bg) => bg,
                     None => return,
                 };
@@ -595,12 +606,18 @@ impl RenderingSystem {
             None => return,
         };
 
-         // --- Transform update ---
+        // --- Transform update ---
         self.queue.write_buffer(
             &cache.transform.buffer,
             0,
             bytemuck::cast_slice(&[transform_uniforms]),
         );
+
+        // --- Tint update ---
+        if let Some(tint_buf) = &cache.material.tint_buffer {
+            let tint = render.tint.unwrap_or([1.0, 1.0, 1.0, 1.0]);
+            self.queue.write_buffer(tint_buf, 0, bytemuck::cast_slice(&tint));
+        }
 
         // --- Pipeline selection and draw ---
         // Bind groups already exist — just hand them to the render pass
@@ -657,8 +674,9 @@ impl RenderingSystem {
         material: &MaterialData,
         asset_manager: &AssetManager,
         material_id: Option<u32>,
+        initial_tint: [f32; 4],
     ) -> Option<MaterialGpuCache> {
-        let material_bind_group = if material.textures.is_empty() {
+        if material.textures.is_empty() {
             let color = match material.uniforms.get("u_color") {
                 Some(crate::asset::UniformValue::Vec3(v)) => *v,
                 _ => [1.0, 1.0, 1.0],
@@ -670,15 +688,21 @@ impl RenderingSystem {
                 usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
             });
 
-            self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("Color Bind Group"),
                 layout: &self.color_bind_group_layout,
                 entries: &[wgpu::BindGroupEntry {
                     binding: 0,
                     resource: color_buffer.as_entire_binding(),
                 }],
-            })
+            });
 
+            Some(MaterialGpuCache {
+                bind_group,
+                cached_id: material_id,
+                has_textures: false,
+                tint_buffer: None,
+            })
         } else {
             let texture_entry = material
                 .textures
@@ -686,7 +710,13 @@ impl RenderingSystem {
                 .next()
                 .and_then(|b| asset_manager.get_texture(&b.texture_id))?;
 
-            self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            let tint_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Tint Buffer"),
+                contents: bytemuck::cast_slice(&initial_tint),
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            });
+
+            let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("Texture Bind Group"),
                 layout: &self.texture_bind_group_layout,
                 entries: &[
@@ -698,15 +728,20 @@ impl RenderingSystem {
                         binding: 1,
                         resource: wgpu::BindingResource::Sampler(&self.default_sampler),
                     },
+                    wgpu::BindGroupEntry {
+                        binding: 2,
+                        resource: tint_buffer.as_entire_binding(),
+                    },
                 ],
-            })
-        };
+            });
 
-        Some(MaterialGpuCache {
-            bind_group: material_bind_group,
-            cached_id: material_id,
-            has_textures: !material.textures.is_empty()
-        })
+            Some(MaterialGpuCache {
+                bind_group,
+                cached_id: material_id,
+                has_textures: true,
+                tint_buffer: Some(tint_buffer),
+            })
+        }
     }
 
     pub fn load_assets<F>(&self, asset_manager: &mut AssetManager, f: F)
