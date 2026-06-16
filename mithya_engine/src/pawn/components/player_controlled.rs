@@ -3,5 +3,5 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct PlayerControlled;

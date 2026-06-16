@@ -32,6 +32,7 @@ impl NamedEngineAction for DestroyEntityAction {
 pub struct Archetype {
     pub signature: HashSet<TypeId>,
     pub entities: Vec<EntityId>,
+    pub components: HashMap<TypeId, Vec<Box<dyn Component>>>,
 }
 
 impl Archetype {
@@ -39,6 +40,7 @@ impl Archetype {
         Self {
             signature,
             entities: Vec::new(),
+            components: HashMap::new()
         }
     }
 
@@ -50,16 +52,14 @@ impl Archetype {
 // Entity manager - stores components for entities
 pub struct EntityManager {
     next_entity_id: EntityId,
-    entity_components: HashMap<TypeId, HashMap<EntityId, Box<dyn Component>>>,
     archetypes: Vec<Archetype>,
-    entity_to_archetype: HashMap<EntityId, usize>,
+    entity_to_archetype: HashMap<EntityId, (usize, usize)>,
 }
 
 impl EntityManager {
     pub fn new() -> Self {
         Self {
             next_entity_id: 0,
-            entity_components: HashMap::new(),
             archetypes: Vec::new(),
             entity_to_archetype: HashMap::new(),
         }
@@ -76,7 +76,7 @@ impl EntityManager {
         let type_id = TypeId::of::<T>();
         
         let mut new_signature = match self.entity_to_archetype.get(&entity_id) {
-            Some(&arch_idx) => self.archetypes[arch_idx].signature.clone(),
+            Some(&(arch_idx, _row_idx),) => self.archetypes[arch_idx].signature.clone(),
             None => HashSet::new(),
         };
 
@@ -87,18 +87,39 @@ impl EntityManager {
         let archetype_idx = self.find_or_create_archetype(new_signature);
 
         // Move entity to new archetype
-        if let Some(old_arch_idx) = self.entity_to_archetype.get(&entity_id) {
-            self.archetypes[*old_arch_idx].entities.retain(|&e| e != entity_id);
+        // After finding archetype_idx, before pushing new component
+        if let Some((old_arch_idx, old_row_idx)) = self.entity_to_archetype.get(&entity_id).copied() {
+            // get the old signature to know which types to migrate
+            let old_signature: Vec<TypeId> = self.archetypes[old_arch_idx].signature.iter().copied().collect();
+            
+            for existing_type_id in old_signature {
+                // swap_remove from old archetype's column
+                if let Some(column) = self.archetypes[old_arch_idx].components.get_mut(&existing_type_id) {
+                    let migrated_component = column.swap_remove(old_row_idx);
+                    self.archetypes[archetype_idx].components
+                        .entry(existing_type_id)
+                        .or_insert_with(Vec::new)
+                        .push(migrated_component);
+                }
+            }
+            
+            self.archetypes[old_arch_idx].entities.swap_remove(old_row_idx);
+
+            // update displaced entity's row_idx if swap occurred
+            if let Some(displaced_entity) = self.archetypes[old_arch_idx].entities.get_mut(old_row_idx) {
+                if let Some(entry) = self.entity_to_archetype.get_mut(displaced_entity) {
+                    entry.1 = old_row_idx;
+                }
+            } 
         }
         
         self.archetypes[archetype_idx].entities.push(entity_id);
-        self.entity_to_archetype.insert(entity_id, archetype_idx);
+        let row_idx = self.archetypes[archetype_idx].entities.len() - 1;
+        self.entity_to_archetype.insert(entity_id, (archetype_idx, row_idx));
         
         // Store component
-        self.entity_components
-            .entry(type_id)
-            .or_insert_with(HashMap::new)
-            .insert(entity_id, Box::new(component));
+        self.archetypes[archetype_idx].components.
+        entry(type_id).or_insert_with(Vec::new).push(Box::new(component));
     }
 
     fn find_or_create_archetype(&mut self, signature: HashSet<TypeId>) -> usize {
@@ -118,9 +139,10 @@ impl EntityManager {
 
     pub fn get_component<T: Component>(&self, entity_id: EntityId) -> Option<&T> {
         let type_id = TypeId::of::<T>();
-        self.entity_components
+        let (arch_idx, row_idx) = *self.entity_to_archetype.get(&entity_id)?;
+        self.archetypes[arch_idx].components
             .get(&type_id)?
-            .get(&entity_id)?
+            .get(row_idx)?
             .as_ref()
             .as_any()
             .downcast_ref::<T>()
@@ -140,9 +162,10 @@ impl EntityManager {
     
     pub fn get_component_mut<T: Component>(&mut self, entity_id: EntityId) -> Option<&mut T> {
         let type_id = TypeId::of::<T>();
-        self.entity_components
+        let (arch_idx, row_idx) = *self.entity_to_archetype.get(&entity_id)?;
+        self.archetypes[arch_idx].components
             .get_mut(&type_id)?
-            .get_mut(&entity_id)?
+            .get_mut(row_idx)?
             .as_mut()
             .as_any_mut()
             .downcast_mut::<T>()
@@ -153,51 +176,115 @@ impl EntityManager {
         a: EntityId,
         b: EntityId
     ) -> (Option<&mut T>, Option<&mut T>) {
+        let type_id = TypeId::of::<T>();
         assert!(a != b);
-        let Some(storage) = self.entity_components.get_mut(&TypeId::of::<T>()) else {
-            return (None, None);
-        };
-        let [component_a, component_b] = storage.get_disjoint_mut([&a, &b]);
-        (
-            component_a.and_then(|c| c.as_mut().as_any_mut().downcast_mut::<T>()),
-            component_b.and_then(|c| c.as_mut().as_any_mut().downcast_mut::<T>()),
-        )
+
+        let a_lookup = self.entity_to_archetype.get(&a).copied();
+        let b_lookup = self.entity_to_archetype.get(&b).copied();
+
+        match (a_lookup, b_lookup) {
+            (None, None) => (None, None),
+            (Some((_arch_a, _row_a)), None) => {
+                // just look up a
+                let ca = self.get_component_mut(a);
+                (ca, None)
+            },
+            (None, Some((_arch_b, _row_b))) => {
+                // just look up b
+                let cb = self.get_component_mut(b);
+                (None, cb)
+            },
+            (Some((arch_a, row_a)), Some((arch_b, row_b))) => {
+                if arch_a == arch_b {
+                    // same archetype, same column Vec — use get_disjoint_mut by row
+                    let Some(column) = self.archetypes[arch_a].components.get_mut(&type_id) else {
+                        return (None, None)
+                    };
+                    let Ok([ca, cb]) = column.get_disjoint_mut([row_a, row_b]) else {
+                        return (None, None);
+                    };
+                    (
+                        ca.as_mut().as_any_mut().downcast_mut::<T>(),
+                        cb.as_mut().as_any_mut().downcast_mut::<T>(),
+                    )
+                }  else {
+                    // different archetypes — split_at_mut
+                    let (arch_ref_a, arch_ref_b) = if arch_a < arch_b {
+                        let (left, right) = self.archetypes.split_at_mut(arch_b);
+                        (&mut left[arch_a], &mut right[0])
+                    } else {
+                        let (left, right) = self.archetypes.split_at_mut(arch_a);
+                        (&mut right[0], &mut left[arch_b])
+                    };
+
+                    let ca = arch_ref_a.components.get_mut(&type_id)
+                        .and_then(|col| col.get_mut(row_a))
+                        .and_then(|c| c.as_mut().as_any_mut().downcast_mut::<T>());
+
+                    let cb = arch_ref_b.components.get_mut(&type_id)
+                        .and_then(|col| col.get_mut(row_b))
+                        .and_then(|c| c.as_mut().as_any_mut().downcast_mut::<T>());
+
+                    (ca, cb)
+                }
+            }
+        }
     }
 
     pub fn remove_component<T: Component + Clone>(&mut self, entity_id: EntityId) -> Option<T> {
         let type_id = TypeId::of::<T>();
 
         // Get current archetype
-        let current_arch_idx = *self.entity_to_archetype.get(&entity_id)?;
+        let (current_arch_idx, old_row_idx) = *self.entity_to_archetype.get(&entity_id)?;
         let current_signature = self.archetypes[current_arch_idx].signature.clone();
-        
-        // Create new signature without borrowing self
-        let mut new_signature = current_signature;
+        let mut new_signature = current_signature.clone(); // clone here, keep current_signature for looping
         new_signature.remove(&type_id);
-        
-        // Store component before archetype modifications
-        let component = match self.entity_components.get_mut(&type_id) {
-            Some(components) => match components.remove(&entity_id) {
-                Some(component) => component,
-                None => return None
-            },
-            None => return None
+        new_signature.remove(&type_id);
+
+        let component = self.archetypes[current_arch_idx].components
+            .get_mut(&type_id)?
+            .swap_remove(old_row_idx);
+
+        // Find or create new archetype
+        let new_arch_idx = self.find_or_create_archetype(new_signature);
+
+        // Split to get two mutable archetype references
+        let (old_arch, new_arch) = if current_arch_idx < new_arch_idx {
+            let (left, right) = self.archetypes.split_at_mut(new_arch_idx);
+            (&mut left[current_arch_idx], &mut right[0])
+        } else {
+            let (left, right) = self.archetypes.split_at_mut(current_arch_idx);
+            (&mut right[0], &mut left[new_arch_idx])
         };
 
-        // Now handle archetype changes
-        let new_arch_idx = self.find_or_create_archetype(new_signature);
-        self.archetypes[current_arch_idx].entities.retain(|&e| e != entity_id);
-        self.archetypes[new_arch_idx].entities.push(entity_id);
-        self.entity_to_archetype.insert(entity_id, new_arch_idx);
+        for existing_type_id in current_signature.iter() {
+            if *existing_type_id == type_id { continue; }
+            if let Some(column) = old_arch.components.get_mut(existing_type_id) {
+                let migrated = column.swap_remove(old_row_idx);
+                new_arch.components
+                    .entry(*existing_type_id)
+                    .or_insert_with(Vec::new)
+                    .push(migrated);
+            }
+        }
 
-        // Downcast and clone the concrete type
-        let concrete_component = component
-            .as_ref()           // &dyn Component
-            .as_any()           // &dyn Any  
-            .downcast_ref::<T>()?  // Option<&T>
-            .clone();           // T (cloned)
+        // Migrate entity
+        old_arch.entities.swap_remove(old_row_idx);
+        let new_row_idx = new_arch.entities.len();
+        new_arch.entities.push(entity_id);
 
-        Some(concrete_component)
+        // Update displaced entity
+        if let Some(&displaced) = old_arch.entities.get(old_row_idx) {
+            if let Some(entry) = self.entity_to_archetype.get_mut(&displaced) {
+                entry.1 = old_row_idx;
+            }
+        }
+
+        // Update entity mapping
+        self.entity_to_archetype.insert(entity_id, (new_arch_idx, new_row_idx));
+
+        // Downcast and return
+        Some(component.as_ref().as_any().downcast_ref::<T>()?.clone())
     }
     
     pub fn has_component<T: Component>(&self, entity_id: EntityId) -> bool {
@@ -206,21 +293,27 @@ impl EntityManager {
     
     pub fn destroy_entity(&mut self, entity_id: EntityId) {
         // Remove from current archetype
-        if let Some(&arch_idx) = self.entity_to_archetype.get(&entity_id) {
-            self.archetypes[arch_idx].entities.retain(|&e| e != entity_id);
+        if let Some(&(arch_idx, row_idx)) = self.entity_to_archetype.get(&entity_id) {
+            let signature: Vec<TypeId> = self.archetypes[arch_idx].signature.iter().copied().collect();
+
+            for type_id in signature {
+                if let Some(column) = self.archetypes[arch_idx].components.get_mut(&type_id) {
+                    column.swap_remove(row_idx);
+                }
+            }
+
+            self.archetypes[arch_idx].entities.swap_remove(row_idx);
+
+            //Update mapping of diplaced entity
+            if let Some(&displaced) = self.archetypes[arch_idx].entities.get(row_idx) {
+                if let Some(entry) = self.entity_to_archetype.get_mut(&displaced) {
+                    entry.1 = row_idx;
+                }
+            }
         }
 
         // Remove archetype mapping
         self.entity_to_archetype.remove(&entity_id);
-
-        // Remove from all component storages
-        for (_, components) in self.entity_components.iter_mut() {
-            components.remove(&entity_id);
-        }
-
-        // Empty archetypes are intentionally kept: entity_to_archetype stores
-        // indices into self.archetypes, so removing one would invalidate every
-        // mapping that points past it. find_or_create_archetype reuses them.
     }
 
     pub fn destroy_all_entities(&mut self) {
@@ -237,7 +330,7 @@ impl EntityManager {
         // Collect entity IDs that DON'T have any of the excluded components
         let entity_ids: Vec<EntityId> = self.entity_to_archetype
             .iter()
-            .filter_map(|(&entity_id, &arch_idx)| {
+            .filter_map(|(&entity_id, &(arch_idx, _row_idx))| {
                 let signature = &self.archetypes[arch_idx].signature;
                 if excluded_component_types.iter().any(|type_id| signature.contains(type_id)) {
                     None
@@ -263,20 +356,7 @@ impl EntityManager {
         
         for archetype in &self.archetypes {
             if archetype.matches(component_types) {
-                // Verify entities exist in component storages
-                let valid_entities: Vec<_> = archetype.entities.iter()
-                    .filter(|&&entity_id| {
-                        component_types.iter().all(|&type_id| 
-                            self.entity_components
-                                .get(&type_id)
-                                .and_then(|components| components.get(&entity_id))
-                                .is_some()
-                        )
-                    })
-                    .copied()
-                    .collect();
-                
-                result.extend(valid_entities);
+                result.extend(archetype.entities.iter().copied());
             }
         }
         
@@ -298,22 +378,19 @@ impl EntityManager {
     pub fn get_renderable_entities(&self) -> Vec<EntityId> {
         self.query_two_components::<Transform, Render>()
     }
-
-    pub fn get_storage<T: Component>(&self) -> Option<&HashMap<EntityId, Box<dyn Component>>> {
-        self.entity_components.get(&TypeId::of::<T>())
-    }
-
-    pub fn get_storage_mut<T: Component>(&mut self) -> Option<&mut HashMap<EntityId, Box<dyn Component>>> {
-        self.entity_components.get_mut(&TypeId::of::<T>())
-    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    #[derive(Debug)]
     struct CompA(u32);
+
+    #[derive(Debug)]
     struct CompB(u32);
+
+    #[derive(Debug)]
     struct CompC(u32);
 
     #[test]

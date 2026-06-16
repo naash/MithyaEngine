@@ -5,7 +5,7 @@
 
 use glam::Vec2;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct RandomMovement {
     pub current_direction: Vec2,
 }
