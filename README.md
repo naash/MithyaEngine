@@ -10,12 +10,12 @@ A game engine built from scratch in Rust, driven by a single goal: learn Rust by
 Entities are plain `u32` IDs. Components are data structs. Systems operate on entities that have specific components. No inheritance — behaviour comes from composition.
 
 ### Event / Action Pipeline
-Systems communicate through two channels — events (facts about what happened) and actions (deferred world mutations). Events are pushed from `update()`, broadcast to listeners, which push actions that execute after all systems finish.
+Systems communicate through two channels — events (facts about what happened) and actions (deferred world mutations). Events are dispatched to listeners before systems update — listeners receive a consistent world snapshot and push actions that are applied before any system runs.
 
 ```
-update() → push events
-on_events(events, actions, world) → push actions
-execute_all() → mutate world
+handle_event_all() → on_events receives read-only &World, pushes actions
+execute_all()      → actions mutate world
+update_all()       → systems update (may push events for next frame)
 ```
 
 `on_events` receives read-only `&World` access so listeners can query component state when deciding which actions to push — without being able to mutate mid-frame.
@@ -73,7 +73,7 @@ let path = nav_grid.find_path(start_cell, goal_cell);
 let cell = nav_grid.world_to_cell(world_pos);
 ```
 
-Agents carry a `NavAgent` component (current cell, path queue, `move_input`). `NavigationSystem` listens for `MoveToEvent`, runs A\* when one arrives, then steps the agent along its path each frame — writing a `move_input` direction that feeds directly into the existing `ControllerSystem → MovementSystem` pipeline. Navigation slots into the ECS without any special-casing in the engine loop.
+Agents carry a `NavAgent` component (current cell, path queue, `move_input`). `NavigationSystem` listens for `MoveToEvent`, runs A\* when one arrives, then steps the agent along its path each frame — writing a `move_input` direction that feeds directly into the existing `NavMovementSystem → MovementSystem` pipeline. Navigation slots into the ECS without any special-casing in the engine loop.
 
 ### Rendering
 Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. `RenderingSystem` is stored separately from the system list — it owns all wgpu state and is called directly from the engine loop. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
