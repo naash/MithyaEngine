@@ -10,7 +10,7 @@ pub mod frame_timer;
 pub mod world;
 pub mod resources;
 
-pub use resources::EngineStats;
+pub use resources::{EngineStats, WorldConfig};
 pub use entity_builder::EntityBuilder;
 pub use frame_timer::FrameTimer;
 pub use world::World;

@@ -10,9 +10,10 @@ use winit::window::Window;
 
 use crate::{
     EntityManager, RenderingSystem, asset::AssetManager, core::{
-        EngineActionQueue, 
-        EngineEventListener, 
-        EngineEventQueue}, engine::World
+        EngineActionQueue,
+        EngineEventListener,
+        EngineEventQueue}, 
+        engine::{World, resources::WorldConfig}
 };
 
 pub struct SystemUpdateContext<'a> {
@@ -29,6 +30,7 @@ pub trait System {
     fn initialize(&mut self, world: &mut World);
     fn update(&mut self, update_context: &mut SystemUpdateContext);
     fn cleanup(&mut self, _world: &mut World) {}
+    fn is_pausable(&self) -> bool { true }
     fn as_event_listener_mut(&mut self) -> Option<&mut dyn EngineEventListener>;
     fn as_any_mut(&mut self) -> &mut dyn Any;
 }
@@ -103,9 +105,16 @@ impl SystemsManager {
     }
 
     pub fn update_all(&mut self, update_context: &mut SystemUpdateContext) {
+        let paused = update_context.world.resources.get::<WorldConfig>()
+            .map(|c| c.paused)
+            .unwrap_or(false);
+
         for &phase in PHASE_ORDER {
             if let Some(systems) = self.systems.get_mut(&phase) {
                 for system in systems {
+                    if paused && system.is_pausable() {
+                        continue;
+                    }
                     system.update(update_context);
                 }
             }

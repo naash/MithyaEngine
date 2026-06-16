@@ -15,3 +15,8 @@ pub struct Time {
     pub elapsed: f32,
 }
 
+#[derive(Default)]
+pub struct WorldConfig {
+    pub paused: bool,
+}
+

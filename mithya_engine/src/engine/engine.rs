@@ -13,7 +13,7 @@ use crate::{
             WindowResizedEvent
         }
     }, engine::{
-        EngineStats, FrameTimer, resources::Time, system::{
+        EngineStats, FrameTimer, resources::{Time, WorldConfig}, system::{
             SystemPhase,
             SystemUpdateContext,
             SystemsManager
@@ -131,6 +131,7 @@ impl<G: GameLogic> ApplicationHandler for Engine<G> {
         world.resources.insert(InputMapping::new());
         world.resources.insert(EngineStats::default());
         world.resources.insert(Time::default());
+        world.resources.insert(WorldConfig::default());
 
         let mut systems_manager = SystemsManager::new();
         systems_manager.add_system_with_phase(InputSystem::new(), &mut world, SystemPhase::Input);

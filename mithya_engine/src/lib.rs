@@ -22,7 +22,7 @@ pub use pawn::{
     Movement,
     PlayerInputSystem, NavMovementSystem, RandomMovementSystem, MovementSystem,
 };
-pub use engine::{Engine, World};
+pub use engine::{Engine, World, WorldConfig};
 pub use physics::PhysicsSystem;
 pub use debug::resources::debug_draw_buffer::DebugDrawBuffer;
 pub use debug::systems::debug_system::DebugSystem;
