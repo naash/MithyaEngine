@@ -35,6 +35,8 @@ pub use navigation::{
     NavGridDebugSystem,
 };
 
+pub use egui;
+
 // Prelude module - common imports users will want
 pub mod prelude {
     pub use crate::{
