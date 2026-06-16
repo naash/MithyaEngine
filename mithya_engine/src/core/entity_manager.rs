@@ -209,10 +209,10 @@ impl EntityManager {
         if let Some(&arch_idx) = self.entity_to_archetype.get(&entity_id) {
             self.archetypes[arch_idx].entities.retain(|&e| e != entity_id);
         }
-        
+
         // Remove archetype mapping
         self.entity_to_archetype.remove(&entity_id);
-        
+
         // Remove from all component storages
         for (_, components) in self.entity_components.iter_mut() {
             components.remove(&entity_id);
@@ -221,6 +221,36 @@ impl EntityManager {
         // Empty archetypes are intentionally kept: entity_to_archetype stores
         // indices into self.archetypes, so removing one would invalidate every
         // mapping that points past it. find_or_create_archetype reuses them.
+    }
+
+    pub fn destroy_all_entities(&mut self) {
+        // Collect all entity IDs first to avoid borrow issues
+        let entity_ids: Vec<EntityId> = self.entity_to_archetype.keys().copied().collect();
+
+        // Destroy each entity
+        for entity_id in entity_ids {
+            self.destroy_entity(entity_id);
+        }
+    }
+
+    pub fn destroy_all_entities_except(&mut self, excluded_component_types: &[TypeId]) {
+        // Collect entity IDs that DON'T have any of the excluded components
+        let entity_ids: Vec<EntityId> = self.entity_to_archetype
+            .iter()
+            .filter_map(|(&entity_id, &arch_idx)| {
+                let signature = &self.archetypes[arch_idx].signature;
+                if excluded_component_types.iter().any(|type_id| signature.contains(type_id)) {
+                    None
+                } else {
+                    Some(entity_id)
+                }
+            })
+            .collect();
+
+        // Destroy each entity
+        for entity_id in entity_ids {
+            self.destroy_entity(entity_id);
+        }
     }
 
      // Get entities that have ALL specified component types

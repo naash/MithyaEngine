@@ -33,4 +33,5 @@ pub struct Render {
     pub mesh: Mesh,
     pub material_id: Option<u32>,
     pub tint: Option<[f32; 4]>,
+    pub gpu_cache: Option<RenderGpuCache>,
 }
