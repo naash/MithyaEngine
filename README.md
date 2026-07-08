@@ -1,105 +1,75 @@
-# Mithya Engine
+# MithyaEngine
 
-A game engine built from scratch in Rust, driven by a single goal: learn Rust by building something real, functional.
+A 2D game engine built from scratch in Rust. Ships real games.
+
+<img src="demos/brickbreaker_demo.gif" width="400" alt="Brickbreaker">
+<img src="demos/pacman_demo.gif" width="400" alt="Pac-Man">
+
+
+---
+
+## Games
+
+**Brickbreaker** — collision layers, physics, velocity reflection, bounce dynamics.
+
+**Pac-Man** — grid-based A* pathfinding, multi-agent navigation, ghost AI, input system.
 
 ---
 
 ## Architecture
 
 ### ECS
-Entities are plain `u32` IDs. Components are data structs. Systems operate on entities that have specific components. No inheritance — behaviour comes from composition.
+Entities are plain `u32` IDs. Components are data structs. Systems operate on entities that match a component set. No inheritance — behaviour comes from composition. Component storage uses contiguous archetype-aligned `Vec` columns for cache-friendly iteration.
 
 ### Event / Action Pipeline
-Systems communicate through two channels — events (facts about what happened) and actions (deferred world mutations). Events are dispatched to listeners before systems update — listeners receive a consistent world snapshot and push actions that are applied before any system runs.
+Systems communicate through two channels: events (facts about what happened) and actions (deferred world mutations). The split exists because the borrow checker cannot allow mutable world access during system reads — so mutations are deferred to a point where no borrows are active.
 
 ```
-handle_event_all() → on_events receives read-only &World, pushes actions
+handle_event_all() → listeners receive read-only &World, push actions
 execute_all()      → actions mutate world
-update_all()       → systems update (may push events for next frame)
+update_all()       → systems update, may push events for next frame
 ```
 
-`on_events` receives read-only `&World` access so listeners can query component state when deciding which actions to push — without being able to mutate mid-frame.
-
-### Resources
-Global data that doesn't belong to any entity lives in a typed `Resources` store keyed by type rather than by name.
-
-```rust
-world.resources.insert(InputMapping::new());
-world.resources.insert(PhysicsConfig::default());
-world.resources.insert(Time::default());
-
-world.resources.get::<InputMapping>()
-world.resources.get_mut::<Time>()
-```
-
-This keeps `World` lean — only `EntityManager` and `AssetManager` live directly on it. Everything else is a resource. Adding new global data never touches the `World` struct.
-
-### Input
-Named input actions bound to physical keys via `InputMapping` resource. `InputSystem` translates raw key events into `InputActionEvent` — systems respond to actions, not keycodes. Rebinding is a config change, not a code change. `InputActionMode::Continuous` fires every frame while held, `InputActionMode::OneShot` fires once on press.
-
-### Camera
-A `Camera` component on any entity drives the view. `RenderingSystem` finds the active camera each frame and computes view and projection matrices from it — no hardcoded values. `size` controls the half-height in world units, aspect ratio is derived from the window dimensions automatically.
-
-```rust
-EntityBuilder::new(&mut world.entity_manager)
-    .with(Transform::default())
-    .with(Camera::new(20.0))  // 20 world units half-height
-    .build();
-```
-
-### Collision Layers
-Colliders have a `layer` (what they are) and a `mask` (what they collide with), both `u32` bitmasks — 32 layers available. Two entities only check collision if their layers and masks intersect, eliminating spurious wall-wall checks.
-
-```rust
-pub const LAYER_WALL: u32   = 0b0001;
-pub const LAYER_BALL: u32   = 0b0010;
-pub const LAYER_PADDLE: u32 = 0b0100;
-pub const LAYER_BRICK: u32  = 0b1000;
-
-//example Wall only collides with ball — never with other walls
-Collider { layer: LAYER_WALL, mask: LAYER_BALL, .. }
-```
+This isn't a workaround — it's a cleaner architecture. Mid-frame mutation bugs are structurally impossible.
 
 ### Navigation
-Grid-based pathfinding built around `NavGrid`, a resource that stores a uniform cell grid with `Floor`/`Wall` cell types. `NavGrid` exposes A\* pathfinding and bidirectional cell↔world coordinate conversion.
+`NavGrid` is a uniform cell grid resource with Floor/Wall types. Exposes A* pathfinding and bidirectional cell↔world coordinate conversion. `NavAgent` components carry path queues; `NavigationSystem` listens for `MoveToEvent`, runs A*, and steps agents along their path each frame — feeding into the existing movement pipeline with no engine-loop special-casing.
 
 ```rust
-world.resources.insert(NavGrid::new(cols, rows, cell_size, origin));
-
-// A* from one cell to another
 let path = nav_grid.find_path(start_cell, goal_cell);
-
-// Convert screen click → world → grid cell
 let cell = nav_grid.world_to_cell(world_pos);
 ```
 
-Agents carry a `NavAgent` component (current cell, path queue, `move_input`). `NavigationSystem` listens for `MoveToEvent`, runs A\* when one arrives, then steps the agent along its path each frame — writing a `move_input` direction that feeds directly into the existing `NavMovementSystem → MovementSystem` pipeline. Navigation slots into the ECS without any special-casing in the engine loop.
+### Collision Layers
+Colliders carry a `layer` (what they are) and `mask` (what they collide with) as `u32` bitmasks — 32 layers available. Two entities only run collision if their layer/mask pairs intersect, eliminating spurious same-type checks.
+
+```rust
+pub const LAYER_WALL:   u32 = 0b0001;
+pub const LAYER_BALL:   u32 = 0b0010;
+pub const LAYER_PADDLE: u32 = 0b0100;
+pub const LAYER_BRICK:  u32 = 0b1000;
+
+// Wall only collides with ball — never with other walls
+Collider { layer: LAYER_WALL, mask: LAYER_BALL, .. }
+```
+
+### Input
+Named actions bound to physical keys via `InputMapping` resource. `InputSystem` translates raw key events into `InputActionEvent` — systems respond to actions, not keycodes. Rebinding is a config change, not a code change. `Continuous` mode fires every frame while held; `OneShot` fires once on press.
+
+### Camera
+A `Camera` component on any entity drives the view. `RenderingSystem` finds the active camera each frame and derives view/projection matrices from it — no hardcoded values. Aspect ratio is computed from window dimensions automatically.
+
+### Resources
+Global data lives in a typed `Resources` store keyed by type, not name. `World` stays lean — only `EntityManager` and `AssetManager` live on it directly. Adding new global state never touches the `World` struct.
 
 ### Rendering
-Built on **wgpu** (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. `RenderingSystem` is stored separately from the system list — it owns all wgpu state and is called directly from the engine loop. UI via **egui** rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
+Built on `wgpu` (Vulkan/DX12/Metal/WebGPU). Shaders in WGSL. `RenderingSystem` owns all wgpu state and is called directly from the engine loop. UI via `egui` rendered on top of the main pass — games register a draw closure that executes every frame with read access to world state.
 
 ### Physics
 Velocity, acceleration, drag, gravity, bounce, max speed. Collision resolution uses relative velocity reflection to preserve ball speed regardless of what it hits.
 
 ---
 
-## What I Learned
-
-This project was deliberately chosen as a Rust learning vehicle because game engines stress-test every part of the language. As a C++ programmer, learning Rust was interesting and its constraints forced me to architect the engine in a more robust and safer way.
-
-**Ownership ended null pointer bugs entirely.** Every `get_component` returns `Option<T>`. The compiler forces handling of the missing case — there is no way to accidentally dereference a missing component. This class of bug simply doesn't exist.
-
-**The borrow checker is a systems architecture tool.** Early versions of the engine had systems trying to hold references to each other but the compiler rejected all of it. The event/action pipeline wasn't a design choice, it was the solution the borrow checker forced. A system can't hold a `&mut World` while another system reads it, so mutations are deferred to a point where no borrows are active. The architecture is better because of the constraint.
-
-**`Option<T>` and `Result<T,E>` replace entire categories of runtime errors.** No exceptions, no null checks, no undefined behaviour. The compiler won't let you use a value that might not exist without explicitly handling both cases. Writing `expect("message")` instead of `unwrap()` forced me to justify every assumption the code makes.
-
-**Traits compose where inheritance breaks.** `System`, `EngineEventListener`, `Component`, `EngineAction` are all traits. A type can implement any combination. No base classes, no diamond problem, no vtable surprises. The ECS architecture maps naturally to this — entities are composed of components, behaviour comes from which traits those components' systems implement.
-
-**Move semantics make resource management explicit.** Passing the wgpu `Device` to a function transfers ownership — you can't accidentally use it from two places. The GPU resource lifetime is enforced by the type system, not by discipline.
-
----
-
 ## Stack
 
 `wgpu` · `winit` · `egui` · `glam` · `serde` · `bytemuck` · `image` · `thiserror`
-
